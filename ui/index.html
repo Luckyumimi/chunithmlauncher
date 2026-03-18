@@ -161,7 +161,11 @@
           <div class="field">
             <label>目标分辨率（固定）</label>
             <div class="input-row">
-              <input type="text" value="1920×1080 @ 120Hz" readonly />
+              <input type="text" id="targetModeSetting" value="1920×1080 @ 120Hz" readonly />
+              <label class="smart-display-toggle" title="启用后将目标刷新率切换为 60Hz，关闭则为 120Hz。">
+                <input type="checkbox" id="target60HzToggle" />
+                <span>60Hz</span>
+              </label>
             </div>
           </div>
         </div>

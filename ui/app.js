@@ -18,6 +18,8 @@
   startBatSetting: document.getElementById('startBatSetting'),
   displaySelectSetting: document.getElementById('displaySelectSetting'),
   originalModeInputSetting: document.getElementById('originalModeInputSetting'),
+  targetModeSetting: document.getElementById('targetModeSetting'),
+  target60HzToggle: document.getElementById('target60HzToggle'),
   smartDisplayToggle: document.getElementById('smartDisplayToggle'),
   themeColor: document.getElementById('themeColor'),
   themeColorText: document.getElementById('themeColorText'),
@@ -52,6 +54,14 @@ const setStatus = (text, color = '#7dffa0') => {
   ui.statusText.textContent = text;
   ui.statusDot.style.background = color;
   ui.statusDot.style.boxShadow = `0 0 10px ${color}`;
+};
+
+const getSelectedTargetMode = () => (ui.target60HzToggle?.checked ? '1920×1080 @ 60Hz' : '1920×1080 @ 120Hz');
+
+const syncTargetModeSetting = (value) => {
+  const targetMode = value || '1920×1080 @ 120Hz';
+  if (ui.targetModeSetting) ui.targetModeSetting.value = targetMode;
+  if (ui.target60HzToggle) ui.target60HzToggle.checked = /@ 60hz/i.test(targetMode);
 };
 
 const setUpdateProgress = (active, text, percent, speedText) => {
@@ -270,6 +280,7 @@ onClick('btnSaveSettings', () => {
     startBatPath: ui.startBatSetting?.value || '',
     primaryDisplay: ui.displaySelectSetting?.value || '',
     originalMode: ui.originalModeInputSetting?.value || '',
+    targetMode: getSelectedTargetMode(),
     backgroundImagePath: ui.bgImageInput?.value || '',
   });
 
@@ -293,6 +304,12 @@ if (ui.smartDisplayToggle) {
   });
 }
 
+if (ui.target60HzToggle) {
+  ui.target60HzToggle.addEventListener('change', () => {
+    syncTargetModeSetting(getSelectedTargetMode());
+  });
+}
+
 const handleHostMessage = (event) => {
   const data = event.data || event;
   const { type, payload } = data || {};
@@ -313,6 +330,7 @@ const handleHostMessage = (event) => {
 
       if (payload.targetMode) {
         if (ui.targetMode) ui.targetMode.textContent = payload.targetMode;
+        syncTargetModeSetting(payload.targetMode);
       }
 
       if (ui.smartDisplayToggle) {
@@ -354,6 +372,7 @@ const handleHostMessage = (event) => {
     }
     case 'update-target': {
       if (ui.targetMode) ui.targetMode.textContent = payload.value || '1920×1080 @ 120Hz';
+      syncTargetModeSetting(payload.value || '1920×1080 @ 120Hz');
       break;
     }
     case 'update-start-bat': {

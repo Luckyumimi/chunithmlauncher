@@ -35,8 +35,8 @@ public partial class MainWindow : Window
     private string? _primaryDisplayName;
     private string? _startBatPath;
     private string? _originalMode;
-    private const string FixedTargetMode = "1920×1080 @ 120Hz";
-    private string _targetMode = FixedTargetMode;
+    private const string DefaultTargetMode = "1920×1080 @ 120Hz";
+    private string _targetMode = DefaultTargetMode;
     private string _launchMode = "smart";
     private string _themeColor = "#fdd500";
     private const string DefaultGameWindowTitle = "teaGfx DirectX Release";
@@ -146,7 +146,7 @@ public partial class MainWindow : Window
                 SendInit();
                 break;
             case "reset-target":
-                _targetMode = FixedTargetMode;
+                _targetMode = DefaultTargetMode;
                 PersistConfig();
                 SendInit();
                 break;
@@ -267,7 +267,8 @@ public partial class MainWindow : Window
         if (!string.IsNullOrWhiteSpace(_config.ThemeColor)) _themeColor = _config.ThemeColor;
         if (!string.IsNullOrWhiteSpace(_config.GameWindowTitle)) _gameWindowTitle = _config.GameWindowTitle;
         if (!string.IsNullOrWhiteSpace(_config.BackgroundImagePath)) _backgroundImagePath = _config.BackgroundImagePath;
-        _targetMode = FixedTargetMode;
+        if (!string.IsNullOrWhiteSpace(_config.TargetMode)) _targetMode = _config.TargetMode;
+        else _targetMode = DefaultTargetMode;
 
         if (string.IsNullOrWhiteSpace(_originalMode))
         {
@@ -387,6 +388,15 @@ public partial class MainWindow : Window
         if (payload.TryGetProperty("originalMode", out var original))
         {
             _originalMode = original.GetString();
+        }
+
+        if (payload.TryGetProperty("targetMode", out var targetMode))
+        {
+            var parsedTargetMode = targetMode.GetString();
+            if (!string.IsNullOrWhiteSpace(parsedTargetMode))
+            {
+                _targetMode = parsedTargetMode;
+            }
         }
 
         if (payload.TryGetProperty("backgroundImagePath", out var backgroundImagePath))

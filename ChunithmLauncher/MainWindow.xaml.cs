@@ -350,9 +350,34 @@ public partial class MainWindow : Window
         }
     }
 
+    private string? ResolveDisplayDeviceName(bool preferCurrentPrimary = false)
+    {
+        var screens = WinForms.Screen.AllScreens;
+
+        if (preferCurrentPrimary)
+        {
+            var currentPrimary = screens.FirstOrDefault(s => s.Primary)?.DeviceName;
+            if (!string.IsNullOrWhiteSpace(currentPrimary))
+            {
+                return currentPrimary;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(_primaryDisplayId))
+        {
+            var matchedDisplay = screens.FirstOrDefault(s => string.Equals(s.DeviceName, _primaryDisplayId, StringComparison.OrdinalIgnoreCase));
+            if (matchedDisplay is not null)
+            {
+                return matchedDisplay.DeviceName;
+            }
+        }
+
+        return WinForms.Screen.PrimaryScreen?.DeviceName;
+    }
+
     private void ReadCurrentMode()
     {
-        var deviceName = _primaryDisplayId ?? WinForms.Screen.PrimaryScreen?.DeviceName;
+        var deviceName = ResolveDisplayDeviceName();
         if (deviceName is null)
         {
             SetStatus("未找到显示器", "#ff5a6a");
@@ -1060,7 +1085,7 @@ public partial class MainWindow : Window
 
         _isLaunching = true;
 
-        var deviceName = _primaryDisplayId ?? WinForms.Screen.PrimaryScreen?.DeviceName;
+        var deviceName = ResolveDisplayDeviceName();
         if (deviceName is null)
         {
             SetStatus("未找到显示器", "#ff5a6a");
@@ -1094,6 +1119,17 @@ public partial class MainWindow : Window
                 {
                     DetectDisplays();
                     SendInit();
+                    deviceName = ResolveDisplayDeviceName(preferCurrentPrimary: true);
+                    if (deviceName is null)
+                    {
+                        SetStatus("独占显示器：未找到可切换的显示器", "#ff5a6a");
+                        if (originalDisplayStates is not null)
+                        {
+                            RestoreDisplayStatesWithFallback(originalDisplayStates);
+                        }
+                        _isLaunching = false;
+                        return;
+                    }
                 }
             }
         }
@@ -1219,7 +1255,7 @@ public partial class MainWindow : Window
 
     private async Task TestSwitchAsync()
     {
-        var deviceName = _primaryDisplayId ?? WinForms.Screen.PrimaryScreen?.DeviceName;
+        var deviceName = ResolveDisplayDeviceName();
         if (deviceName is null)
         {
             SetStatus("未找到显示器", "#ff5a6a");
@@ -1252,7 +1288,7 @@ public partial class MainWindow : Window
 
     private async Task RestoreOriginalAsync()
     {
-        var deviceName = _primaryDisplayId ?? WinForms.Screen.PrimaryScreen?.DeviceName;
+        var deviceName = ResolveDisplayDeviceName(preferCurrentPrimary: _smartDisplayEnabled);
         if (deviceName is null)
         {
             SetStatus("未找到显示器", "#ff5a6a");
@@ -1292,7 +1328,7 @@ public partial class MainWindow : Window
             _testSwitchCts?.Cancel();
             if (_launchMode == "smart" && _lastKnownOriginalMode.HasValue)
             {
-                var deviceName = _primaryDisplayId ?? WinForms.Screen.PrimaryScreen?.DeviceName;
+                var deviceName = ResolveDisplayDeviceName(preferCurrentPrimary: _smartDisplayEnabled);
                 if (deviceName is not null)
                 {
                     DisplayModeHelper.TrySetMode(deviceName, _lastKnownOriginalMode.Value);

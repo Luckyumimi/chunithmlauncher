@@ -40,9 +40,9 @@ jobs:
             -p:PublishSingleFile=true `
             -p:IncludeNativeLibrariesForSelfExtract=true `
             -p:UseAppHost=true `
-            -p:Version=1.2.0 `
-            -p:FileVersion=1.2.0 `
-            -p:AssemblyVersion=1.2.0 `
+            -p:Version=1.2.3 `
+            -p:FileVersion=1.2.3 `
+            -p:AssemblyVersion=1.2.3 `
             -p:DebugType=None `
             -p:DebugSymbols=false `
             -o $publishDir

@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -709,7 +707,9 @@ public partial class MainWindow : Window
     {
         SetStatus("正在检查更新...", "#5ee7ff");
 
-        GithubReleaseInfo? release;
+        string? latestTag = null;
+        string latestReleaseUrl = GithubLatestReleasePage;
+
         try
         {
             using var response = await UpdateHttpClient.GetAsync(GithubLatestReleaseApi);
@@ -717,32 +717,31 @@ public partial class MainWindow : Window
             {
                 SetStatus("检查更新失败", "#ff5a6a");
                 System.Windows.MessageBox.Show(
-                    $"检查更新失败：HTTP {(int)response.StatusCode}",
+                    $"检查更新失败：HTTP {(int)response.StatusCode}\n请检查网络环境后重试。",
                     "检查更新",
                     System.Windows.MessageBoxButton.OK,
                     System.Windows.MessageBoxImage.Warning);
                 return;
             }
 
-            var json = await response.Content.ReadAsStringAsync();
-            release = JsonSerializer.Deserialize<GithubReleaseInfo>(json);
+            await using var stream = await response.Content.ReadAsStreamAsync();
+            using var json = await JsonDocument.ParseAsync(stream);
+            var root = json.RootElement;
+            if (root.TryGetProperty("tag_name", out var tagElement))
+            {
+                latestTag = tagElement.GetString();
+            }
+
+            if (root.TryGetProperty("html_url", out var htmlUrlElement))
+            {
+                latestReleaseUrl = htmlUrlElement.GetString() ?? GithubLatestReleasePage;
+            }
         }
         catch
         {
             SetStatus("检查更新失败", "#ff5a6a");
             System.Windows.MessageBox.Show(
-                "检查更新失败，请稍后重试。",
-                "检查更新",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Warning);
-            return;
-        }
-
-        if (release is null || string.IsNullOrWhiteSpace(release.TagName))
-        {
-            SetStatus("未获取到更新信息", "#ff5a6a");
-            System.Windows.MessageBox.Show(
-                "未获取到有效的版本信息。",
+                "检查更新失败。\n中国内地网络环境下可能无法正常访问 GitHub API，请检查网络环境后重试。",
                 "检查更新",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Warning);
@@ -750,13 +749,12 @@ public partial class MainWindow : Window
         }
 
         var currentVersion = TryParseVersion(GetAppVersion());
-        var latestVersion = TryParseVersion(release.TagName);
-
+        var latestVersion = TryParseVersion(latestTag ?? string.Empty);
         if (currentVersion is null || latestVersion is null)
         {
             SetStatus("版本解析失败", "#ff5a6a");
             System.Windows.MessageBox.Show(
-                $"版本解析失败。\n当前版本：{GetAppVersion()}\n最新版本：{release.TagName}",
+                "检查到的版本信息无效。",
                 "检查更新",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Warning);
@@ -767,7 +765,7 @@ public partial class MainWindow : Window
         {
             SetStatus("当前已是最新版本", "#7dffa0");
             System.Windows.MessageBox.Show(
-                $"当前已是最新版本。\n当前版本：v{currentVersion}\n最新版本：v{latestVersion}",
+                "已经是最新版本！",
                 "检查更新",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Information);
@@ -775,66 +773,24 @@ public partial class MainWindow : Window
         }
 
         var result = System.Windows.MessageBox.Show(
-            $"发现新版本 v{latestVersion}（当前 v{currentVersion}）。\n\n选择“是”自动下载并安装更新。\n选择“否”打开发布页面手动下载。",
+            $"发现新版本：v{latestVersion}，是否前往更新？",
             "发现新版本",
-            System.Windows.MessageBoxButton.YesNoCancel,
+            System.Windows.MessageBoxButton.YesNo,
             System.Windows.MessageBoxImage.Question);
 
-        if (result == System.Windows.MessageBoxResult.Cancel)
+        if (result != System.Windows.MessageBoxResult.Yes)
         {
-            SetStatus("已取消更新", "#ffb36a");
+            SetStatus("已取消前往更新页面", "#ffb36a");
             return;
         }
 
-        if (result == System.Windows.MessageBoxResult.No)
+        if (TryOpenUrl(latestReleaseUrl))
         {
-            if (TryOpenUrl(release.HtmlUrl ?? GithubLatestReleasePage))
-            {
-                SetStatus($"已打开 v{latestVersion} 发布页面", "#7dffa0");
-                return;
-            }
-
-            SetStatus("打开发布页面失败", "#ff5a6a");
+            SetStatus($"已打开 v{latestVersion} 发布页面", "#7dffa0");
             return;
         }
 
-        var asset = PickPreferredDownloadAsset(release);
-        if (asset is null || string.IsNullOrWhiteSpace(asset.BrowserDownloadUrl))
-        {
-            if (TryOpenUrl(release.HtmlUrl ?? GithubLatestReleasePage))
-            {
-                SetStatus("未找到可自动更新的资源，已打开发布页面", "#ffb36a");
-                return;
-            }
-
-            SetStatus("未找到可更新资源", "#ff5a6a");
-            return;
-        }
-
-        if (!IsZipAsset(asset.Name))
-        {
-            if (TryOpenUrl(asset.BrowserDownloadUrl))
-            {
-                SetStatus("该版本资源不支持自动安装，已打开下载链接", "#ffb36a");
-                return;
-            }
-
-            SetStatus("打开下载链接失败", "#ff5a6a");
-            return;
-        }
-
-        var ok = await TryDownloadAndInstallUpdateAsync(asset, latestVersion);
-        if (!ok)
-        {
-            if (TryOpenUrl(asset.BrowserDownloadUrl))
-            {
-                SetStatus("自动更新失败，已打开下载链接", "#ffb36a");
-            }
-            else
-            {
-                SetStatus("自动更新失败", "#ff5a6a");
-            }
-        }
+        SetStatus("打开最新发布页面失败", "#ff5a6a");
     }
 
     private void OpenGithubHomePage()
@@ -894,180 +850,6 @@ public partial class MainWindow : Window
         }
 
         return Version.TryParse(cleaned, out var version) ? version : null;
-    }
-
-    private async Task<bool> TryDownloadAndInstallUpdateAsync(GithubReleaseAsset asset, Version latestVersion)
-    {
-        if (string.IsNullOrWhiteSpace(asset.BrowserDownloadUrl))
-        {
-            return false;
-        }
-
-        var tempRoot = Path.Combine(Path.GetTempPath(), "ChunithmLauncherUpdate", Guid.NewGuid().ToString("N"));
-        var extractRoot = Path.Combine(tempRoot, "extracted");
-
-        try
-        {
-            Directory.CreateDirectory(tempRoot);
-            Directory.CreateDirectory(extractRoot);
-
-            var fileName = string.IsNullOrWhiteSpace(asset.Name) ? "update.zip" : asset.Name!;
-            var downloadPath = Path.Combine(tempRoot, fileName);
-
-            SetStatus("正在下载更新包...", "#5ee7ff");
-            using (var response = await UpdateHttpClient.GetAsync(asset.BrowserDownloadUrl, HttpCompletionOption.ResponseHeadersRead))
-            {
-                if (!response.IsSuccessStatusCode)
-                {
-                    PostUpdateProgress(false, "下载失败", 0, "0.00 MB/s");
-                    return false;
-                }
-
-                var totalBytes = response.Content.Headers.ContentLength;
-                await using var responseStream = await response.Content.ReadAsStreamAsync();
-                await using var fileStream = File.Create(downloadPath);
-                var buffer = new byte[64 * 1024];
-                long readTotal = 0;
-                var sw = Stopwatch.StartNew();
-                var lastReportAt = TimeSpan.Zero;
-
-                while (true)
-                {
-                    var read = await responseStream.ReadAsync(buffer, 0, buffer.Length);
-                    if (read <= 0)
-                    {
-                        break;
-                    }
-
-                    await fileStream.WriteAsync(buffer, 0, read);
-                    readTotal += read;
-
-                    var now = sw.Elapsed;
-                    if (now - lastReportAt >= TimeSpan.FromMilliseconds(150))
-                    {
-                        lastReportAt = now;
-                        var mbps = now.TotalSeconds > 0 ? readTotal / now.TotalSeconds / 1024d / 1024d : 0;
-                        var percent = totalBytes.HasValue && totalBytes.Value > 0
-                            ? (int)Math.Clamp(readTotal * 100d / totalBytes.Value, 0, 100)
-                            : 0;
-                        var text = totalBytes.HasValue && totalBytes.Value > 0
-                            ? $"下载更新中... {percent}%"
-                            : $"下载更新中... {readTotal / 1024d / 1024d:F1} MB";
-                        PostUpdateProgress(true, text, percent, $"{mbps:F2} MB/s");
-                    }
-                }
-
-                var finalMbps = sw.Elapsed.TotalSeconds > 0 ? readTotal / sw.Elapsed.TotalSeconds / 1024d / 1024d : 0;
-                PostUpdateProgress(true, "下载完成，准备安装...", 100, $"{finalMbps:F2} MB/s");
-            }
-
-            SetStatus("正在解压更新包...", "#5ee7ff");
-            ZipFile.ExtractToDirectory(downloadPath, extractRoot, overwriteFiles: true);
-
-            var newExePath = Directory
-                .GetFiles(extractRoot, "ChunithmLauncher.exe", SearchOption.AllDirectories)
-                .FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(newExePath))
-            {
-                return false;
-            }
-
-            var sourceDir = Path.GetDirectoryName(newExePath);
-            if (string.IsNullOrWhiteSpace(sourceDir))
-            {
-                return false;
-            }
-
-            var currentExePath = Process.GetCurrentProcess().MainModule?.FileName
-                ?? Path.Combine(AppContext.BaseDirectory, "ChunithmLauncher.exe");
-            var targetDir = AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-            var exeName = Path.GetFileName(currentExePath);
-            var currentPid = Process.GetCurrentProcess().Id;
-            var scriptPath = Path.Combine(tempRoot, "updater.cmd");
-
-            var script = string.Join(Environment.NewLine, new[]
-            {
-                "@echo off",
-                "setlocal",
-                $"set \"PID={currentPid}\"",
-                $"set \"SRC={sourceDir}\"",
-                $"set \"DST={targetDir}\"",
-                $"set \"EXE={exeName}\"",
-                ":wait_exit",
-                "tasklist /FI \"PID eq %PID%\" | find \"%PID%\" >nul",
-                "if not errorlevel 1 (",
-                "  timeout /t 1 /nobreak >nul",
-                "  goto wait_exit",
-                ")",
-                "xcopy \"%SRC%\\*\" \"%DST%\\\" /E /H /Y /I >nul",
-                "start \"\" \"%DST%\\%EXE%\"",
-                "endlocal",
-            });
-
-            File.WriteAllText(scriptPath, script);
-
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "cmd.exe",
-                Arguments = $"/c start \"\" \"{scriptPath}\"",
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WorkingDirectory = tempRoot,
-            });
-
-            SetStatus($"正在应用 v{latestVersion} 更新...", "#7dffa0");
-            System.Windows.MessageBox.Show(
-                $"更新包已下载，程序将退出并更新到 v{latestVersion}。",
-                "开始更新",
-                System.Windows.MessageBoxButton.OK,
-                System.Windows.MessageBoxImage.Information);
-
-            System.Windows.Application.Current.Shutdown();
-            return true;
-        }
-        catch
-        {
-            PostUpdateProgress(false, "更新失败", 0, "0.00 MB/s");
-            return false;
-        }
-    }
-
-    private void PostUpdateProgress(bool active, string text, int percent, string speedText)
-    {
-        PostMessage("update-progress", new
-        {
-            active,
-            text,
-            percent,
-            speedText,
-        });
-    }
-
-    private static bool IsZipAsset(string? assetName) =>
-        !string.IsNullOrWhiteSpace(assetName)
-        && assetName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase);
-
-    private static GithubReleaseAsset? PickPreferredDownloadAsset(GithubReleaseInfo release)
-    {
-        if (release.Assets is null || release.Assets.Count == 0)
-        {
-            return null;
-        }
-
-        static bool Contains(string source, string value) =>
-            source.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
-
-        var assets = release.Assets
-            .Where(a => !string.IsNullOrWhiteSpace(a.BrowserDownloadUrl))
-            .ToList();
-
-        var selected = assets.FirstOrDefault(a => Contains(a.Name ?? string.Empty, "win-x64") && Contains(a.Name ?? string.Empty, ".zip"))
-            ?? assets.FirstOrDefault(a => Contains(a.Name ?? string.Empty, "win-x64") && Contains(a.Name ?? string.Empty, ".exe"))
-            ?? assets.FirstOrDefault(a => Contains(a.Name ?? string.Empty, ".zip"))
-            ?? assets.FirstOrDefault(a => Contains(a.Name ?? string.Empty, ".exe"))
-            ?? assets.FirstOrDefault();
-
-        return selected;
     }
 
     private async Task LaunchGameAsync()
@@ -1642,27 +1424,6 @@ public partial class MainWindow : Window
         public string? ThemeColor { get; set; }
         public string? GameWindowTitle { get; set; }
         public string? BackgroundImagePath { get; set; }
-    }
-
-    private sealed class GithubReleaseInfo
-    {
-        [JsonPropertyName("tag_name")]
-        public string? TagName { get; set; }
-
-        [JsonPropertyName("html_url")]
-        public string? HtmlUrl { get; set; }
-
-        [JsonPropertyName("assets")]
-        public List<GithubReleaseAsset>? Assets { get; set; }
-    }
-
-    private sealed class GithubReleaseAsset
-    {
-        [JsonPropertyName("name")]
-        public string? Name { get; set; }
-
-        [JsonPropertyName("browser_download_url")]
-        public string? BrowserDownloadUrl { get; set; }
     }
 
     private readonly record struct DisplayMode(int Width, int Height, int Frequency)

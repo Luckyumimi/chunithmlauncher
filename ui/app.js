@@ -29,6 +29,19 @@ let currentBgImage = localStorage.getItem('bgImage') || '';
 let isTestSwitchActive = false;
 let testSwitchCountdownTimer = null;
 let testSwitchRemainingSeconds = 0;
+let currentSettings = {
+  startBatPath: '',
+  primaryDisplay: '',
+  primaryDisplayName: '未选择',
+  originalMode: '',
+  targetMode: '1920×1080 @ 120Hz',
+  launchMode: 'smart',
+  smartDisplayEnabled: false,
+  themeColor: '#fdd500',
+  backgroundImagePath: '',
+  displays: [],
+};
+let draftSettings = null;
 
 const post = (type, payload = {}) => {
   if (window.chrome && window.chrome.webview) {
@@ -51,6 +64,8 @@ const setStatus = (text, color = '#7dffa0') => {
   ui.statusDot.style.background = color;
   ui.statusDot.style.boxShadow = `0 0 10px ${color}`;
 };
+
+const cloneSettings = (value) => JSON.parse(JSON.stringify(value));
 
 const getSelectedTargetMode = () => (ui.target60HzToggle?.checked ? '1920×1080 @ 60Hz' : '1920×1080 @ 120Hz');
 
@@ -145,11 +160,6 @@ const applyBackground = (value, persist = true) => {
   }
 };
 
-const handleThemeInput = (value) => {
-  applyThemeColor(value);
-  post('set-theme', { color: currentThemeColor });
-};
-
 const toggleModal = (el, show) => {
   if (!el) return;
   el.classList.toggle('show', show);
@@ -214,6 +224,62 @@ const updateMeta = () => {
   if (ui.originalModeHover && !ui.originalModeHover.textContent.trim()) ui.originalModeHover.textContent = '未读取';
 };
 
+const renderDisplays = (displays = [], selectedId = '') => {
+  const html = '<option value="">请先选择</option>';
+  if (ui.displaySelect) ui.displaySelect.innerHTML = html;
+  if (ui.displaySelectSetting) ui.displaySelectSetting.innerHTML = html;
+
+  displays.forEach((d) => {
+    const selected = d.id === selectedId;
+
+    if (ui.displaySelect) {
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = d.name;
+      opt.selected = selected;
+      ui.displaySelect.appendChild(opt);
+    }
+
+    if (ui.displaySelectSetting) {
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = d.name;
+      opt.selected = selected;
+      ui.displaySelectSetting.appendChild(opt);
+    }
+  });
+};
+
+const setLaunchModeUi = (mode) => {
+  segs.forEach((s) => s.classList.toggle('active', s.dataset.mode === mode));
+};
+
+const syncDraftToSettingsForm = () => {
+  if (!draftSettings) return;
+
+  if (ui.startBatSetting) ui.startBatSetting.value = draftSettings.startBatPath || '';
+  if (ui.displaySelectSetting) ui.displaySelectSetting.value = draftSettings.primaryDisplay || '';
+  if (ui.originalModeInputSetting) ui.originalModeInputSetting.value = draftSettings.originalMode || '';
+  if (ui.smartDisplayToggle) ui.smartDisplayToggle.checked = !!draftSettings.smartDisplayEnabled;
+  if (ui.bgImageInput) ui.bgImageInput.value = draftSettings.backgroundImagePath || '';
+  if (ui.themeColor) ui.themeColor.value = draftSettings.themeColor || '#fdd500';
+  if (ui.themeColorText) ui.themeColorText.value = draftSettings.themeColor || '#fdd500';
+  syncTargetModeSetting(draftSettings.targetMode || '1920×1080 @ 120Hz');
+  setLaunchModeUi(draftSettings.launchMode || 'smart');
+};
+
+const openSettingsModal = () => {
+  draftSettings = cloneSettings(currentSettings);
+  renderDisplays(draftSettings.displays, draftSettings.primaryDisplay);
+  syncDraftToSettingsForm();
+  toggleModal(ui.settingsModal, true);
+};
+
+const closeSettingsModal = () => {
+  draftSettings = null;
+  toggleModal(ui.settingsModal, false);
+};
+
 onClick('btnLaunch', () => post('launch-game'));
 onClick('btnTestSwitch', () => {
   if (isTestSwitchActive) {
@@ -223,10 +289,14 @@ onClick('btnTestSwitch', () => {
 
   post('test-switch');
 });
-onClick('btnSettings', () => toggleModal(ui.settingsModal, true));
-onClick('btnCloseSettings', () => toggleModal(ui.settingsModal, false));
-onClick('btnApplyBg', () => applyBackground(ui.bgImageInput?.value || ''));
-onClick('btnBrowseBg', () => post('pick-background-image'));
+onClick('btnSettings', () => openSettingsModal());
+onClick('btnCloseSettings', () => closeSettingsModal());
+onClick('btnApplyBg', () => {
+  if (!draftSettings) return;
+  draftSettings.backgroundImagePath = ui.bgImageInput?.value || '';
+  setStatus('已暂存背景图片，点击“保存设置”后生效', '#ffb36a');
+});
+onClick('btnBrowseBg', () => post('pick-background-image-preview'));
 
 onClick('btnPickBat', () => post('pick-start-bat'));
 onClick('btnDetectDisplays', () => post('detect-displays'));
@@ -253,38 +323,69 @@ onClick('btnSave', () => {
   updateMeta();
 });
 
-onClick('btnPickBatSetting', () => post('pick-start-bat'));
+onClick('btnPickBatSetting', () => post('pick-start-bat-preview'));
 onClick('btnEditSegatoolsIni', () => post('open-segatools-ini'));
 onClick('btnApplyRecommendedSegatools', () => post('apply-recommended-segatools-gfx'));
-onClick('btnDetectDisplaysSetting', () => post('detect-displays'));
-onClick('btnReadCurrentSetting', () => post('read-current-mode'));
+onClick('btnDetectDisplaysSetting', () => post('detect-displays-preview'));
+onClick('btnReadCurrentSetting', () => post('read-current-mode-preview'));
 onClick('btnCheckUpdate', () => post('check-update'));
 onClick('btnOpenGithubHome', () => post('open-github-home'));
 onClick('btnSaveSettings', () => {
+  if (!draftSettings) return;
+
+  draftSettings.startBatPath = ui.startBatSetting?.value || '';
+  draftSettings.primaryDisplay = ui.displaySelectSetting?.value || '';
+  draftSettings.originalMode = ui.originalModeInputSetting?.value || '';
+  draftSettings.targetMode = getSelectedTargetMode();
+  draftSettings.backgroundImagePath = ui.bgImageInput?.value || '';
+  draftSettings.themeColor = ui.themeColorText?.value || ui.themeColor?.value || '#fdd500';
+
   post('save-settings', {
-    startBatPath: ui.startBatSetting?.value || '',
-    primaryDisplay: ui.displaySelectSetting?.value || '',
-    originalMode: ui.originalModeInputSetting?.value || '',
-    targetMode: getSelectedTargetMode(),
-    backgroundImagePath: ui.bgImageInput?.value || '',
+    startBatPath: draftSettings.startBatPath,
+    primaryDisplay: draftSettings.primaryDisplay,
+    originalMode: draftSettings.originalMode,
+    targetMode: draftSettings.targetMode,
+    backgroundImagePath: draftSettings.backgroundImagePath,
+    launchMode: draftSettings.launchMode,
+    smartDisplayEnabled: !!draftSettings.smartDisplayEnabled,
+    themeColor: draftSettings.themeColor,
   });
 
-  toggleModal(ui.settingsModal, false);
+  closeSettingsModal();
   updateMeta();
 });
 
-if (ui.themeColor) ui.themeColor.addEventListener('input', (e) => handleThemeInput(e.target.value));
-if (ui.themeColorText) ui.themeColorText.addEventListener('change', (e) => handleThemeInput(e.target.value));
+if (ui.themeColor) ui.themeColor.addEventListener('input', (e) => {
+  if (!draftSettings) return;
+  draftSettings.themeColor = e.target.value;
+  if (ui.themeColorText) ui.themeColorText.value = e.target.value;
+});
+if (ui.themeColorText) ui.themeColorText.addEventListener('change', (e) => {
+  if (!draftSettings) return;
+  draftSettings.themeColor = e.target.value;
+  if (ui.themeColor) ui.themeColor.value = e.target.value;
+});
 
 const segs = document.querySelectorAll('#launchMode .seg');
 segs.forEach((seg) => seg.addEventListener('click', () => {
-  segs.forEach((s) => s.classList.remove('active'));
-  seg.classList.add('active');
-  post('set-launch-mode', { mode: seg.dataset.mode });
+  const mode = seg.dataset.mode;
+  if (draftSettings) {
+    draftSettings.launchMode = mode;
+  } else {
+    currentSettings.launchMode = mode;
+    post('set-launch-mode', { mode });
+  }
+  setLaunchModeUi(mode);
 }));
 
 if (ui.smartDisplayToggle) {
   ui.smartDisplayToggle.addEventListener('change', () => {
+    if (draftSettings) {
+      draftSettings.smartDisplayEnabled = !!ui.smartDisplayToggle.checked;
+      return;
+    }
+
+    currentSettings.smartDisplayEnabled = !!ui.smartDisplayToggle.checked;
     post('set-smart-display', { enabled: !!ui.smartDisplayToggle.checked });
   });
 }
@@ -302,6 +403,19 @@ const handleHostMessage = (event) => {
 
   switch (type) {
     case 'init': {
+      currentSettings = {
+        ...currentSettings,
+        startBatPath: payload.startBatPath || '',
+        originalMode: payload.originalMode || '',
+        targetMode: payload.targetMode || '1920×1080 @ 120Hz',
+        launchMode: payload.launchMode || 'smart',
+        primaryDisplayName: payload.primaryDisplayName || '未选择',
+        smartDisplayEnabled: !!payload.smartDisplayEnabled,
+        themeColor: payload.themeColor || '#fdd500',
+        backgroundImagePath: payload.backgroundImagePath || '',
+        displays: payload.displays || [],
+      };
+
       if (payload.startBatPath) {
         if (ui.startBat) ui.startBat.value = payload.startBatPath;
         if (ui.startBatSetting) ui.startBatSetting.value = payload.startBatPath;
@@ -318,9 +432,9 @@ const handleHostMessage = (event) => {
         syncTargetModeSetting(payload.targetMode);
       }
 
-      if (ui.smartDisplayToggle) {
-        ui.smartDisplayToggle.checked = !!payload.smartDisplayEnabled;
-      }
+      currentSettings.primaryDisplay = (payload.displays || []).find((d) => d.selected)?.id || '';
+      setLaunchModeUi(currentSettings.launchMode);
+      if (ui.smartDisplayToggle) ui.smartDisplayToggle.checked = !!payload.smartDisplayEnabled;
 
       if (payload.primaryDisplayName && ui.primaryDisplayHover) ui.primaryDisplayHover.textContent = payload.primaryDisplayName;
       if (payload.themeColor) applyThemeColor(payload.themeColor);
@@ -328,16 +442,7 @@ const handleHostMessage = (event) => {
       if (payload.version && ui.appVersion) ui.appVersion.textContent = `v${payload.version}`;
 
       if (payload.displays) {
-        if (ui.displaySelect) ui.displaySelect.innerHTML = '<option value="">请先选择</option>';
-        if (ui.displaySelectSetting) ui.displaySelectSetting.innerHTML = '<option value="">请先选择</option>';
-        payload.displays.forEach((d) => {
-          const opt = document.createElement('option');
-          opt.value = d.id;
-          opt.textContent = d.name;
-          if (d.selected) opt.selected = true;
-          if (ui.displaySelect) ui.displaySelect.appendChild(opt.cloneNode(true));
-          if (ui.displaySelectSetting) ui.displaySelectSetting.appendChild(opt);
-        });
+        renderDisplays(payload.displays, currentSettings.primaryDisplay);
       }
 
       updateMeta();
@@ -350,9 +455,15 @@ const handleHostMessage = (event) => {
       break;
     }
     case 'update-original': {
-      if (ui.originalModeCard) ui.originalModeCard.textContent = payload.value || '未读取';
-      if (ui.originalModeInputSetting) ui.originalModeInputSetting.value = payload.value || '';
-      if (ui.originalModeHover) ui.originalModeHover.textContent = payload.value || '未读取';
+      if (draftSettings) {
+        draftSettings.originalMode = payload.value || '';
+        if (ui.originalModeInputSetting) ui.originalModeInputSetting.value = payload.value || '';
+      } else {
+        currentSettings.originalMode = payload.value || '';
+        if (ui.originalModeCard) ui.originalModeCard.textContent = payload.value || '未读取';
+        if (ui.originalModeInputSetting) ui.originalModeInputSetting.value = payload.value || '';
+        if (ui.originalModeHover) ui.originalModeHover.textContent = payload.value || '未读取';
+      }
       break;
     }
     case 'update-target': {
@@ -361,13 +472,40 @@ const handleHostMessage = (event) => {
       break;
     }
     case 'update-start-bat': {
-      if (ui.startBat) ui.startBat.value = payload.path || '';
+      if (draftSettings) {
+        draftSettings.startBatPath = payload.path || '';
+      } else {
+        currentSettings.startBatPath = payload.path || '';
+        if (ui.startBat) ui.startBat.value = payload.path || '';
+      }
       if (ui.startBatSetting) ui.startBatSetting.value = payload.path || '';
       updateMeta();
       break;
     }
     case 'update-background-image': {
-      applyBackground(payload.path || '', false);
+      if (draftSettings) {
+        draftSettings.backgroundImagePath = payload.path || '';
+        if (ui.bgImageInput) ui.bgImageInput.value = payload.path || '';
+      } else {
+        currentSettings.backgroundImagePath = payload.path || '';
+        applyBackground(payload.path || '', false);
+      }
+      break;
+    }
+    case 'update-displays': {
+      const displays = payload.displays || [];
+      const primaryDisplay = displays.find((d) => d.selected)?.id || '';
+      if (draftSettings) {
+        draftSettings.displays = displays;
+        draftSettings.primaryDisplay = primaryDisplay;
+        draftSettings.primaryDisplayName = payload.primaryDisplayName || '未选择';
+        renderDisplays(displays, primaryDisplay);
+      } else {
+        currentSettings.displays = displays;
+        currentSettings.primaryDisplay = primaryDisplay;
+        currentSettings.primaryDisplayName = payload.primaryDisplayName || '未选择';
+        renderDisplays(displays, primaryDisplay);
+      }
       break;
     }
     case 'test-switch-state': {

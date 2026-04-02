@@ -151,8 +151,21 @@ public partial class MainWindow : Window
             case "save-settings":
                 ApplySettings(message.Payload);
                 PersistConfig();
-                SetStatus("设置已保存", "#7dffa0");
+                SetStatus("设置已保存并生效", "#7dffa0");
                 SendInit();
+                break;
+            case "pick-start-bat-preview":
+                PickStartBat(previewOnly: true);
+                break;
+            case "pick-background-image-preview":
+                PickBackgroundImage(previewOnly: true);
+                break;
+            case "detect-displays-preview":
+                DetectDisplays();
+                PostDisplays();
+                break;
+            case "read-current-mode-preview":
+                ReadCurrentMode(previewOnly: true);
                 break;
             case "test-switch":
                 _ = TestSwitchAsync();
@@ -193,22 +206,8 @@ public partial class MainWindow : Window
                     PersistConfig();
                 }
                 break;
-            case "set-theme":
-                if (message.Payload.TryGetProperty("color", out var colorElement))
-                {
-                    _themeColor = colorElement.GetString() ?? _themeColor;
-                    PersistConfig();
-                }
-                break;
             case "pick-background-image":
-                PickBackgroundImage();
-                break;
-            case "set-background-image":
-                if (message.Payload.TryGetProperty("path", out var bgPathElement))
-                {
-                    _backgroundImagePath = bgPathElement.GetString();
-                    PersistConfig();
-                }
+                PickBackgroundImage(previewOnly: true);
                 break;
         }
     }
@@ -275,7 +274,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void PickStartBat()
+    private void PickStartBat(bool previewOnly = false)
     {
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
@@ -286,6 +285,13 @@ public partial class MainWindow : Window
 
         if (dialog.ShowDialog() == true)
         {
+            if (previewOnly)
+            {
+                PostMessage("update-start-bat", new { path = dialog.FileName });
+                SetStatus("已暂存 start.bat，点击“保存设置”后生效", "#ffb36a");
+                return;
+            }
+
             _startBatPath = dialog.FileName;
             PersistConfig();
             SetStatus("已选择 start.bat", "#7dffa0");
@@ -293,7 +299,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void PickBackgroundImage()
+    private void PickBackgroundImage(bool previewOnly = false)
     {
         var dialog = new Microsoft.Win32.OpenFileDialog
         {
@@ -304,6 +310,13 @@ public partial class MainWindow : Window
 
         if (dialog.ShowDialog() == true)
         {
+            if (previewOnly)
+            {
+                PostMessage("update-background-image", new { path = dialog.FileName });
+                SetStatus("已暂存背景图片，点击“保存设置”后生效", "#ffb36a");
+                return;
+            }
+
             _backgroundImagePath = dialog.FileName;
             PersistConfig();
             PostMessage("update-background-image", new { path = _backgroundImagePath });
@@ -373,7 +386,7 @@ public partial class MainWindow : Window
         return WinForms.Screen.PrimaryScreen?.DeviceName;
     }
 
-    private void ReadCurrentMode()
+    private void ReadCurrentMode(bool previewOnly = false)
     {
         var deviceName = ResolveDisplayDeviceName();
         if (deviceName is null)
@@ -384,6 +397,13 @@ public partial class MainWindow : Window
 
         if (DisplayModeHelper.TryGetCurrentMode(deviceName, out var mode, out var modeStruct))
         {
+            if (previewOnly)
+            {
+                PostMessage("update-original", new { value = mode });
+                SetStatus("已暂存当前分辨率，点击“保存设置”后生效", "#ffb36a");
+                return;
+            }
+
             _originalMode = mode;
             _lastKnownOriginalMode = modeStruct;
             SetStatus("已读取当前分辨率", "#7dffa0");
@@ -425,6 +445,30 @@ public partial class MainWindow : Window
         if (payload.TryGetProperty("backgroundImagePath", out var backgroundImagePath))
         {
             _backgroundImagePath = backgroundImagePath.GetString();
+        }
+
+        if (payload.TryGetProperty("launchMode", out var launchMode))
+        {
+            var parsedLaunchMode = launchMode.GetString();
+            if (!string.IsNullOrWhiteSpace(parsedLaunchMode))
+            {
+                _launchMode = parsedLaunchMode;
+            }
+        }
+
+        if (payload.TryGetProperty("smartDisplayEnabled", out var smartDisplayEnabled)
+            && smartDisplayEnabled.ValueKind is JsonValueKind.True or JsonValueKind.False)
+        {
+            _smartDisplayEnabled = smartDisplayEnabled.GetBoolean();
+        }
+
+        if (payload.TryGetProperty("themeColor", out var themeColor))
+        {
+            var parsedThemeColor = themeColor.GetString();
+            if (!string.IsNullOrWhiteSpace(parsedThemeColor))
+            {
+                _themeColor = parsedThemeColor;
+            }
         }
     }
 
@@ -1253,6 +1297,7 @@ public partial class MainWindow : Window
             startBatPath = _startBatPath ?? string.Empty,
             originalMode = _originalMode ?? string.Empty,
             targetMode = _targetMode,
+            launchMode = _launchMode,
             primaryDisplayName = _primaryDisplayName ?? "未选择",
             smartDisplayEnabled = _smartDisplayEnabled,
             themeColor = _themeColor,
@@ -1267,6 +1312,15 @@ public partial class MainWindow : Window
     private void SetStatus(string text, string color)
     {
         PostMessage("status", new { text, color });
+    }
+
+    private void PostDisplays()
+    {
+        PostMessage("update-displays", new
+        {
+            primaryDisplayName = _primaryDisplayName ?? "未选择",
+            displays = _displays.Select(d => new { id = d.Id, name = d.Name, selected = d.Selected }).ToArray(),
+        });
     }
 
     private void PostMessage(string type, object payload)

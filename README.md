@@ -30,13 +30,14 @@
 - 首次配置向导与可视化设置界面
 - 主题化 UI，支持背景图自定义
 
-## 轻量化策略
+## 运行环境
 
-为精简项目体积，仓库与发布内容不再内置完整运行时：
+为减小发布包体积，本项目不再内置完整运行环境。首次运行前或运行时可能需要安装：
 
-- `ChunithmLauncher.exe` 是原生启动器，会在缺少 `.NET Desktop Runtime 10` 时弹窗提示并打开官方下载页
-- `WebView2 Runtime` 由用户在运行时按提示自行下载并安装
-- 发布采用 framework-dependent 模式（不打包 .NET Runtime）
+- `.NET Desktop Runtime 10 x64`
+- `WebView2 Runtime`
+
+如果电脑缺少上述运行环境，程序会弹窗提示，并引导打开官方下载页面。
 
 ## 使用方式
 

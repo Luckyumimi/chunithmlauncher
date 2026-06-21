@@ -24,10 +24,14 @@ jobs:
           dotnet-version: "10.0.x"
 
       - name: Restore
-        run: dotnet restore .\ChunithmLauncher\ChunithmLauncher.csproj --configfile .\NuGet.Config
+        run: |
+          dotnet restore .\ChunithmLauncher\ChunithmLauncher.csproj --configfile .\NuGet.Config
+          dotnet restore .\ChunithmLauncher.Bootstrapper\ChunithmLauncher.Bootstrapper.csproj --configfile .\NuGet.Config
 
       - name: Build
-        run: dotnet build .\ChunithmLauncher\ChunithmLauncher.csproj -c Release --no-restore
+        run: |
+          dotnet build .\ChunithmLauncher\ChunithmLauncher.csproj -c Release --no-restore
+          dotnet build .\ChunithmLauncher.Bootstrapper\ChunithmLauncher.Bootstrapper.csproj -c Release --no-restore
 
       - name: Publish
         shell: pwsh
@@ -37,15 +41,25 @@ jobs:
             -c Release `
             -r win-x64 `
             --self-contained false `
-            -p:PublishSingleFile=true `
-            -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:PublishSingleFile=false `
             -p:UseAppHost=true `
-            -p:Version=1.2.3 `
-            -p:FileVersion=1.2.3 `
-            -p:AssemblyVersion=1.2.3 `
+            -p:Version=1.2.4 `
+            -p:FileVersion=1.2.4 `
+            -p:AssemblyVersion=1.2.4 `
             -p:DebugType=None `
             -p:DebugSymbols=false `
             -o $publishDir
+          dotnet publish .\ChunithmLauncher.Bootstrapper\ChunithmLauncher.Bootstrapper.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -p:Version=1.2.4 `
+            -p:FileVersion=1.2.4 `
+            -p:AssemblyVersion=1.2.4 `
+            -p:DebugType=None `
+            -p:DebugSymbols=false `
+            -o $publishDir
+          Get-ChildItem $publishDir -Recurse -Include *.pdb,*.xml | Remove-Item -Force
 
       - name: Pack zip
         shell: pwsh

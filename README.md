@@ -34,6 +34,7 @@
 
 为精简项目体积，仓库与发布内容不再内置完整运行时：
 
+- `ChunithmLauncher.exe` 是原生启动器，会在缺少 `.NET Desktop Runtime 10` 时弹窗提示并打开官方下载页
 - `WebView2 Runtime` 由用户在运行时按提示自行下载并安装
 - 发布采用 framework-dependent 模式（不打包 .NET Runtime）
 

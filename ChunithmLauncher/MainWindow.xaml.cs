@@ -63,7 +63,14 @@ public partial class MainWindow : Window
             return;
         }
 
-        await WebView.EnsureCoreWebView2Async();
+        var userDataFolder = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "ChunithmLauncher",
+            "WebView2");
+        Directory.CreateDirectory(userDataFolder);
+        var webViewEnvironment = await CoreWebView2Environment.CreateAsync(userDataFolder: userDataFolder);
+
+        await WebView.EnsureCoreWebView2Async(webViewEnvironment);
         WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
         WebView.CoreWebView2.Settings.AreDevToolsEnabled = false;
         WebView.CoreWebView2.WebMessageReceived += OnWebMessageReceived;

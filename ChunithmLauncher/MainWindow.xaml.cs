@@ -172,7 +172,11 @@ public partial class MainWindow : Window
                 PostDisplays();
                 break;
             case "read-current-mode-preview":
-                ReadCurrentMode(previewOnly: true);
+                ReadCurrentMode(
+                    previewOnly: true,
+                    requestedDisplayId: message.Payload.TryGetProperty("primaryDisplay", out var previewDisplay)
+                        ? previewDisplay.GetString()
+                        : null);
                 break;
             case "test-switch":
                 _ = TestSwitchAsync();
@@ -368,7 +372,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private string? ResolveDisplayDeviceName(bool preferCurrentPrimary = false)
+    private string? ResolveDisplayDeviceName(string? requestedDisplayId = null, bool preferCurrentPrimary = false)
     {
         var screens = WinForms.Screen.AllScreens;
 
@@ -378,6 +382,15 @@ public partial class MainWindow : Window
             if (!string.IsNullOrWhiteSpace(currentPrimary))
             {
                 return currentPrimary;
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(requestedDisplayId))
+        {
+            var requestedDisplay = screens.FirstOrDefault(s => string.Equals(s.DeviceName, requestedDisplayId, StringComparison.OrdinalIgnoreCase));
+            if (requestedDisplay is not null)
+            {
+                return requestedDisplay.DeviceName;
             }
         }
 
@@ -393,9 +406,9 @@ public partial class MainWindow : Window
         return WinForms.Screen.PrimaryScreen?.DeviceName;
     }
 
-    private void ReadCurrentMode(bool previewOnly = false)
+    private void ReadCurrentMode(bool previewOnly = false, string? requestedDisplayId = null)
     {
-        var deviceName = ResolveDisplayDeviceName();
+        var deviceName = ResolveDisplayDeviceName(requestedDisplayId);
         if (deviceName is null)
         {
             SetStatus("未找到显示器", "#ff5a6a");

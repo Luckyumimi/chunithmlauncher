@@ -327,7 +327,9 @@ onClick('btnPickBatSetting', () => post('pick-start-bat-preview'));
 onClick('btnEditSegatoolsIni', () => post('open-segatools-ini'));
 onClick('btnApplyRecommendedSegatools', () => post('apply-recommended-segatools-gfx'));
 onClick('btnDetectDisplaysSetting', () => post('detect-displays-preview'));
-onClick('btnReadCurrentSetting', () => post('read-current-mode-preview'));
+onClick('btnReadCurrentSetting', () => post('read-current-mode-preview', {
+  primaryDisplay: ui.displaySelectSetting?.value || '',
+}));
 onClick('btnCheckUpdate', () => post('check-update'));
 onClick('btnOpenGithubHome', () => post('open-github-home'));
 onClick('btnSaveSettings', () => {

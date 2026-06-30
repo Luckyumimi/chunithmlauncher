@@ -82,6 +82,7 @@ public partial class MainWindow : Window
 
         WebView.Source = new Uri(ResolveUiIndexPath());
         ApplyWindowBackdrop();
+        _ = CheckForUpdatesOnStartupAsync();
     }
 
     private bool EnsureWebView2RuntimeInstalled()
@@ -160,6 +161,12 @@ public partial class MainWindow : Window
                 PersistConfig();
                 SetStatus("设置已保存并生效", "#7dffa0");
                 SendInit();
+                break;
+            case "set-primary-display":
+                ApplyPrimaryDisplay(message.Payload);
+                PersistConfig();
+                SetStatus("主显示器已保存", "#7dffa0");
+                PostDisplays();
                 break;
             case "pick-start-bat-preview":
                 PickStartBat(previewOnly: true);
@@ -492,6 +499,24 @@ public partial class MainWindow : Window
         }
     }
 
+    private void ApplyPrimaryDisplay(JsonElement payload)
+    {
+        if (!payload.TryGetProperty("primaryDisplay", out var display))
+        {
+            return;
+        }
+
+        var primaryDisplayId = display.GetString();
+        if (string.IsNullOrWhiteSpace(primaryDisplayId))
+        {
+            return;
+        }
+
+        _primaryDisplayId = primaryDisplayId;
+        UpdateDisplaySelection();
+        _primaryDisplayName = _displays.FirstOrDefault(d => d.Id == _primaryDisplayId)?.Name ?? _primaryDisplayId;
+    }
+
     private void OpenGameFolder()
     {
         if (string.IsNullOrWhiteSpace(_startBatPath))
@@ -771,41 +796,16 @@ public partial class MainWindow : Window
     {
         SetStatus("正在检查更新...", "#5ee7ff");
 
-        string? latestTag = null;
-        string latestReleaseUrl = GithubLatestReleasePage;
-
+        LatestReleaseInfo latestRelease;
         try
         {
-            using var response = await UpdateHttpClient.GetAsync(GithubLatestReleaseApi);
-            if (!response.IsSuccessStatusCode)
-            {
-                SetStatus("检查更新失败", "#ff5a6a");
-                System.Windows.MessageBox.Show(
-                    $"检查更新失败：HTTP {(int)response.StatusCode}\n请检查网络环境后重试。",
-                    "检查更新",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Warning);
-                return;
-            }
-
-            await using var stream = await response.Content.ReadAsStreamAsync();
-            using var json = await JsonDocument.ParseAsync(stream);
-            var root = json.RootElement;
-            if (root.TryGetProperty("tag_name", out var tagElement))
-            {
-                latestTag = tagElement.GetString();
-            }
-
-            if (root.TryGetProperty("html_url", out var htmlUrlElement))
-            {
-                latestReleaseUrl = htmlUrlElement.GetString() ?? GithubLatestReleasePage;
-            }
+            latestRelease = await FetchLatestReleaseAsync();
         }
-        catch
+        catch (Exception ex)
         {
             SetStatus("检查更新失败", "#ff5a6a");
             System.Windows.MessageBox.Show(
-                "检查更新失败。\n中国内地网络环境下可能无法正常访问 GitHub API，请检查网络环境后重试。",
+                $"{ex.Message}\n中国内地网络环境下可能无法正常访问 GitHub API，请检查网络环境后重试。",
                 "检查更新",
                 System.Windows.MessageBoxButton.OK,
                 System.Windows.MessageBoxImage.Warning);
@@ -813,7 +813,7 @@ public partial class MainWindow : Window
         }
 
         var currentVersion = TryParseVersion(GetAppVersion());
-        var latestVersion = TryParseVersion(latestTag ?? string.Empty);
+        var latestVersion = TryParseVersion(latestRelease.Tag);
         if (currentVersion is null || latestVersion is null)
         {
             SetStatus("版本解析失败", "#ff5a6a");
@@ -836,6 +836,79 @@ public partial class MainWindow : Window
             return;
         }
 
+        if (!ShowUpdateAvailableDialog(latestVersion, latestRelease.ReleaseUrl))
+        {
+            SetStatus("已取消前往更新页面", "#ffb36a");
+            return;
+        }
+
+        SetStatus($"已打开 v{latestVersion} 发布页面", "#7dffa0");
+    }
+
+    private async Task CheckForUpdatesOnStartupAsync()
+    {
+        const int maxRetryCount = 3;
+
+        for (var retry = 0; retry <= maxRetryCount; retry++)
+        {
+            try
+            {
+                var latestRelease = await FetchLatestReleaseAsync();
+                var currentVersion = TryParseVersion(GetAppVersion());
+                var latestVersion = TryParseVersion(latestRelease.Tag);
+                if (currentVersion is null || latestVersion is null)
+                {
+                    throw new InvalidOperationException("版本解析失败。");
+                }
+
+                if (latestVersion > currentVersion)
+                {
+                    ShowUpdateAvailableDialog(latestVersion, latestRelease.ReleaseUrl);
+                }
+
+                return;
+            }
+            catch
+            {
+                if (retry >= maxRetryCount)
+                {
+                    return;
+                }
+
+                await Task.Delay(TimeSpan.FromSeconds(3));
+            }
+        }
+    }
+
+    private static async Task<LatestReleaseInfo> FetchLatestReleaseAsync()
+    {
+        using var response = await UpdateHttpClient.GetAsync(GithubLatestReleaseApi);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InvalidOperationException($"检查更新失败：HTTP {(int)response.StatusCode}");
+        }
+
+        await using var stream = await response.Content.ReadAsStreamAsync();
+        using var json = await JsonDocument.ParseAsync(stream);
+        var root = json.RootElement;
+        var latestTag = root.TryGetProperty("tag_name", out var tagElement)
+            ? tagElement.GetString()
+            : null;
+
+        if (string.IsNullOrWhiteSpace(latestTag))
+        {
+            throw new InvalidOperationException("检查到的版本信息无效。");
+        }
+
+        var latestReleaseUrl = root.TryGetProperty("html_url", out var htmlUrlElement)
+            ? htmlUrlElement.GetString() ?? GithubLatestReleasePage
+            : GithubLatestReleasePage;
+
+        return new LatestReleaseInfo(latestTag, latestReleaseUrl);
+    }
+
+    private static bool ShowUpdateAvailableDialog(Version latestVersion, string latestReleaseUrl)
+    {
         var result = System.Windows.MessageBox.Show(
             $"发现新版本：v{latestVersion}，是否前往更新？",
             "发现新版本",
@@ -844,17 +917,10 @@ public partial class MainWindow : Window
 
         if (result != System.Windows.MessageBoxResult.Yes)
         {
-            SetStatus("已取消前往更新页面", "#ffb36a");
-            return;
+            return false;
         }
 
-        if (TryOpenUrl(latestReleaseUrl))
-        {
-            SetStatus($"已打开 v{latestVersion} 发布页面", "#7dffa0");
-            return;
-        }
-
-        SetStatus("打开最新发布页面失败", "#ff5a6a");
+        return TryOpenUrl(latestReleaseUrl);
     }
 
     private void OpenGithubHomePage()
@@ -954,28 +1020,28 @@ public partial class MainWindow : Window
             }
             else
             {
-                var primaryToApply = _primaryDisplayId ?? deviceName;
-                SetStatus("独占显示器：切换主显示器并启用仅主屏...", "#5ee7ff");
+                var primaryToApply = deviceName;
+                SetStatus("独占显示器：正在关闭其他显示器...", "#5ee7ff");
                 if (!DisplayModeHelper.TryApplyPrimaryOnly(primaryToApply))
                 {
-                    originalDisplayStates = null;
+                    RestoreDisplayStatesWithFallback(originalDisplayStates);
                     SetStatus("独占显示器：切换失败，继续启动", "#ffb36a");
+                    originalDisplayStates = null;
                 }
                 else
                 {
-                    DetectDisplays();
-                    SendInit();
-                    deviceName = ResolveDisplayDeviceName(preferCurrentPrimary: true);
-                    if (deviceName is null)
+                    await Task.Delay(1200);
+                    if (!DisplayModeHelper.TryGetCurrentMode(deviceName, out _, out currentStruct))
                     {
-                        SetStatus("独占显示器：未找到可切换的显示器", "#ff5a6a");
-                        if (originalDisplayStates is not null)
-                        {
-                            RestoreDisplayStatesWithFallback(originalDisplayStates);
-                        }
+                        RestoreDisplayStatesWithFallback(originalDisplayStates);
+                        SetStatus("独占显示器：目标显示器被关闭，已恢复布局", "#ff5a6a");
                         _isLaunching = false;
                         return;
                     }
+
+                    _lastKnownOriginalMode = currentStruct;
+                    DetectDisplays();
+                    SendInit();
                 }
             }
         }
@@ -1083,6 +1149,7 @@ public partial class MainWindow : Window
         if (!DisplayModeHelper.TryRestoreDisplayStates(states))
         {
             DisplayModeHelper.TrySwitchToExtendedMode();
+            DisplayModeHelper.TryRestoreDisplayStates(states);
         }
 
         DetectDisplays();
@@ -1487,6 +1554,8 @@ public partial class MainWindow : Window
 
     private sealed record WebMessage(string? Type, JsonElement Payload);
 
+    private sealed record LatestReleaseInfo(string Tag, string ReleaseUrl);
+
     private sealed class Config
     {
         public string? StartBatPath { get; set; }
@@ -1538,9 +1607,17 @@ public partial class MainWindow : Window
         private const int CdsUpdateRegistry = 0x00000001;
         private const int CdsNoReset = 0x10000000;
         private const int CdsFullscreen = 0x00000004;
+        private const int DisplayDeviceAttachedToDesktop = 0x00000001;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern bool EnumDisplaySettings(string deviceName, int modeNum, ref DEVMODE devMode);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern bool EnumDisplayDevices(
+            string? lpDevice,
+            uint iDevNum,
+            ref DISPLAY_DEVICE lpDisplayDevice,
+            uint dwFlags);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int ChangeDisplaySettingsEx(
@@ -1557,6 +1634,21 @@ public partial class MainWindow : Window
             IntPtr hwnd,
             int dwflags,
             IntPtr lParam);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private struct DISPLAY_DEVICE
+        {
+            public int cb;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceString;
+            public int StateFlags;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceID;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceKey;
+        }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         private struct DEVMODE
@@ -1609,16 +1701,16 @@ public partial class MainWindow : Window
         public static List<DisplayState> CaptureCurrentDisplayStates()
         {
             var states = new List<DisplayState>();
-            foreach (var screen in WinForms.Screen.AllScreens)
+            foreach (var deviceName in EnumerateAttachedDisplayDeviceNames())
             {
                 var devMode = new DEVMODE { dmSize = (short)Marshal.SizeOf(typeof(DEVMODE)) };
-                if (!EnumDisplaySettings(screen.DeviceName, EnumCurrentSettings, ref devMode))
+                if (!EnumDisplaySettings(deviceName, EnumCurrentSettings, ref devMode))
                 {
                     continue;
                 }
 
                 states.Add(new DisplayState(
-                    screen.DeviceName,
+                    deviceName,
                     devMode.dmPositionX,
                     devMode.dmPositionY,
                     devMode.dmPelsWidth,
@@ -1631,43 +1723,43 @@ public partial class MainWindow : Window
 
         public static bool TryApplyPrimaryOnly(string primaryDisplayId)
         {
-            var screens = WinForms.Screen.AllScreens;
-            if (screens.Length <= 1)
+            return TryDisableOtherDisplays(primaryDisplayId);
+        }
+
+        private static bool TryDisableOtherDisplays(string primaryDisplayId)
+        {
+            var deviceNames = EnumerateAttachedDisplayDeviceNames();
+            if (deviceNames.Count <= 1)
             {
                 return true;
             }
 
-            var exists = screens.Any(s => string.Equals(s.DeviceName, primaryDisplayId, StringComparison.OrdinalIgnoreCase));
-            if (!exists)
+            if (!deviceNames.Any(d => string.Equals(d, primaryDisplayId, StringComparison.OrdinalIgnoreCase)))
             {
-                primaryDisplayId = screens.FirstOrDefault(s => s.Primary)?.DeviceName ?? screens[0].DeviceName;
+                return false;
             }
 
-            foreach (var screen in screens)
+            foreach (var deviceName in deviceNames)
             {
-                var devMode = new DEVMODE { dmSize = (short)Marshal.SizeOf(typeof(DEVMODE)) };
-                if (!EnumDisplaySettings(screen.DeviceName, EnumCurrentSettings, ref devMode))
+                if (string.Equals(deviceName, primaryDisplayId, StringComparison.OrdinalIgnoreCase))
                 {
                     continue;
                 }
 
-                if (string.Equals(screen.DeviceName, primaryDisplayId, StringComparison.OrdinalIgnoreCase))
+                var devMode = new DEVMODE { dmSize = (short)Marshal.SizeOf(typeof(DEVMODE)) };
+                if (!EnumDisplaySettings(deviceName, EnumCurrentSettings, ref devMode))
                 {
-                    devMode.dmPositionX = 0;
-                    devMode.dmPositionY = 0;
-                    devMode.dmFields = DmPosition | DmPelsWidth | DmPelsHeight | DmDisplayFrequency;
-                }
-                else
-                {
-                    devMode.dmPositionX = 0;
-                    devMode.dmPositionY = 0;
-                    devMode.dmPelsWidth = 0;
-                    devMode.dmPelsHeight = 0;
-                    devMode.dmFields = DmPosition | DmPelsWidth | DmPelsHeight;
+                    continue;
                 }
 
+                devMode.dmPositionX = 0;
+                devMode.dmPositionY = 0;
+                devMode.dmPelsWidth = 0;
+                devMode.dmPelsHeight = 0;
+                devMode.dmFields = DmPosition | DmPelsWidth | DmPelsHeight;
+
                 var result = ChangeDisplaySettingsEx(
-                    screen.DeviceName,
+                    deviceName,
                     ref devMode,
                     IntPtr.Zero,
                     CdsUpdateRegistry | CdsNoReset,
@@ -1683,8 +1775,18 @@ public partial class MainWindow : Window
 
         public static bool TryRestoreDisplayStates(IReadOnlyCollection<DisplayState> states)
         {
+            TrySwitchToExtendedMode();
+            Thread.Sleep(1200);
+
+            var knownDeviceNames = EnumerateDisplayDeviceNames();
+            var attempted = false;
             foreach (var state in states)
             {
+                if (!knownDeviceNames.Any(d => string.Equals(d, state.DeviceName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    continue;
+                }
+
                 var devMode = new DEVMODE
                 {
                     dmSize = (short)Marshal.SizeOf(typeof(DEVMODE)),
@@ -1706,9 +1808,48 @@ public partial class MainWindow : Window
                 {
                     return false;
                 }
+
+                attempted = true;
             }
 
-            return ChangeDisplaySettingsEx(null, IntPtr.Zero, IntPtr.Zero, 0, IntPtr.Zero) == DispChangeSuccessful;
+            return attempted && ChangeDisplaySettingsEx(null, IntPtr.Zero, IntPtr.Zero, 0, IntPtr.Zero) == DispChangeSuccessful;
+        }
+
+        private static List<string> EnumerateAttachedDisplayDeviceNames()
+        {
+            return EnumerateDisplayDeviceNames(attachedOnly: true);
+        }
+
+        private static List<string> EnumerateDisplayDeviceNames(bool attachedOnly = false)
+        {
+            var deviceNames = new List<string>();
+            for (uint index = 0; ; index++)
+            {
+                var displayDevice = new DISPLAY_DEVICE
+                {
+                    cb = Marshal.SizeOf(typeof(DISPLAY_DEVICE)),
+                };
+
+                if (!EnumDisplayDevices(null, index, ref displayDevice, 0))
+                {
+                    break;
+                }
+
+                if (string.IsNullOrWhiteSpace(displayDevice.DeviceName)
+                    || (attachedOnly && (displayDevice.StateFlags & DisplayDeviceAttachedToDesktop) == 0))
+                {
+                    continue;
+                }
+
+                deviceNames.Add(displayDevice.DeviceName);
+            }
+
+            if (deviceNames.Count == 0)
+            {
+                deviceNames.AddRange(WinForms.Screen.AllScreens.Select(s => s.DeviceName));
+            }
+
+            return deviceNames;
         }
 
         public static bool TrySwitchToExtendedMode()

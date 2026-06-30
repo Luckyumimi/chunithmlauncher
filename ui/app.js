@@ -162,7 +162,18 @@ const applyBackground = (value, persist = true) => {
 
 const toggleModal = (el, show) => {
   if (!el) return;
-  el.classList.toggle('show', show);
+  if (show) {
+    window.clearTimeout(el._closeTimer);
+    el.classList.remove('closing');
+    el.classList.add('show');
+    return;
+  }
+
+  el.classList.add('closing');
+  window.clearTimeout(el._closeTimer);
+  el._closeTimer = window.setTimeout(() => {
+    el.classList.remove('show', 'closing');
+  }, 220);
 };
 
 const clearTestSwitchCountdown = () => {
@@ -251,6 +262,9 @@ const renderDisplays = (displays = [], selectedId = '') => {
 };
 
 const setLaunchModeUi = (mode) => {
+  const normalizedMode = mode === 'manual' ? 'manual' : 'smart';
+  const launchMode = document.getElementById('launchMode');
+  if (launchMode) launchMode.dataset.mode = normalizedMode;
   segs.forEach((s) => s.classList.toggle('active', s.dataset.mode === mode));
 };
 
@@ -357,6 +371,24 @@ onClick('btnSaveSettings', () => {
   updateMeta();
 });
 
+if (ui.displaySelectSetting) ui.displaySelectSetting.addEventListener('change', (e) => {
+  const primaryDisplay = e.target.value || '';
+  if (!isValidPrimaryDisplay(primaryDisplay)) return;
+
+  if (draftSettings) {
+    draftSettings.primaryDisplay = primaryDisplay;
+    const selectedDisplay = draftSettings.displays.find((d) => d.id === primaryDisplay);
+    draftSettings.primaryDisplayName = selectedDisplay?.name || primaryDisplay;
+  }
+
+  currentSettings.primaryDisplay = primaryDisplay;
+  const selectedDisplay = currentSettings.displays.find((d) => d.id === primaryDisplay);
+  currentSettings.primaryDisplayName = selectedDisplay?.name || primaryDisplay;
+  if (ui.primaryDisplayHover) ui.primaryDisplayHover.textContent = currentSettings.primaryDisplayName;
+
+  post('set-primary-display', { primaryDisplay });
+});
+
 if (ui.themeColor) ui.themeColor.addEventListener('input', (e) => {
   if (!draftSettings) return;
   draftSettings.themeColor = e.target.value;
@@ -382,13 +414,13 @@ segs.forEach((seg) => seg.addEventListener('click', () => {
 
 if (ui.smartDisplayToggle) {
   ui.smartDisplayToggle.addEventListener('change', () => {
+    const enabled = !!ui.smartDisplayToggle.checked;
     if (draftSettings) {
-      draftSettings.smartDisplayEnabled = !!ui.smartDisplayToggle.checked;
-      return;
+      draftSettings.smartDisplayEnabled = enabled;
     }
 
-    currentSettings.smartDisplayEnabled = !!ui.smartDisplayToggle.checked;
-    post('set-smart-display', { enabled: !!ui.smartDisplayToggle.checked });
+    currentSettings.smartDisplayEnabled = enabled;
+    post('set-smart-display', { enabled });
   });
 }
 

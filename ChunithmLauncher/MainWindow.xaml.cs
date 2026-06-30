@@ -1441,9 +1441,7 @@ public partial class MainWindow : Window
             return "0.0.0";
         }
 
-        return version.Revision > 0
-            ? $"{version.Major}.{version.Minor}.{version.Build}+{version.Revision}"
-            : $"{version.Major}.{version.Minor}.{version.Build}";
+        return $"{version.Major}.{version.Minor}.{version.Build}";
     }
 
     private void ApplyWindowBackdrop()

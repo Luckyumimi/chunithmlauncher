@@ -11,8 +11,7 @@ $appProject = ".\\ChunithmLauncher\\ChunithmLauncher.csproj"
 $bootstrapperProject = ".\\ChunithmLauncher.Bootstrapper\\ChunithmLauncher.Bootstrapper.csproj"
 $stamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $output = Join-Path $OutputRoot $stamp
-$versionSuffix = Get-Date -Format "yyyyMMdd.HHmm"
-$version = "$VersionPrefix+$versionSuffix"
+$version = $VersionPrefix
 
 Write-Host "Publishing $appProject" -ForegroundColor Cyan
 Write-Host "Version: $version" -ForegroundColor Cyan

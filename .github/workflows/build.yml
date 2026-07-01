@@ -36,30 +36,11 @@ jobs:
       - name: Publish
         shell: pwsh
         run: |
-          $publishDir = Join-Path $env:GITHUB_WORKSPACE "artifacts\github-action\publish"
-          dotnet publish .\ChunithmLauncher\ChunithmLauncher.csproj `
-            -c Release `
-            -r win-x64 `
-            --self-contained false `
-            -p:PublishSingleFile=false `
-            -p:UseAppHost=true `
-            -p:Version=1.2.4 `
-            -p:FileVersion=1.2.4 `
-            -p:AssemblyVersion=1.2.4 `
-            -p:DebugType=None `
-            -p:DebugSymbols=false `
-            -o $publishDir
-          dotnet publish .\ChunithmLauncher.Bootstrapper\ChunithmLauncher.Bootstrapper.csproj `
-            -c Release `
-            -r win-x64 `
-            --self-contained true `
-            -p:Version=1.2.4 `
-            -p:FileVersion=1.2.4 `
-            -p:AssemblyVersion=1.2.4 `
-            -p:DebugType=None `
-            -p:DebugSymbols=false `
-            -o $publishDir
-          Get-ChildItem $publishDir -Recurse -Include *.pdb,*.xml | Remove-Item -Force
+          .\publish.ps1 -Configuration Release -Runtime win-x64 -OutputRoot "artifacts\github-action"
+          $latestPublish = Get-ChildItem "artifacts\github-action" -Directory |
+            Sort-Object Name -Descending |
+            Select-Object -First 1
+          Move-Item -Path $latestPublish.FullName -Destination "artifacts\github-action\publish"
 
       - name: Pack zip
         shell: pwsh
@@ -72,16 +53,9 @@ jobs:
           }
           Compress-Archive -Path (Join-Path $publishDir "*") -DestinationPath $zipPath
 
-      - name: Upload publish folder
-        uses: actions/upload-artifact@v4
-        with:
-          name: ChunithmLauncher-win-x64-publish
-          path: artifacts/github-action/publish
-          if-no-files-found: error
-
       - name: Upload zip
         uses: actions/upload-artifact@v4
         with:
-          name: ChunithmLauncher-win-x64-zip
+          name: ChunithmLauncher-win-x64
           path: artifacts/github-action/ChunithmLauncher-win-x64.zip
           if-no-files-found: error

@@ -40,6 +40,8 @@ Invoke-DotNetPublish @(
   "-p:Version=$version",
   "-p:FileVersion=$VersionPrefix",
   "-p:AssemblyVersion=$VersionPrefix",
+  "-p:InformationalVersion=$VersionPrefix",
+  "-p:IncludeSourceRevisionInInformationalVersion=false",
   "-p:DebugType=None",
   "-p:DebugSymbols=false",
   "-o", $output
@@ -54,6 +56,8 @@ Invoke-DotNetPublish @(
   "-p:Version=$version",
   "-p:FileVersion=$VersionPrefix",
   "-p:AssemblyVersion=$VersionPrefix",
+  "-p:InformationalVersion=$VersionPrefix",
+  "-p:IncludeSourceRevisionInInformationalVersion=false",
   "-p:DebugType=None",
   "-p:DebugSymbols=false",
   "-o", $output

@@ -42,20 +42,9 @@ jobs:
             Select-Object -First 1
           Move-Item -Path $latestPublish.FullName -Destination "artifacts\github-action\publish"
 
-      - name: Pack zip
-        shell: pwsh
-        run: |
-          $artifactRoot = Join-Path $env:GITHUB_WORKSPACE "artifacts\github-action"
-          $publishDir = Join-Path $artifactRoot "publish"
-          $zipPath = Join-Path $artifactRoot "ChunithmLauncher-win-x64.zip"
-          if (Test-Path $zipPath) {
-            Remove-Item $zipPath -Force
-          }
-          Compress-Archive -Path (Join-Path $publishDir "*") -DestinationPath $zipPath
-
-      - name: Upload zip
+      - name: Upload publish
         uses: actions/upload-artifact@v4
         with:
           name: ChunithmLauncher-win-x64
-          path: artifacts/github-action/ChunithmLauncher-win-x64.zip
+          path: artifacts/github-action/publish
           if-no-files-found: error

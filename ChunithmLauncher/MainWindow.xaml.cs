@@ -24,9 +24,9 @@ public partial class MainWindow : Window
         WriteIndented = true,
     };
     private static readonly HttpClient UpdateHttpClient = CreateUpdateHttpClient();
-    private const string GithubRepoHomeUrl = "https://github.com/lichi7887/chunithmlauncher";
-    private const string GithubLatestReleaseApi = "https://api.github.com/repos/lichi7887/chunithmlauncher/releases/latest";
-    private const string GithubLatestReleasePage = "https://github.com/lichi7887/chunithmlauncher/releases/latest";
+    private const string GithubRepoHomeUrl = "https://github.com/luckyumimi/chunithmlauncher";
+    private const string GithubLatestReleaseApi = "https://api.github.com/repos/luckyumimi/chunithmlauncher/releases/latest";
+    private const string GithubLatestReleasePage = "https://github.com/luckyumimi/chunithmlauncher/releases/latest";
 
     private readonly List<DisplayInfo> _displays = new();
     private string? _primaryDisplayId;

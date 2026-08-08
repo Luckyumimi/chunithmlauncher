@@ -240,6 +240,13 @@ body.dark-mode .row input, body.dark-mode .row select { border-color: transparen
 .page.dark .scroll-body::-webkit-scrollbar-thumb, body.dark-mode .scroll-body::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .62); background-clip: padding-box; }
 .page.dark .scroll-body::-webkit-scrollbar-thumb:hover, body.dark-mode .scroll-body::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, .82); background-clip: padding-box; }
 
+/* Keep theme changes cohesive across the launcher and both configuration dialogs. */
+.page, .page::before, .modal-backdrop, .modal-card, .section, .app-panel, .app-button, .status-pill,
+.row input, .row select, .display-picker-trigger, .display-picker-panel, .about-row, .portal-toolbar,
+footer, .target-label, .stats span, .launch-panel p {
+  transition: background-color .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease, transform .18s ease;
+}
+
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
 @keyframes modal-in { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }

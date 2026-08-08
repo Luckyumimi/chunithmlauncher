@@ -12,6 +12,7 @@
         MinHeight="280"
         WindowStyle="SingleBorderWindow"
         ResizeMode="CanResize"
+        Icon="assets/penguin.ico"
         Background="#0b0d14"
         WindowStartupLocation="CenterScreen">
     <Grid>

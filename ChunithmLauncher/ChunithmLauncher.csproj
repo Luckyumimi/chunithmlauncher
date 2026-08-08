@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="assets\penguin.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="..\ui\**\*">
       <Link>ui\%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

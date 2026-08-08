@@ -290,6 +290,8 @@ function init(payload) {
   show('firstRun', !state.startBatPath || !state.primaryDisplay);
 }
 
+document.querySelector('#settingsModal small')?.replaceChildren('选择后即刻生效');
+
 function handleMessage(event) {
   const data = event.data || event; if (!data?.type) return; const p = data.payload || {};
   if (data.type === 'init') init(p);

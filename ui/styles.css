@@ -233,7 +233,9 @@ body.dark-mode .row input, body.dark-mode .row select { border-color: transparen
 .page.dark .modal-card.settings .row input:not([type="color"]):focus, .page.dark .modal-card.settings .row select:focus, body.dark-mode .modal-card.settings .row input:not([type="color"]):focus, body.dark-mode .modal-card.settings .row select:focus { background: var(--focus-bg); border-color: var(--focus-border); }
 .page.dark .modal-card.settings .row input:not([type="color"]):hover, .page.dark .modal-card.settings .row select:hover, body.dark-mode .modal-card.settings .row input:not([type="color"]):hover, body.dark-mode .modal-card.settings .row select:hover { background: #393939; }
 .page.dark .modal-card.settings .app-button:not(.primary), body.dark-mode .modal-card.settings .app-button:not(.primary) { background: #303030; color: rgba(255, 255, 255, .87); }
+body.dark-mode .modal-card:not(.settings) .app-button:not(.primary) { background: #303030; color: rgba(255, 255, 255, .87); }
 .page.dark .modal-card.settings .app-button:not(.primary):hover, body.dark-mode .modal-card.settings .app-button:not(.primary):hover { background: #3a3a3a; }
+body.dark-mode .modal-card:not(.settings) .app-button:not(.primary):hover { background: #3a3a3a; }
 .page.dark .modal-card.settings #btnCloseSettings, body.dark-mode .modal-card.settings #btnCloseSettings { background: #303030; color: rgba(255, 255, 255, .87); }
 .page.dark .modal-card.settings #btnCloseSettings:hover, body.dark-mode .modal-card.settings #btnCloseSettings:hover { background: #3a3a3a; }
 .page.dark .modal-card.settings .row input:not([type="color"])::placeholder, body.dark-mode .modal-card.settings .row input:not([type="color"])::placeholder { color: #a0a0a0; }

@@ -157,8 +157,10 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .display-picker-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; height: 44px; min-height: 44px; padding: .6em 1.1em; border: 2px solid transparent; border-radius: 12px; background: rgba(255, 255, 255, .08); color: var(--ink); font-size: 12px; font-weight: 500; text-align: left; transition: background-color .3s ease, border-color .3s ease, box-shadow .3s ease, color .3s ease; }
 .display-picker-trigger:hover { background: rgba(255, 255, 255, .12); }
 .modal-card.settings .display-picker-trigger { background: #f4f2f6; color: var(--ink); }
+.modal-card:not(.settings) .display-picker-trigger { background: #f4f2f6; color: var(--ink); }
 .display-picker-trigger:focus, .display-picker.open .display-picker-trigger { border-color: var(--focus-border); background: var(--focus-bg); box-shadow: none; outline: none; }
 .modal-card.settings .display-picker-trigger:hover, .modal-card.settings .display-picker-trigger:focus, .modal-card.settings .display-picker.open .display-picker-trigger { background: #f4f2f6; color: var(--ink); }
+.modal-card:not(.settings) .display-picker-trigger:hover, .modal-card:not(.settings) .display-picker-trigger:focus, .modal-card:not(.settings) .display-picker.open .display-picker-trigger { background: #f4f2f6; color: var(--ink); }
 .display-picker-trigger > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .display-picker-chevron { flex: 0 0 8px; width: 8px; height: 8px; margin-left: 12px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .28s cubic-bezier(.2, .8, .2, 1); }
 .display-picker.open .display-picker-chevron { transform: rotate(225deg) translate(-1px, -1px); }
@@ -205,6 +207,7 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .page.dark .row input, .page.dark .row select { border-color: transparent; background: #333333; color: #f2f2f2; }
 .page.dark .row input::placeholder { color: #9f9f9f; }
 .page.dark .modal-card.settings .display-picker-trigger, body.dark-mode .modal-card.settings .display-picker-trigger { border-color: transparent; background: #333333; color: #f2f2f2; }
+.page.dark .modal-card:not(.settings) .display-picker-trigger, body.dark-mode .modal-card:not(.settings) .display-picker-trigger { border-color: transparent; background: #333333; color: #f2f2f2; }
 .page.dark .modal-card.settings .display-picker-trigger:hover, .page.dark .modal-card.settings .display-picker-trigger:focus, .page.dark .modal-card.settings .display-picker.open .display-picker-trigger, body.dark-mode .modal-card.settings .display-picker-trigger:hover, body.dark-mode .modal-card.settings .display-picker-trigger:focus, body.dark-mode .modal-card.settings .display-picker.open .display-picker-trigger { border-color: transparent; background: #333333; color: #f2f2f2; }
 .page.dark .display-picker-panel, body.dark-mode .display-picker-panel { border-color: transparent; background: rgba(58, 58, 58, .8); }
 .page.dark .display-picker-option, body.dark-mode .display-picker-option { color: #f2f2f2; }

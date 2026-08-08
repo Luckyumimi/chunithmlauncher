@@ -75,6 +75,7 @@ function fillDisplays(select, selected) {
   });
   select.value = selected || '';
   if (select.id === 'displaySelectSetting') syncDisplayDropdown(selected);
+  if (select.id === 'displaySelect') syncFirstRunDropdown(selected);
 }
 
 function syncDisplayDropdown(selected = byId('displaySelectSetting')?.value || '') {
@@ -95,6 +96,22 @@ function syncDisplayDropdown(selected = byId('displaySelectSetting')?.value || '
       setPrimary(display.id);
       setDisplayDropdownOpen(false);
     };
+    optionsNode.appendChild(option);
+  });
+}
+
+function syncFirstRunDropdown(selected = byId('displaySelect')?.value || '') {
+  const valueNode = byId('displaySelectValueFirstRun');
+  const optionsNode = byId('displaySelectOptionsFirstRun');
+  if (!valueNode || !optionsNode) return;
+  const selectedDisplay = state.displays.find(display => display.id === selected);
+  valueNode.textContent = selectedDisplay?.name || '请选择主显示器';
+  optionsNode.innerHTML = '';
+  state.displays.forEach(display => {
+    const option = document.createElement('button');
+    option.type = 'button'; option.className = 'display-picker-option'; option.setAttribute('role', 'option');
+    option.setAttribute('aria-selected', display.id === selected ? 'true' : 'false'); option.textContent = display.name;
+    option.onclick = () => { setPrimary(display.id); setFirstRunDropdownOpen(false); };
     optionsNode.appendChild(option);
   });
 }
@@ -135,6 +152,29 @@ function setDisplayDropdownOpen(open) {
   }
 }
 
+function positionFirstRunDropdown() {
+  const dropdown = byId('displayDropdownFirstRun');
+  const trigger = byId('displaySelectTriggerFirstRun');
+  const panel = byId('displaySelectPanelFirstRun');
+  if (!dropdown?.classList.contains('open') || !trigger || !panel) return;
+  const rect = trigger.getBoundingClientRect(); const gap = 7;
+  const contentHeight = Math.min(280, panel.scrollHeight || 280);
+  const spaceBelow = Math.max(0, window.innerHeight - rect.bottom - gap); const spaceAbove = Math.max(0, rect.top - gap);
+  const opensAbove = spaceBelow < contentHeight && spaceAbove > spaceBelow;
+  const maxHeight = Math.max(0, Math.min(contentHeight, opensAbove ? spaceAbove : spaceBelow));
+  panel.style.setProperty('--dropdown-top', `${Math.max(8, opensAbove ? rect.top - gap - maxHeight : rect.bottom + gap)}px`);
+  panel.style.setProperty('--dropdown-left', `${rect.left}px`); panel.style.setProperty('--dropdown-width', `${rect.width}px`);
+  panel.style.setProperty('--dropdown-max-height', `${maxHeight}px`);
+}
+
+function setFirstRunDropdownOpen(open) {
+  const dropdown = byId('displayDropdownFirstRun'); const trigger = byId('displaySelectTriggerFirstRun'); const panel = byId('displaySelectPanelFirstRun');
+  if (!dropdown || !trigger || !panel) return;
+  dropdown.classList.toggle('open', open); trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) requestAnimationFrame(positionFirstRunDropdown);
+  else ['top', 'left', 'width', 'max-height'].forEach(name => panel.style.removeProperty(`--dropdown-${name}`));
+}
+
 function fillSettings() {
   byId('startBatSetting').value = state.startBatPath;
   byId('originalModeInputSetting').value = state.originalMode;
@@ -151,7 +191,7 @@ function fillSettings() {
 function setPrimary(id) {
   const display = state.displays.find(item => item.id === id); if (!display) return;
   state.primaryDisplay = id; state.primaryDisplayName = display.name;
-  byId('displaySelect').value = id; byId('displaySelectSetting').value = id; syncDisplayDropdown(id); render();
+  byId('displaySelect').value = id; byId('displaySelectSetting').value = id; syncFirstRunDropdown(id); syncDisplayDropdown(id); render();
   post('set-primary-display', { primaryDisplay: id });
 }
 
@@ -245,6 +285,7 @@ byId('btnSettings').onclick = () => { fillSettings(); show('settingsModal', true
 byId('portalTab').onclick = openPortal;
 byId('backToLauncher').onclick = showLauncher;
 byId('themeToggle').onclick = () => applyTheme(theme === 'dark' ? 'light' : 'dark');
+byId('themeSelect').onchange = event => applyTheme(event.target.value);
 byId('btnCloseSettings').onclick = () => show('settingsModal', false);
 byId('btnSaveSettings').onclick = saveSettings; byId('btnSave').onclick = saveSettings;
 byId('btnPickBat').onclick = () => post('pick-start-bat'); byId('btnPickBatSetting').onclick = () => post('pick-start-bat-preview');
@@ -258,6 +299,11 @@ byId('displaySelectTrigger').onkeydown = event => {
     setDisplayDropdownOpen(true);
   }
 };
+byId('displaySelectTriggerFirstRun').onclick = () => setFirstRunDropdownOpen(!byId('displayDropdownFirstRun').classList.contains('open'));
+byId('displaySelectTriggerFirstRun').onkeydown = event => {
+  if (event.key === 'Escape') setFirstRunDropdownOpen(false);
+  if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setFirstRunDropdownOpen(true); }
+};
 byId('btnEditSegatoolsIni').onclick = () => post('open-segatools-ini'); byId('btnApplyRecommendedSegatools').onclick = () => post('apply-recommended-segatools-gfx');
 byId('btnBrowseBg').onclick = () => post('pick-background-image-preview'); byId('btnCheckUpdate').onclick = () => post('check-update'); byId('btnOpenGithubHome').onclick = () => post('open-github-home');
 byId('smartDisplayToggle').onchange = event => { state.smartDisplayEnabled = event.target.checked; post('set-smart-display', { enabled: state.smartDisplayEnabled }); };
@@ -267,9 +313,12 @@ byId('themeColorText').onchange = event => { byId('themeColor').value = event.ta
 byId('displaySelectSetting').onchange = event => setPrimary(event.target.value); byId('displaySelect').onchange = event => setPrimary(event.target.value);
 document.addEventListener('click', event => {
   if (!byId('displayDropdownSetting')?.contains(event.target)) setDisplayDropdownOpen(false);
+  if (!byId('displayDropdownFirstRun')?.contains(event.target)) setFirstRunDropdownOpen(false);
 });
 window.addEventListener('resize', positionDisplayDropdown);
+window.addEventListener('resize', positionFirstRunDropdown);
 window.addEventListener('scroll', positionDisplayDropdown, true);
+window.addEventListener('scroll', positionFirstRunDropdown, true);
 document.querySelectorAll('#launchMode button').forEach(button => button.onclick = () => { state.launchMode = button.dataset.mode; post('set-launch-mode', { mode: state.launchMode }); render(); });
 byId('btnTestSwitch').onclick = () => { if (testTimer) { post('restore-original'); clearInterval(testTimer); testTimer = null; byId('btnTestSwitch').textContent = '测试切换'; return; } post('test-switch'); let seconds = 15; byId('btnTestSwitch').textContent = `恢复原始分辨率 (${seconds}s)`; testTimer = setInterval(() => { seconds -= 1; byId('btnTestSwitch').textContent = `恢复原始分辨率 (${seconds}s)`; if (seconds <= 0) { clearInterval(testTimer); testTimer = null; byId('btnTestSwitch').textContent = '测试切换'; } }, 1000); };
 

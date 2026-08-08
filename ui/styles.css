@@ -137,6 +137,12 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .row.wrap > .app-button { flex: 0 0 auto; }
 .row input, .row select { width: 100%; min-height: 38px; padding: 0 11px; border: 0; border-radius: 11px; background: rgba(248, 246, 251, .76); color: var(--ink); outline: none; }
 .row input:focus, .row select:focus { border-color: color-mix(in srgb, var(--accent) 55%, #aaa); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
+.modal-card:not(.settings) .row input:not([type="color"]), .modal-card:not(.settings) .row select { height: 44px; min-height: 44px; padding: 0 13px; border: 2px solid transparent; border-radius: 12px; background: #f4f2f6; color: var(--ink); font-size: 12px; }
+.modal-card:not(.settings) .row input:not([type="color"]):hover, .modal-card:not(.settings) .row select:hover { background: #f4f2f6; }
+.modal-card:not(.settings) .row input:not([type="color"]):focus, .modal-card:not(.settings) .row select:focus { border-color: var(--focus-border); background: #f4f2f6; box-shadow: none; outline: none; }
+.modal-card:not(.settings) .row input:not([type="color"])::placeholder { color: var(--muted); }
+.modal-card:not(.settings) .row select { appearance: none; padding-right: 36px; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 19px) 19px, calc(100% - 14px) 19px; background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; }
+.modal-card:not(.settings) > .app-button.wide { width: 100%; }
 .modal-card.settings .row input:not([type="color"]), .modal-card.settings .row select { height: 44px; min-height: 44px; padding: 0 13px; border: 2px solid transparent; border-radius: 12px; background: #f4f2f6; color: var(--ink); }
 .modal-card.settings .row input:not([type="color"]):hover, .modal-card.settings .row select:hover { background: #f4f2f6; }
 .modal-card.settings .row input:not([type="color"]):focus, .modal-card.settings .row select:focus { border-color: var(--focus-border); background: #f4f2f6; box-shadow: none; outline: none; }

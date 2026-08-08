@@ -30,6 +30,7 @@ function applyTheme(value) {
   byId('themeLabel').textContent = theme === 'dark' ? '浅色' : '深色';
   byId('themeIcon').innerHTML = theme === 'dark' ? fixedSunMarkup : `<path d="${moonPath}"></path>`;
   byId('themeSelect').value = theme;
+  syncThemeDropdown(theme);
   localStorage.setItem('chunithm-theme', theme);
 }
 
@@ -175,6 +176,37 @@ function setFirstRunDropdownOpen(open) {
   else ['top', 'left', 'width', 'max-height'].forEach(name => panel.style.removeProperty(`--dropdown-${name}`));
 }
 
+function syncThemeDropdown(value = theme) {
+  const valueNode = byId('themeSelectValueFirstRun'); const optionsNode = byId('themeSelectOptionsFirstRun');
+  if (!valueNode || !optionsNode) return;
+  const labels = { light: '浅色模式', dark: '深色模式' };
+  valueNode.textContent = labels[value] || labels.light;
+  optionsNode.innerHTML = '';
+  Object.entries(labels).forEach(([key, label]) => {
+    const option = document.createElement('button'); option.type = 'button'; option.className = 'display-picker-option'; option.setAttribute('role', 'option');
+    option.setAttribute('aria-selected', key === value ? 'true' : 'false'); option.textContent = label;
+    option.onclick = () => { byId('themeSelect').value = key; applyTheme(key); setThemeDropdownOpen(false); };
+    optionsNode.appendChild(option);
+  });
+}
+
+function positionThemeDropdown() {
+  const dropdown = byId('themeDropdownFirstRun'); const trigger = byId('themeSelectTriggerFirstRun'); const panel = byId('themeSelectPanelFirstRun');
+  if (!dropdown?.classList.contains('open') || !trigger || !panel) return;
+  const rect = trigger.getBoundingClientRect(); const gap = 7; const contentHeight = Math.min(280, panel.scrollHeight || 280);
+  const spaceBelow = Math.max(0, window.innerHeight - rect.bottom - gap); const spaceAbove = Math.max(0, rect.top - gap);
+  const opensAbove = spaceBelow < contentHeight && spaceAbove > spaceBelow; const maxHeight = Math.max(0, Math.min(contentHeight, opensAbove ? spaceAbove : spaceBelow));
+  panel.style.setProperty('--dropdown-top', `${Math.max(8, opensAbove ? rect.top - gap - maxHeight : rect.bottom + gap)}px`); panel.style.setProperty('--dropdown-left', `${rect.left}px`); panel.style.setProperty('--dropdown-width', `${rect.width}px`); panel.style.setProperty('--dropdown-max-height', `${maxHeight}px`);
+}
+
+function setThemeDropdownOpen(open) {
+  const dropdown = byId('themeDropdownFirstRun'); const trigger = byId('themeSelectTriggerFirstRun'); const panel = byId('themeSelectPanelFirstRun');
+  if (!dropdown || !trigger || !panel) return;
+  dropdown.classList.toggle('open', open); trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) requestAnimationFrame(positionThemeDropdown);
+  else ['top', 'left', 'width', 'max-height'].forEach(name => panel.style.removeProperty(`--dropdown-${name}`));
+}
+
 function fillSettings() {
   byId('startBatSetting').value = state.startBatPath;
   byId('originalModeInputSetting').value = state.originalMode;
@@ -286,6 +318,11 @@ byId('portalTab').onclick = openPortal;
 byId('backToLauncher').onclick = showLauncher;
 byId('themeToggle').onclick = () => applyTheme(theme === 'dark' ? 'light' : 'dark');
 byId('themeSelect').onchange = event => applyTheme(event.target.value);
+byId('themeSelectTriggerFirstRun').onclick = () => setThemeDropdownOpen(!byId('themeDropdownFirstRun').classList.contains('open'));
+byId('themeSelectTriggerFirstRun').onkeydown = event => {
+  if (event.key === 'Escape') setThemeDropdownOpen(false);
+  if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setThemeDropdownOpen(true); }
+};
 byId('btnCloseSettings').onclick = () => show('settingsModal', false);
 byId('btnSaveSettings').onclick = saveSettings; byId('btnSave').onclick = saveSettings;
 byId('btnPickBat').onclick = () => post('pick-start-bat'); byId('btnPickBatSetting').onclick = () => post('pick-start-bat-preview');
@@ -314,11 +351,14 @@ byId('displaySelectSetting').onchange = event => setPrimary(event.target.value);
 document.addEventListener('click', event => {
   if (!byId('displayDropdownSetting')?.contains(event.target)) setDisplayDropdownOpen(false);
   if (!byId('displayDropdownFirstRun')?.contains(event.target)) setFirstRunDropdownOpen(false);
+  if (!byId('themeDropdownFirstRun')?.contains(event.target)) setThemeDropdownOpen(false);
 });
 window.addEventListener('resize', positionDisplayDropdown);
 window.addEventListener('resize', positionFirstRunDropdown);
 window.addEventListener('scroll', positionDisplayDropdown, true);
 window.addEventListener('scroll', positionFirstRunDropdown, true);
+window.addEventListener('resize', positionThemeDropdown);
+window.addEventListener('scroll', positionThemeDropdown, true);
 document.querySelectorAll('#launchMode button').forEach(button => button.onclick = () => { state.launchMode = button.dataset.mode; post('set-launch-mode', { mode: state.launchMode }); render(); });
 byId('btnTestSwitch').onclick = () => { if (testTimer) { post('restore-original'); clearInterval(testTimer); testTimer = null; byId('btnTestSwitch').textContent = '测试切换'; return; } post('test-switch'); let seconds = 15; byId('btnTestSwitch').textContent = `恢复原始分辨率 (${seconds}s)`; testTimer = setInterval(() => { seconds -= 1; byId('btnTestSwitch').textContent = `恢复原始分辨率 (${seconds}s)`; if (seconds <= 0) { clearInterval(testTimer); testTimer = null; byId('btnTestSwitch').textContent = '测试切换'; } }, 1000); };
 

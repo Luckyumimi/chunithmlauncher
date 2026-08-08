@@ -49,11 +49,11 @@
 
 ### 默认背景
 
-![默认背景](https://raw.githubusercontent.com/luckyumimi/chunithmlauncher/refs/heads/main/docs/image/screenshot-dark.png)
+![默认背景](docs/image/screenshot-dark.png)
 
 ### 自定义背景
 
-![自定义背景](https://raw.githubusercontent.com/luckyumimi/chunithmlauncher/refs/heads/main/docs/image/screenshot-wallpaper.png)
+![自定义背景](docs/image/screenshot-wallpaper.png)
 
 ## 开源许可证
 

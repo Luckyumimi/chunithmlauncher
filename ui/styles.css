@@ -213,6 +213,7 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .page.dark .display-picker-panel, body.dark-mode .display-picker-panel { border-color: transparent; background: rgba(58, 58, 58, .8); }
 .page.dark .display-picker-option, body.dark-mode .display-picker-option { color: #f2f2f2; }
 .page.dark .display-picker-option:hover, .page.dark .display-picker-option:focus, body.dark-mode .display-picker-option:hover, body.dark-mode .display-picker-option:focus { background: rgba(255, 255, 255, .12); color: #f2f2f2; }
+.page.dark .display-picker-option[aria-selected="true"], body.dark-mode .display-picker-option[aria-selected="true"] { background: color-mix(in srgb, var(--accent) 24%, transparent); color: var(--accent); }
 .page.dark .modal-backdrop { background: rgba(0, 0, 0, .78); }
 .page.dark .modal-card { border-color: transparent; background: #222222; color: #f2f2f2; }
   .page.dark .modal-card.settings { background: #222222; }

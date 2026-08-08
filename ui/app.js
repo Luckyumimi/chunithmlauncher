@@ -225,7 +225,11 @@ function handleMessage(event) {
   if (data.type === 'update-target') { state.targetMode = p.value || ''; byId('targetModeSetting').value = state.targetMode; render(); }
   if (data.type === 'update-original') { state.originalMode = p.value || ''; byId('originalModeInputSetting').value = state.originalMode; render(); }
   if (data.type === 'update-start-bat') { state.startBatPath = p.path || ''; byId('startBat').value = state.startBatPath; render(); }
-  if (data.type === 'update-background-image') { state.backgroundImagePath = p.path || ''; render(); }
+  if (data.type === 'update-background-image') {
+    state.backgroundImagePath = p.path || '';
+    byId('bgImageInput').value = state.backgroundImagePath;
+    render();
+  }
   if (data.type === 'update-displays') { state.displays = p.displays || []; state.primaryDisplay = state.displays.find(item => item.selected)?.id || ''; state.primaryDisplayName = p.primaryDisplayName || '未选择'; fillDisplays(byId('displaySelect'), state.primaryDisplay); fillDisplays(byId('displaySelectSetting'), state.primaryDisplay); render(); }
   if (data.type === 'test-switch-state') {
     if (p.active) {

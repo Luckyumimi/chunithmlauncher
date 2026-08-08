@@ -131,6 +131,7 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .section h3 { margin: 0 0 2px; font-size: 13px; }
 .modal-card.settings .section h3 { font-size: 20px; }
 .section label { color: var(--muted); font-size: 11px; }
+.modal-card.settings .section label { font-size: 12px; }
 .row { gap: 8px; }
 .row > :first-child { flex: 1; min-width: 0; }
 .row.wrap { flex-wrap: wrap; }

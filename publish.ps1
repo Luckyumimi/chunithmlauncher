@@ -11,6 +11,7 @@ $appProject = ".\\ChunithmLauncher\\ChunithmLauncher.csproj"
 $bootstrapperProject = ".\\ChunithmLauncher.Bootstrapper\\ChunithmLauncher.Bootstrapper.csproj"
 $stamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $output = Join-Path $OutputRoot $stamp
+$appOutput = Join-Path $output "app"
 $version = $VersionPrefix
 
 Write-Host "Publishing $appProject" -ForegroundColor Cyan
@@ -44,7 +45,7 @@ Invoke-DotNetPublish @(
   "-p:IncludeSourceRevisionInInformationalVersion=false",
   "-p:DebugType=None",
   "-p:DebugSymbols=false",
-  "-o", $output
+  "-o", $appOutput
 )
 
 # Self-contained bootstrapper: runs without .NET and opens the runtime download page if needed.

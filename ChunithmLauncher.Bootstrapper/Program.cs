@@ -4,10 +4,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 const string AppExeName = "ChunithmLauncher.App.exe";
+const string AppDirectoryName = "app";
 const string DotnetDesktopRuntimeDownloadUrl = "https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0";
 
 var baseDirectory = AppContext.BaseDirectory;
-var appPath = Path.Combine(baseDirectory, AppExeName);
+var appPath = Path.Combine(baseDirectory, AppDirectoryName, AppExeName);
 
 if (!IsDotnetDesktopRuntimeInstalled())
 {
@@ -29,7 +30,7 @@ if (!File.Exists(appPath))
 {
     MessageBoxW(
         IntPtr.Zero,
-        $"未找到主程序：{AppExeName}\n\n请重新解压完整发布包后再运行。",
+        $"未找到主程序：{Path.Combine(AppDirectoryName, AppExeName)}\n\n请重新解压完整发布包后再运行。",
         "启动失败",
         MessageBoxType.Ok | MessageBoxType.IconError);
     return;
@@ -41,7 +42,7 @@ try
     {
         FileName = appPath,
         Arguments = JoinArguments(Environment.GetCommandLineArgs().Skip(1)),
-        WorkingDirectory = baseDirectory,
+        WorkingDirectory = Path.GetDirectoryName(appPath) ?? baseDirectory,
         UseShellExecute = false,
     });
 }

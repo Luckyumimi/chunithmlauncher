@@ -2,7 +2,7 @@
   [string]$Configuration = "Release",
   [string]$Runtime = "win-x64",
   [string]$OutputRoot = ".\\artifacts\\publish",
-  [string]$VersionPrefix = "1.4.0"
+  [string]$VersionPrefix = "2.0.0"
 )
 
 $ErrorActionPreference = "Stop"

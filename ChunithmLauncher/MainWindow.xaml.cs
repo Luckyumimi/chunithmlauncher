@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.Json;
@@ -41,6 +42,7 @@ public partial class MainWindow : Window
     private string _gameWindowTitle = DefaultGameWindowTitle;
     private string? _backgroundImagePath;
     private bool _smartDisplayEnabled;
+    private bool _isMuNetPage;
 
     private Config _config = new();
     private bool _isLaunching;
@@ -74,7 +76,7 @@ public partial class MainWindow : Window
         WebView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
         WebView.CoreWebView2.Settings.AreDevToolsEnabled = false;
         WebView.CoreWebView2.WebMessageReceived += OnWebMessageReceived;
-        WebView.NavigationCompleted += (_, _) => SendInit();
+        WebView.NavigationCompleted += OnNavigationCompleted;
 
         LoadConfig();
         DetectDisplays();
@@ -208,6 +210,12 @@ public partial class MainWindow : Window
                 break;
             case "open-github-home":
                 OpenGithubHomePage();
+                break;
+            case "open-munet":
+                OpenMuNetPage(message.Payload);
+                break;
+            case "return-to-launcher":
+                ReturnToLauncher();
                 break;
             case "set-launch-mode":
                 if (message.Payload.TryGetProperty("mode", out var modeElement))
@@ -885,6 +893,11 @@ public partial class MainWindow : Window
         using var response = await UpdateHttpClient.GetAsync(GithubLatestReleaseApi);
         if (!response.IsSuccessStatusCode)
         {
+            if (response.StatusCode == HttpStatusCode.Forbidden)
+            {
+                return await FetchLatestReleaseFromPageAsync();
+            }
+
             throw new InvalidOperationException($"检查更新失败：HTTP {(int)response.StatusCode}");
         }
 
@@ -905,6 +918,41 @@ public partial class MainWindow : Window
             : GithubLatestReleasePage;
 
         return new LatestReleaseInfo(latestTag, latestReleaseUrl);
+    }
+
+    private static async Task<LatestReleaseInfo> FetchLatestReleaseFromPageAsync()
+    {
+        using var response = await UpdateHttpClient.GetAsync(GithubLatestReleasePage);
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new InvalidOperationException($"检查更新失败：HTTP {(int)response.StatusCode}");
+        }
+
+        var finalUri = response.RequestMessage?.RequestUri;
+        var tagMarker = "/releases/tag/";
+        var finalPath = finalUri?.AbsolutePath ?? string.Empty;
+        var tagIndex = finalPath.IndexOf(tagMarker, StringComparison.OrdinalIgnoreCase);
+        if (tagIndex >= 0)
+        {
+            var tag = Uri.UnescapeDataString(finalPath[(tagIndex + tagMarker.Length)..].Trim('/'));
+            if (!string.IsNullOrWhiteSpace(tag))
+            {
+                return new LatestReleaseInfo(tag, finalUri!.AbsoluteUri);
+            }
+        }
+
+        var html = await response.Content.ReadAsStringAsync();
+        var match = Regex.Match(
+            html,
+            @"/luckyumimi/chunithmlauncher/releases/tag/([^""'<>\s]+)",
+            RegexOptions.IgnoreCase);
+        if (match.Success)
+        {
+            var tag = Uri.UnescapeDataString(match.Groups[1].Value);
+            return new LatestReleaseInfo(tag, $"{GithubRepoHomeUrl}/releases/tag/{Uri.EscapeDataString(tag)}");
+        }
+
+        throw new InvalidOperationException("无法从 GitHub Releases 页面读取版本信息。");
     }
 
     private static bool ShowUpdateAvailableDialog(Version latestVersion, string latestReleaseUrl)
@@ -935,6 +983,78 @@ public partial class MainWindow : Window
         SetStatus("打开 GitHub 主页失败", "#ff5a6a");
     }
 
+    private void OpenMuNetPage(JsonElement payload)
+    {
+        var url = payload.TryGetProperty("url", out var urlElement)
+            ? urlElement.GetString()
+            : null;
+
+        if (string.IsNullOrWhiteSpace(url)
+            || !Uri.TryCreate(url, UriKind.Absolute, out var uri)
+            || uri.Scheme is not ("http" or "https"))
+        {
+            SetStatus("MuNET 链接无效", "#ff5a6a");
+            return;
+        }
+
+        if (WebView.CoreWebView2 is null)
+        {
+            SetStatus("MuNET 页面尚未准备好", "#ff5a6a");
+            return;
+        }
+
+        _isMuNetPage = true;
+        WebView.CoreWebView2.Navigate(uri.AbsoluteUri);
+    }
+
+    private async void OnNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
+    {
+        if (_isMuNetPage)
+        {
+            await InjectMuNetBackButtonAsync();
+        }
+        else
+        {
+            SendInit();
+        }
+    }
+
+    private async Task InjectMuNetBackButtonAsync()
+    {
+        if (WebView.CoreWebView2 is null)
+        {
+            return;
+        }
+
+        const string script = """
+            (() => {
+                if (document.getElementById('chunithm-launcher-back')) return;
+                const button = document.createElement('button');
+                button.id = 'chunithm-launcher-back';
+                button.type = 'button';
+                button.textContent = '\u2190 返回启动器';
+                button.style.cssText = 'position:fixed;top:16px;left:16px;z-index:2147483647;padding:9px 14px;border:1px solid rgba(255,255,255,.35);border-radius:10px;background:rgba(0,0,0,.82);color:#fff;font:600 13px Microsoft YaHei,sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);';
+                button.addEventListener('click', () => window.chrome.webview.postMessage({ type: 'return-to-launcher', payload: {} }));
+                document.documentElement.appendChild(button);
+            })();
+            """;
+
+        try
+        {
+            await WebView.CoreWebView2.ExecuteScriptAsync(script);
+        }
+        catch
+        {
+            SetStatus("MuNET 返回按钮注入失败", "#ff5a6a");
+        }
+    }
+
+    private void ReturnToLauncher()
+    {
+        _isMuNetPage = false;
+        WebView.CoreWebView2?.Navigate(new Uri(ResolveUiIndexPath()).AbsoluteUri);
+    }
+
     private static bool TryOpenUrl(string url)
     {
         try
@@ -954,7 +1074,15 @@ public partial class MainWindow : Window
 
     private static HttpClient CreateUpdateHttpClient()
     {
-        var client = new HttpClient();
+        var handler = new HttpClientHandler
+        {
+            UseProxy = true,
+            Proxy = WebRequest.DefaultWebProxy,
+            DefaultProxyCredentials = CredentialCache.DefaultCredentials,
+            AutomaticDecompression = DecompressionMethods.All,
+        };
+        var client = new HttpClient(handler);
+        client.Timeout = TimeSpan.FromSeconds(15);
         client.DefaultRequestHeaders.UserAgent.ParseAdd("ChunithmLauncher/1.0");
         client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github+json");
         return client;

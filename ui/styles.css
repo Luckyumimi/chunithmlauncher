@@ -130,6 +130,7 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .section { display: grid; gap: 12px; margin-top: 16px; padding: 20px; border: 0; border-radius: 20px; background: rgba(255, 255, 255, .32); }
 .section h3 { margin: 0 0 2px; font-size: 13px; }
 .modal-card.settings .section h3 { font-size: 20px; }
+.modal-card.settings .app-button.compact { font-size: 12px; }
 .section label { color: var(--muted); font-size: 11px; }
 .modal-card.settings .section label { font-size: 12px; }
 .row { gap: 8px; }
@@ -175,7 +176,8 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .row input[type=color] { flex: 0 0 44px; width: 44px; padding: 3px; }
 .row #themeColor:focus { border-color: transparent; box-shadow: none; outline: none; }
 .row:has(#themeColor:focus) .field-shell::after { content: ''; position: absolute; inset: 0; z-index: 2; border: 2px solid var(--focus-border); border-radius: 12px; opacity: 0; pointer-events: none; animation: inputFocusBorderAnim .5s; }
-.about-row { flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 11px; }
+.about-row { flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 13px; }
+.about-row .app-button.compact { font-size: 13px; }
 .about-row span:nth-of-type(2) { margin-left: 8px; }
 
 .page.dark {

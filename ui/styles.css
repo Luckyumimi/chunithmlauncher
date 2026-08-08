@@ -205,6 +205,7 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .page.dark .segmented button { color: #c2c2c2; }
 .page.dark .segmented button.active { color: #302b1f; }
 .page.dark .row input, .page.dark .row select { border-color: transparent; background: #333333; color: #f2f2f2; }
+.page.dark .modal-card:not(.settings) .row input:not([type="color"]), .page.dark .modal-card:not(.settings) .row select, body.dark-mode .modal-card:not(.settings) .row input:not([type="color"]), body.dark-mode .modal-card:not(.settings) .row select { border-color: transparent; background: #333333; color: #f2f2f2; }
 .page.dark .row input::placeholder { color: #9f9f9f; }
 .page.dark .modal-card.settings .display-picker-trigger, body.dark-mode .modal-card.settings .display-picker-trigger { border-color: transparent; background: #333333; color: #f2f2f2; }
 .page.dark .modal-card:not(.settings) .display-picker-trigger, body.dark-mode .modal-card:not(.settings) .display-picker-trigger { border-color: transparent; background: #333333; color: #f2f2f2; }

@@ -8,7 +8,7 @@ const post = (type, payload = {}) => window.chrome?.webview
 
 const state = {
   startBatPath: '', appleChuEnabled: false, gameRunning: false, primaryDisplay: '', primaryDisplayName: '未选择', originalMode: '',
-  targetMode: '1920×1080 @ 120Hz', launchMode: 'smart', smartDisplayEnabled: false,
+  targetMode: '1920×1080 @ 120Hz', launchMode: 'smart', smartDisplayEnabled: false, runBatAsAdministrator: true, terminateCmdBeforeLaunch: true,
   themeColor: '#fdd500', backgroundImagePath: '', displays: [],
 };
 let testTimer;
@@ -211,6 +211,8 @@ function setThemeDropdownOpen(open) {
 }
 
 function fillSettings() {
+  byId('runBatAsAdministrator').checked = state.runBatAsAdministrator !== false;
+  byId('terminateCmdBeforeLaunch').checked = state.terminateCmdBeforeLaunch !== false;
   byId('startBatSetting').value = state.startBatPath;
   byId('originalModeInputSetting').value = state.originalMode;
   byId('targetModeSetting').value = state.targetMode;
@@ -254,7 +256,9 @@ function saveSettings() {
   portalUrl = byId('portalUrl').value.trim() || defaultPortalUrl;
   localStorage.setItem('chunithm-portal-text', portalButtonText);
   localStorage.setItem('chunithm-portal-url', portalUrl);
-  post('save-settings', { startBatPath, primaryDisplay, originalMode: state.originalMode, targetMode: state.targetMode, launchMode: state.launchMode, smartDisplayEnabled: state.smartDisplayEnabled, themeColor: state.themeColor, backgroundImagePath: state.backgroundImagePath });
+  state.runBatAsAdministrator = byId('runBatAsAdministrator').checked;
+  state.terminateCmdBeforeLaunch = byId('terminateCmdBeforeLaunch').checked;
+  post('save-settings', { startBatPath, primaryDisplay, originalMode: state.originalMode, targetMode: state.targetMode, launchMode: state.launchMode, smartDisplayEnabled: state.smartDisplayEnabled, runBatAsAdministrator: state.runBatAsAdministrator, terminateCmdBeforeLaunch: state.terminateCmdBeforeLaunch, themeColor: state.themeColor, backgroundImagePath: state.backgroundImagePath });
   show('settingsModal', false); show('firstRun', false); render(); status('设置已保存');
 }
 
@@ -306,6 +310,9 @@ if (legacySegatoolsActions) {
   const editAppleChu = document.createElement('button');
   editAppleChu.type = 'button'; editAppleChu.className = 'app-button compact'; editAppleChu.id = 'btnEditAppleChu'; editAppleChu.textContent = '编辑 AppleChu.toml';
   legacySegatoolsActions.append(migrateAppleChu, editAppleChu);
+  const launchOptions = document.createElement('div'); launchOptions.className = 'launch-options';
+  launchOptions.innerHTML = '<label class="checkbox"><input type="checkbox" id="runBatAsAdministrator" /><span></span>使用管理员权限运行 bat</label><label class="checkbox"><input type="checkbox" id="terminateCmdBeforeLaunch" /><span></span>启动前关闭残留 CMD</label>';
+  legacySegatoolsActions.after(launchOptions);
 }
 
 function syncAppleChuStatus() {
@@ -552,4 +559,4 @@ window.addEventListener('message', handleMessage);
 window.chrome?.webview?.addEventListener('message', handleMessage);
 render();
 applyTheme(theme);
-if (!window.chrome?.webview) setTimeout(() => init({ version: '2.0.1', startBatPath: 'D:\\SDHD\\bin\\start.bat', primaryDisplayName: '\\\\.\\DISPLAY1 · 2560×1440 @ 144Hz', primaryDisplay: '\\\\.\\DISPLAY1', originalMode: '2560×1440 @ 144Hz', displays: [{ id: '\\\\.\\DISPLAY1', name: '\\\\.\\DISPLAY1 · 2560×1440 @ 144Hz', selected: true }, { id: '\\\\.\\DISPLAY2', name: '\\\\.\\DISPLAY2 · 1920×1080 @ 60Hz' }] }), 180);
+if (!window.chrome?.webview) setTimeout(() => init({ version: '2.1.1', startBatPath: 'D:\\SDHD\\bin\\start.bat', primaryDisplayName: '\\\\.\\DISPLAY1 · 2560×1440 @ 144Hz', primaryDisplay: '\\\\.\\DISPLAY1', originalMode: '2560×1440 @ 144Hz', displays: [{ id: '\\\\.\\DISPLAY1', name: '\\\\.\\DISPLAY1 · 2560×1440 @ 144Hz', selected: true }, { id: '\\\\.\\DISPLAY2', name: '\\\\.\\DISPLAY2 · 1920×1080 @ 60Hz' }] }), 180);

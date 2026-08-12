@@ -42,6 +42,8 @@ public partial class MainWindow : Window
     private string _gameWindowTitle = DefaultGameWindowTitle;
     private string? _backgroundImagePath;
     private bool _smartDisplayEnabled;
+    private bool _runBatAsAdministrator = true;
+    private bool _terminateCmdBeforeLaunch = true;
     private bool _isMuNetPage;
 
     private Config _config = new();
@@ -278,6 +280,8 @@ public partial class MainWindow : Window
         _config.TargetMode = _targetMode;
         _config.LaunchMode = _launchMode;
         _config.SmartDisplayEnabled = _smartDisplayEnabled;
+        _config.RunBatAsAdministrator = _runBatAsAdministrator;
+        _config.TerminateCmdBeforeLaunch = _terminateCmdBeforeLaunch;
         _config.ThemeColor = _themeColor;
         _config.GameWindowTitle = _gameWindowTitle;
         _config.BackgroundImagePath = _backgroundImagePath;
@@ -302,6 +306,8 @@ public partial class MainWindow : Window
         if (!string.IsNullOrWhiteSpace(_config.OriginalMode)) _originalMode = _config.OriginalMode;
         if (!string.IsNullOrWhiteSpace(_config.LaunchMode)) _launchMode = _config.LaunchMode;
         _smartDisplayEnabled = _config.SmartDisplayEnabled;
+        _runBatAsAdministrator = _config.RunBatAsAdministrator;
+        _terminateCmdBeforeLaunch = _config.TerminateCmdBeforeLaunch;
         if (!string.IsNullOrWhiteSpace(_config.ThemeColor)) _themeColor = _config.ThemeColor;
         if (!string.IsNullOrWhiteSpace(_config.GameWindowTitle)) _gameWindowTitle = _config.GameWindowTitle;
         if (!string.IsNullOrWhiteSpace(_config.BackgroundImagePath)) _backgroundImagePath = _config.BackgroundImagePath;
@@ -510,6 +516,18 @@ public partial class MainWindow : Window
             && smartDisplayEnabled.ValueKind is JsonValueKind.True or JsonValueKind.False)
         {
             _smartDisplayEnabled = smartDisplayEnabled.GetBoolean();
+        }
+
+        if (payload.TryGetProperty("runBatAsAdministrator", out var runBatAsAdministrator)
+            && runBatAsAdministrator.ValueKind is JsonValueKind.True or JsonValueKind.False)
+        {
+            _runBatAsAdministrator = runBatAsAdministrator.GetBoolean();
+        }
+
+        if (payload.TryGetProperty("terminateCmdBeforeLaunch", out var terminateCmdBeforeLaunch)
+            && terminateCmdBeforeLaunch.ValueKind is JsonValueKind.True or JsonValueKind.False)
+        {
+            _terminateCmdBeforeLaunch = terminateCmdBeforeLaunch.GetBoolean();
         }
 
         if (payload.TryGetProperty("themeColor", out var themeColor))
@@ -1418,18 +1436,6 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (HasVisibleCommandPrompt())
-        {
-            const string message = "由于 Windows 限制，本启动器无法在开启 CMD 窗口的情况下启动游戏。\n\n如确有需要，请关闭 CMD 窗口后重试，或改用 PowerShell。";
-            SetStatus("检测到活动 CMD，启动失败", "#ff5a6a");
-            System.Windows.MessageBox.Show(
-                message,
-                "启动失败",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-            return;
-        }
-
         if (string.IsNullOrWhiteSpace(_startBatPath) || !File.Exists(_startBatPath))
         {
             SetStatus("start.bat 无效", "#ff5a6a");
@@ -1437,6 +1443,22 @@ public partial class MainWindow : Window
         }
 
         _isLaunching = true;
+
+        if (_terminateCmdBeforeLaunch)
+        {
+            SetStatus("正在关闭现有 CMD...", "#ffb36a");
+            if (!await TerminateAllCommandPromptsAsync())
+            {
+                SetStatus("无法关闭全部 CMD，启动失败", "#ff5a6a");
+                _isLaunching = false;
+                System.Windows.MessageBox.Show(
+                    "无法关闭系统中现有的 CMD 进程，游戏未启动。请手动关闭 CMD 后重试。",
+                    "启动失败",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return;
+            }
+        }
 
         var deviceName = ResolveDisplayDeviceName();
         if (deviceName is null)
@@ -1527,10 +1549,14 @@ public partial class MainWindow : Window
                 // batch as its own command and is independent of other CMDs.
                 Arguments = $"/d /s /c call \"{_startBatPath}\"",
                 UseShellExecute = true,
-                Verb = "runas",
                 WindowStyle = ProcessWindowStyle.Hidden,
                 WorkingDirectory = Path.GetDirectoryName(_startBatPath),
             };
+
+            if (_runBatAsAdministrator)
+            {
+                psi.Verb = "runas";
+            }
 
             _gameCommandProcess = Process.Start(psi);
             SetGameRunningState(true);
@@ -1593,26 +1619,33 @@ public partial class MainWindow : Window
         SetGameRunningState(false);
     }
 
-    private static bool HasVisibleCommandPrompt()
+    private static async Task<bool> TerminateAllCommandPromptsAsync()
     {
         try
         {
-            return Process.GetProcessesByName("cmd")
-                .Any(process =>
+            var processes = Process.GetProcessesByName("cmd");
+            foreach (var process in processes)
+            {
+                try
                 {
-                    try
+                    if (!process.HasExited)
                     {
-                        return process.MainWindowHandle != IntPtr.Zero && !process.HasExited;
+                        process.Kill(entireProcessTree: true);
                     }
-                    catch
-                    {
-                        return false;
-                    }
-                    finally
-                    {
-                        process.Dispose();
-                    }
-                });
+
+                    await process.WaitForExitAsync();
+                }
+                catch
+                {
+                    return false;
+                }
+                finally
+                {
+                    process.Dispose();
+                }
+            }
+
+            return Process.GetProcessesByName("cmd").Length == 0;
         }
         catch
         {
@@ -1937,6 +1970,8 @@ public partial class MainWindow : Window
             launchMode = _launchMode,
             primaryDisplayName = _primaryDisplayName ?? "未选择",
             smartDisplayEnabled = _smartDisplayEnabled,
+            runBatAsAdministrator = _runBatAsAdministrator,
+            terminateCmdBeforeLaunch = _terminateCmdBeforeLaunch,
             themeColor = _themeColor,
             backgroundImagePath = _backgroundImagePath ?? string.Empty,
             version = GetAppVersion(),
@@ -2124,6 +2159,8 @@ public partial class MainWindow : Window
         public string? TargetMode { get; set; }
         public string? LaunchMode { get; set; }
         public bool SmartDisplayEnabled { get; set; }
+        public bool RunBatAsAdministrator { get; set; } = true;
+        public bool TerminateCmdBeforeLaunch { get; set; } = true;
         public string? ThemeColor { get; set; }
         public string? GameWindowTitle { get; set; }
         public string? BackgroundImagePath { get; set; }

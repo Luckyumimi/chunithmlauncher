@@ -140,6 +140,7 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .row.wrap { flex-wrap: wrap; }
 .row.wrap > .app-button { flex: 0 0 auto; }
 .applechu-actions { align-items: center; }
+.launch-options { display: grid; gap: 10px; padding: 2px 0; }
 .modal-card.settings.settings-paged { position: relative; width: min(760px, 94vw); height: min(760px, calc(100dvh - 40px)); padding: 0; }
 .settings-main-page, .settings-subpage { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; padding: 30px; }
 .settings-main-page { transition: transform .42s cubic-bezier(.22, .8, .2, 1), opacity .3s ease; }

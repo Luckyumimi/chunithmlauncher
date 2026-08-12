@@ -1,0 +1,32 @@
+{
+    "condition" :
+    {
+        "dipsw" :
+        {
+            "value" : 4,
+            "mask" : 4
+        }
+    },
+
+    "aime" :
+    {
+        "enable" : true,
+        "unit" :
+        [
+            {
+                "port" : 4,
+                "id" : 1
+            }
+        ],
+        "firmware_path" :
+        [
+            "aime_firm\\update_15286_6691_94.bin"
+        ],
+        "high_baudrate" : true
+    },
+
+    "emoney" :
+    {
+        "enable" : false
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "condition" :
+    {
+        "dipsw" :
+        {
+            "value" : 0,
+            "mask" : 4
+        }
+    },
+
+    "aime" :
+    {
+        "enable" : true,
+        "unit" :
+        [
+            {
+                "port" : 4,
+                "id" : 1
+            }
+        ],
+        "firmware_path" :
+        [
+            "aime_firm\\update_15396_6728_94.bin"
+        ],
+        "high_baudrate" : true
+    },
+
+    "emoney" :
+    {
+        "enable" : false,
+        "resource_path" : "tfps-res-pro",
+        "aime_unit" : 0,
+        "display_port" : 2,
+        "ignore_brand" :
+        [
+            "sapica"
+        ]
+    }
+}

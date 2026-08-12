@@ -20,6 +20,10 @@
 
   <ItemGroup>
     <Resource Include="assets\penguin.ico" />
+    <Content Include="assets\AppleChu\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

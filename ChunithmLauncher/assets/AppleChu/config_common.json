@@ -1,0 +1,161 @@
+{
+  "common": {
+    "max_player": 1,
+    "language": "japanese",
+    "custom_resource_id": ["C3"]
+  },
+
+  "error": {
+    "auto_reset": true
+  },
+
+  "sequence": {
+    "play_accounting_timing": "normal",
+    "save_total_time_on_playing": false
+  },
+
+  "video": {
+    "enable": true,
+    "mode": "single",
+    "monitor": [
+      {
+        "width": 1920,
+        "height": 1080,
+        "angle": 0
+      }
+    ],
+    "ignore_unconnected": false
+  },
+
+  "usb_io": {
+    "enable": true,
+    "node": [
+      {
+        "id": 0,
+        "required_function": {
+          "coin_input": {
+            "enable": true,
+            "slot": 1
+          },
+          "switch_input": {
+            "enable": true,
+            "player": 2,
+            "button": 14
+          },
+          "general_output": {
+            "enable": true,
+            "slot": 20
+          },
+          "unique_io": [
+            {
+              "command": 65,
+              "param": [6],
+              "input": false,
+              "output": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "input": {
+    "system": [
+      { "id": "test", "type": "usb_switch", "usb_player": -1, "index": 0 },
+      { "id": "service", "type": "usb_switch", "usb_player": 0, "index": 6 }
+    ],
+
+    "players": [
+      [
+        {
+          "id": "photo_sensor_6",
+          "type": "usb_switch",
+          "usb_player": 0,
+          "index": 13
+        },
+        {
+          "id": "photo_sensor_5",
+          "type": "usb_switch",
+          "usb_player": 1,
+          "index": 13
+        },
+        {
+          "id": "photo_sensor_4",
+          "type": "usb_switch",
+          "usb_player": 0,
+          "index": 12
+        },
+        {
+          "id": "photo_sensor_3",
+          "type": "usb_switch",
+          "usb_player": 1,
+          "index": 12
+        },
+        {
+          "id": "photo_sensor_2",
+          "type": "usb_switch",
+          "usb_player": 0,
+          "index": 11
+        },
+        {
+          "id": "photo_sensor_1",
+          "type": "usb_switch",
+          "usb_player": 1,
+          "index": 11
+        }
+      ]
+    ]
+  },
+
+  "output": {
+    "system": [
+      {
+        "id": "coin_block",
+        "type": "usb_general",
+        "usb_node": 0,
+        "index": 7,
+        "count": 1
+      }
+    ]
+  },
+
+  "credit": {
+    "enable": true,
+    "max_credit": 24,
+    "config": {
+      "game_cost": [1, 1, 1, 2, 3, 4, 5, 6]
+    }
+  },
+
+  "network": {
+    "enable": true,
+    "support_standalone": false,
+    "use_gateway": true,
+    "use_location_router": true,
+    "location_router_directly": "deny",
+    "property": {
+      "save": true,
+      "dhcp": true
+    }
+  },
+
+  "allnet_auth": {
+    "enable": true,
+    "support_line": {
+      "broadband": true,
+      "mobile": false,
+      "xdsl": false
+    },
+    "type": "1.0"
+  },
+
+  "allnet_accounting": {
+    "enable": false,
+    "mode": "A"
+  },
+
+  "abaas_log": {
+    "enable": false,
+    "root_path": "log_abaas"
+  }
+}

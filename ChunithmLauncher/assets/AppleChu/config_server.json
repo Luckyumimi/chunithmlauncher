@@ -1,0 +1,13 @@
+{
+    "lan_install" :
+    {
+        "enable" : true,
+        "server" : true,
+        "interval" : 5
+    },
+
+    "net_delivery" :
+    {
+        "enable" : true
+    }
+}

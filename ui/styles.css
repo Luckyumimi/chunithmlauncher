@@ -94,16 +94,10 @@ button { cursor: pointer; }
 .launch:hover { transform: scale(1.02); }
 .launch:active { transform: scale(.98); }
 footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter-spacing: .08em; }
-.portal-view { position: absolute; inset: 0; z-index: 5; display: none; flex-direction: column; background: var(--paper); }
-.portal-view.show { display: flex; animation: view-in .35s ease both; }
-.portal-toolbar { display: flex; align-items: center; gap: 14px; min-height: 58px; padding: 12px 22px; border: 0; background: rgba(255, 255, 255, .58); box-shadow: 0 8px 24px rgba(0, 0, 0, .08); backdrop-filter: blur(18px); }
-.portal-toolbar span { color: var(--ink); font-size: 13px; font-weight: 700; }
-.portal-view iframe { width: 100%; height: 100%; border: 0; background: var(--paper); }
 
 .entrance { opacity: 0; animation: rise .7s cubic-bezier(.2, .8, .2, 1) forwards; }
 .e1 { animation-delay: 70ms; } .e2 { animation-delay: 160ms; } .e3 { animation-delay: 250ms; }
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes view-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 .modal-backdrop { position: fixed; inset: 0; z-index: 10; display: none; place-items: center; padding: 20px; background: rgba(0, 0, 0, .78); backdrop-filter: blur(12px); }
 .modal-backdrop.show { display: grid; animation: fade-in .25s ease both; }

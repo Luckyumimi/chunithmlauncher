@@ -2,7 +2,7 @@
   [string]$Configuration = "Release",
   [string]$Runtime = "win-x64",
   [string]$OutputRoot = ".\\artifacts\\publish",
-  [string]$VersionPrefix = "2.1.1"
+  [string]$VersionPrefix = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,6 +13,22 @@ $stamp = Get-Date -Format "yyyyMMdd_HHmmss"
 $output = Join-Path $OutputRoot $stamp
 $appOutput = Join-Path $output "app"
 $version = $VersionPrefix
+
+# Directory.Build.props is the single source of truth for the version;
+# only read from it when the caller did not pass -VersionPrefix explicitly.
+if ([string]::IsNullOrWhiteSpace($version)) {
+  $propsPath = Join-Path $PSScriptRoot "Directory.Build.props"
+  if (-not (Test-Path -LiteralPath $propsPath)) {
+    throw "Directory.Build.props not found and no -VersionPrefix was supplied."
+  }
+
+  $props = [xml](Get-Content -LiteralPath $propsPath -Raw)
+  $version = $props.Project.PropertyGroup.Version
+}
+
+if ([string]::IsNullOrWhiteSpace($version)) {
+  throw "Cannot determine version: define Version in Directory.Build.props or pass -VersionPrefix."
+}
 
 Write-Host "Publishing $appProject" -ForegroundColor Cyan
 Write-Host "Version: $version" -ForegroundColor Cyan
@@ -39,9 +55,9 @@ Invoke-DotNetPublish @(
   "-p:PublishSingleFile=false",
   "-p:UseAppHost=true",
   "-p:Version=$version",
-  "-p:FileVersion=$VersionPrefix",
-  "-p:AssemblyVersion=$VersionPrefix",
-  "-p:InformationalVersion=$VersionPrefix",
+  "-p:FileVersion=$version",
+  "-p:AssemblyVersion=$version",
+  "-p:InformationalVersion=$version",
   "-p:IncludeSourceRevisionInInformationalVersion=false",
   "-p:DebugType=None",
   "-p:DebugSymbols=false",
@@ -55,9 +71,9 @@ Invoke-DotNetPublish @(
   "-r", $Runtime,
   "--self-contained", "true",
   "-p:Version=$version",
-  "-p:FileVersion=$VersionPrefix",
-  "-p:AssemblyVersion=$VersionPrefix",
-  "-p:InformationalVersion=$VersionPrefix",
+  "-p:FileVersion=$version",
+  "-p:AssemblyVersion=$version",
+  "-p:InformationalVersion=$version",
   "-p:IncludeSourceRevisionInInformationalVersion=false",
   "-p:DebugType=None",
   "-p:DebugSymbols=false",

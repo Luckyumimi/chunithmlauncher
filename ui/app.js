@@ -7,7 +7,7 @@ const post = (type, payload = {}) => window.chrome?.webview
   : console.info('[preview]', type, payload);
 
 const state = {
-  startBatPath: '', appleChuEnabled: false, gameRunning: false, primaryDisplay: '', primaryDisplayName: '未选择', originalMode: '',
+  startBatPath: '', appleChuEnabled: false, primaryDisplay: '', primaryDisplayName: '未选择', originalMode: '',
   targetMode: '1920×1080 @ 120Hz', launchMode: 'smart', smartDisplayEnabled: false, runBatAsAdministrator: true, terminateCmdBeforeLaunch: true,
   themeColor: '#fdd500', backgroundImagePath: '', displays: [],
 };
@@ -55,8 +55,6 @@ function show(id, visible) {
 }
 
 function render() {
-  const launchButton = byId('btnLaunch');
-  if (launchButton) launchButton.textContent = state.gameRunning ? '■　关闭游戏' : '▶　启动游戏';
   byId('targetMode').textContent = state.targetMode;
   byId('originalMode').textContent = state.originalMode || '未读取';
   byId('primaryDisplay').textContent = state.primaryDisplayName || '未选择';
@@ -262,11 +260,6 @@ function saveSettings() {
   show('settingsModal', false); show('firstRun', false); render(); status('设置已保存');
 }
 
-function showLauncher() {
-  byId('portalView').classList.remove('show');
-  byId('portalTab').classList.remove('active');
-}
-
 function openPortal() {
   let url = portalUrl.trim();
   if (!url) {
@@ -296,23 +289,6 @@ function init(payload) {
   state.primaryDisplayName = state.primaryDisplayName || state.displays.find(item => item.id === state.primaryDisplay)?.name || '未选择';
   byId('startBat').value = state.startBatPath; fillDisplays(byId('displaySelect'), state.primaryDisplay); render();
   show('firstRun', !state.startBatPath || !state.primaryDisplay);
-}
-
-document.querySelector('#settingsModal small')?.replaceChildren('选择后即刻生效');
-document.querySelector('#settingsModal .modal-heading p')?.remove();
-
-const legacySegatoolsActions = byId('btnEditSegatoolsIni')?.closest('.row.wrap');
-if (legacySegatoolsActions) {
-  legacySegatoolsActions.classList.add('applechu-actions');
-  legacySegatoolsActions.replaceChildren();
-  const migrateAppleChu = document.createElement('button');
-  migrateAppleChu.type = 'button'; migrateAppleChu.className = 'app-button compact'; migrateAppleChu.id = 'btnMigrateToAppleChu';
-  const editAppleChu = document.createElement('button');
-  editAppleChu.type = 'button'; editAppleChu.className = 'app-button compact'; editAppleChu.id = 'btnEditAppleChu'; editAppleChu.textContent = '编辑 AppleChu.toml';
-  legacySegatoolsActions.append(migrateAppleChu, editAppleChu);
-  const launchOptions = document.createElement('div'); launchOptions.className = 'launch-options';
-  launchOptions.innerHTML = '<label class="checkbox"><input type="checkbox" id="runBatAsAdministrator" /><span></span>使用管理员权限运行 bat</label><label class="checkbox"><input type="checkbox" id="terminateCmdBeforeLaunch" /><span></span>启动前关闭残留 CMD</label>';
-  legacySegatoolsActions.after(launchOptions);
 }
 
 function syncAppleChuStatus() {
@@ -383,8 +359,10 @@ function writeTomlValue(content, section, key, value, type) {
   const nextHeaderOffset = content.slice(afterHeader).search(/\r?\n\[/);
   const end = nextHeaderOffset < 0 ? content.length : afterHeader + nextHeaderOffset;
   const block = content.slice(afterHeader, end);
-  const keyPattern = new RegExp(`^\\s*#?\\s*${escapeRegex(key)}\\s*=.*$`, 'm');
-  const updated = keyPattern.test(block) ? block.replace(keyPattern, line) : `${block.replace(/\s*$/, '')}\n${line}\n`;
+  // 保留行首原有的注释前缀(#):被注释的配置(如 #monitor = 0)保存后仍保持注释,
+  // 避免把"使用默认值"的配置项误改成"显式生效"。
+  const keyPattern = new RegExp(`^(\\s*#?\\s*)${escapeRegex(key)}\\s*=.*$`, 'm');
+  const updated = keyPattern.test(block) ? block.replace(keyPattern, `$1${line}`) : `${block.replace(/\s*$/, '')}\n${line}\n`;
   return content.slice(0, afterHeader) + updated + content.slice(end);
 }
 function renderAppleChuEditor(content, path) {
@@ -475,7 +453,6 @@ function saveAppleChuEditor() {
 function handleMessage(event) {
   const data = event.data || event; if (!data?.type) return; const p = data.payload || {};
   if (data.type === 'init') init(p);
-  if (data.type === 'game-state') { state.gameRunning = !!p.running; render(); }
   if (data.type === 'status') status(p.text || '待机', p.color || '#5caa74');
   if (data.type === 'update-target') { state.targetMode = p.value || ''; byId('targetModeSetting').value = state.targetMode; render(); }
   if (data.type === 'update-original') { state.originalMode = p.value || ''; byId('originalModeInputSetting').value = state.originalMode; render(); }
@@ -497,17 +474,11 @@ function handleMessage(event) {
 }
 
 byId('btnLaunch').onclick = () => {
-  if (state.gameRunning) {
-    post('launch-game');
-    status('正在关闭游戏', '#ffb36a');
-  } else {
-    post('launch-game');
-    status('启动中', '#d6944e');
-  }
+  post('launch-game');
+  status('启动中', '#d6944e');
 };
 byId('btnSettings').onclick = () => { fillSettings(); show('settingsModal', true); };
 byId('portalTab').onclick = openPortal;
-byId('backToLauncher').onclick = showLauncher;
 byId('themeToggle').onclick = () => applyTheme(theme === 'dark' ? 'light' : 'dark');
 byId('themeSelect').onchange = event => applyTheme(event.target.value);
 byId('themeSelectTriggerFirstRun').onclick = () => setThemeDropdownOpen(!byId('themeDropdownFirstRun').classList.contains('open'));
@@ -559,4 +530,9 @@ window.addEventListener('message', handleMessage);
 window.chrome?.webview?.addEventListener('message', handleMessage);
 render();
 applyTheme(theme);
-if (!window.chrome?.webview) setTimeout(() => init({ version: '2.1.1', startBatPath: 'D:\\SDHD\\bin\\start.bat', primaryDisplayName: '\\\\.\\DISPLAY1 · 2560×1440 @ 144Hz', primaryDisplay: '\\\\.\\DISPLAY1', originalMode: '2560×1440 @ 144Hz', displays: [{ id: '\\\\.\\DISPLAY1', name: '\\\\.\\DISPLAY1 · 2560×1440 @ 144Hz', selected: true }, { id: '\\\\.\\DISPLAY2', name: '\\\\.\\DISPLAY2 · 1920×1080 @ 60Hz' }] }), 180);
+// 浏览器预览:仅当非 WebView2 环境且 URL 带 ?preview 时注入假数据。
+// 版本号不再硬编码(缺省显示 'preview',可用 ?version=x 覆盖),避免与发布版本漂移。
+if (!window.chrome?.webview && new URLSearchParams(location.search).has('preview')) {
+  const previewVersion = new URLSearchParams(location.search).get('version') || 'preview';
+  setTimeout(() => init({ version: previewVersion, startBatPath: 'D:\\SDHD\\bin\\start.bat', primaryDisplayName: '\\\\.\\DISPLAY1 · 2560×1440 @ 144Hz', primaryDisplay: '\\\\.\\DISPLAY1', originalMode: '2560×1440 @ 144Hz', displays: [{ id: '\\\\.\\DISPLAY1', name: '\\\\.\\DISPLAY1 · 2560×1440 @ 144Hz', selected: true }, { id: '\\\\.\\DISPLAY2', name: '\\\\.\\DISPLAY2 · 1920×1080 @ 60Hz' }] }), 180);
+}

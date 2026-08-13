@@ -10,12 +10,10 @@
     <PublishSingleFile>true</PublishSingleFile>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <!-- 当前引导逻辑不含反射,可安全全量裁剪;若未来引入反射需加 TrimmerRootAssembly 保留相关程序集。 -->
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>full</TrimMode>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <Version>2.1.1</Version>
-    <AssemblyVersion>2.1.1</AssemblyVersion>
-    <FileVersion>2.1.1</FileVersion>
     <ApplicationIcon>..\ChunithmLauncher\assets\penguin.ico</ApplicationIcon>
   </PropertyGroup>
 

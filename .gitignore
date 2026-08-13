@@ -20,3 +20,5 @@ Thumbs.db
 
 # Local agent guidance
 /AGENTS.md
+.reasonix/
+reasonix.toml

@@ -42,36 +42,18 @@ function Update-TextFile {
     Write-Host "Updated $RelativePath" -ForegroundColor Green
 }
 
-$ProjectFiles = @(
-    'ChunithmLauncher\ChunithmLauncher.csproj',
-    'ChunithmLauncher.Bootstrapper\ChunithmLauncher.Bootstrapper.csproj'
-)
-
-foreach ($ProjectFile in $ProjectFiles) {
-    Update-TextFile $ProjectFile {
-        param($Text)
-        $Text = [regex]::Replace($Text, '<Version>[^<]+</Version>', "<Version>$NormalizedVersion</Version>")
-        $Text = [regex]::Replace($Text, '<AssemblyVersion>[^<]+</AssemblyVersion>', "<AssemblyVersion>$NormalizedVersion</AssemblyVersion>")
-        [regex]::Replace($Text, '<FileVersion>[^<]+</FileVersion>', "<FileVersion>$NormalizedVersion</FileVersion>")
-    }
-}
-
-Update-TextFile 'publish.ps1' {
+# Directory.Build.props is the single source of truth for the version;
+# publish.ps1 reads it, and the index.html footer stays in sync.
+Update-TextFile 'Directory.Build.props' {
     param($Text)
-    [regex]::Replace($Text, '\[string\]\$VersionPrefix\s*=\s*"[^"]+"', "[string]`$VersionPrefix = `"$NormalizedVersion`"")
+    $Text = [regex]::Replace($Text, '<Version>[^<]+</Version>', "<Version>$NormalizedVersion</Version>")
+    $Text = [regex]::Replace($Text, '<AssemblyVersion>[^<]+</AssemblyVersion>', "<AssemblyVersion>$NormalizedVersion</AssemblyVersion>")
+    [regex]::Replace($Text, '<FileVersion>[^<]+</FileVersion>', "<FileVersion>$NormalizedVersion</FileVersion>")
 }
 
 Update-TextFile 'ui\index.html' {
     param($Text)
     [regex]::Replace($Text, '(<span\s+id="version">)v?[^<]+(</span>)', "`$1$DisplayVersion`$2")
-}
-
-$AppJsPath = Join-Path $RepositoryRoot 'ui\app.js'
-$AppJs = [System.IO.File]::ReadAllText($AppJsPath)
-$UpdatedAppJs = [regex]::Replace($AppJs, "version:\s*'[0-9]+(?:\.[0-9]+){2,3}'", "version: '$NormalizedVersion'")
-if ($UpdatedAppJs -ne $AppJs) {
-    [System.IO.File]::WriteAllText($AppJsPath, $UpdatedAppJs, $Utf8NoBom)
-    Write-Host "Updated ui\app.js" -ForegroundColor Green
 }
 
 Write-Host ""

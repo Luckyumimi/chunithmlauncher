@@ -13,11 +13,13 @@ public partial class MainWindow
     {
         if (_isLaunching)
         {
+            Log("启动被忽略:上一次启动流程尚未结束");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(_startBatPath) || !File.Exists(_startBatPath))
         {
+            Log("启动被忽略:start.bat 无效");
             SetStatus("start.bat 无效", "#ff5a6a");
             return;
         }
@@ -25,11 +27,13 @@ public partial class MainWindow
         var title = string.IsNullOrWhiteSpace(_gameWindowTitle) ? DefaultGameWindowTitle : _gameWindowTitle;
         if (FindWindow(null, title) != IntPtr.Zero)
         {
+            Log("启动被忽略:检测到游戏窗口已存在");
             SetStatus("游戏已在运行", "#7dffa0");
             return;
         }
 
         _isLaunching = true;
+        Log("开始启动游戏");
 
         // 清理残留的 amdaemon(AppleChu 守护进程)。上次游戏若异常退出,amdaemon 会残留,
         // 导致下次启动时 amdaemon 端口/实例冲突,游戏闪退。启动前先杀掉残留。
@@ -38,8 +42,10 @@ public partial class MainWindow
         if (_terminateCmdBeforeLaunch)
         {
             SetStatus("正在关闭现有 CMD...", "#ffb36a");
+            Log("清理残留 CMD");
             if (!await TerminateAllCommandPromptsAsync())
             {
+                Log("清理残留 CMD 失败,中止启动");
                 SetStatus("无法关闭全部 CMD，启动失败", "#ff5a6a");
                 _isLaunching = false;
                 System.Windows.MessageBox.Show(
@@ -113,8 +119,10 @@ public partial class MainWindow
             }
 
             SetStatus("正在切换分辨率...", "#5ee7ff");
+            Log($"切换分辨率到 {target}");
             if (!DisplayModeHelper.TrySetMode(deviceName, target))
             {
+                Log("切换分辨率失败");
                 SetStatus("切换分辨率失败", "#ff5a6a");
                 ShowResolutionSwitchFailedDialog();
                 if (originalDisplayStates is not null)
@@ -132,6 +140,7 @@ public partial class MainWindow
         try
         {
             SetStatus("游戏启动中...", "#5ee7ff");
+            Log($"启动游戏命令: {_startBatPath}");
             var psi = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
@@ -169,9 +178,34 @@ public partial class MainWindow
         if (_launchMode == "smart")
         {
             SetStatus("等待游戏窗口...", "#5ee7ff");
-            var windowFound = await WaitForWindowAsync(title, TimeSpan.FromSeconds(60));
+            Log("等待游戏窗口,同时监控启动命令进程");
+            // 同时等待"游戏窗口出现"和"启动命令进程退出":若命令进程先退出而窗口未出现,
+            // 说明游戏启动失败(如 chusanApp 闪退),立即恢复分辨率并重置状态,
+            // 而不是干等到 60 秒超时——这样用户能马上重试,分辨率也不会一直卡在切换后。
+            var windowTask = WaitForWindowAsync(title, TimeSpan.FromSeconds(10));
+            var cmdExitTask = _gameCommandProcess is null
+                ? Task.Delay(Timeout.Infinite)
+                : WaitForCommandProcessExitAsync(_gameCommandProcess);
+
+            if (await Task.WhenAny(windowTask, cmdExitTask) == cmdExitTask)
+            {
+                Log("游戏启动失败:启动命令进程已退出,恢复分辨率");
+                SetStatus("游戏启动失败", "#ff5a6a");
+                await RestoreOriginalAsync();
+                if (originalDisplayStates is not null)
+                {
+                    await RestoreDisplayStatesWithFallback(originalDisplayStates);
+                }
+
+                _isLaunching = false;
+                _gameCommandProcess = null;
+                return;
+            }
+
+            var windowFound = await windowTask;
             if (windowFound == IntPtr.Zero)
             {
+                Log("未检测到游戏窗口(等待超时),恢复分辨率");
                 SetStatus("未检测到游戏窗口", "#ff5a6a");
                 await RestoreOriginalAsync();
                 if (originalDisplayStates is not null)
@@ -183,6 +217,7 @@ public partial class MainWindow
             }
 
             SetStatus("游戏运行中...", "#7dffa0");
+            Log("游戏窗口出现,游戏运行中");
             await WaitForGameExitAsync(windowFound, title);
             await RestoreOriginalAsync();
             if (originalDisplayStates is not null)

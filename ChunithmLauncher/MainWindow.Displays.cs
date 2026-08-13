@@ -176,9 +176,11 @@ public partial class MainWindow
         var restore = _originalMode ?? FallbackOriginalMode;
 
         SetStatus("正在恢复分辨率...", "#5ee7ff");
+        Log($"恢复分辨率到 {restore}");
         await Task.Delay(100);
         if (!DisplayModeHelper.TrySetMode(deviceName, restore))
         {
+            Log("恢复分辨率失败");
             SetStatus("恢复失败", "#ff5a6a");
             return;
         }

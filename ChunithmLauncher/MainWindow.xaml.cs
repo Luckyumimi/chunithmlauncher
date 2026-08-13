@@ -206,6 +206,7 @@ public partial class MainWindow : Window
                 _ = RestoreOriginalAsync();
                 break;
             case "launch-game":
+                Log("收到启动游戏请求");
                 _ = LaunchGameAsync();
                 break;
             case "open-game-folder":

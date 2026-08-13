@@ -1,8 +1,8 @@
 <Project>
   <!-- 版本号唯一真源:两个 csproj 与 publish.ps1 均从此读取,勿在别处再硬编码版本。 -->
   <PropertyGroup>
-    <Version>2.2.2</Version>
-    <AssemblyVersion>2.2.2</AssemblyVersion>
-    <FileVersion>2.2.2</FileVersion>
+    <Version>2.3.0</Version>
+    <AssemblyVersion>2.3.0</AssemblyVersion>
+    <FileVersion>2.3.0</FileVersion>
   </PropertyGroup>
 </Project>

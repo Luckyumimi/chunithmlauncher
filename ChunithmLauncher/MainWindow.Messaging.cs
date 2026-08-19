@@ -29,8 +29,6 @@ public partial class MainWindow
 
     private sealed record UrlPayload(string? Url);
 
-    private sealed record ContentPayload(string? Content);
-
     /// <summary>把消息 payload 反序列化为强类型;无 payload 或空对象时返回 null。</summary>
     private static T? DeserializePayload<T>(WebMessage message) where T : class
     {

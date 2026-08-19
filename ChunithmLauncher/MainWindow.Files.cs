@@ -441,58 +441,23 @@ public partial class MainWindow
         }
     }
 
-    private void OpenAppleChuEditor()
+    private void OpenChuChartManagerActionsPage()
     {
-        if (string.IsNullOrWhiteSpace(_startBatPath))
+        const string url = "https://github.com/MuNET-OSS/ChuChartManager/actions";
+        if (TryOpenUrl(url))
         {
-            SetStatus("尚未选择批处理文件", "#ff5a6a");
-            return;
+            SetStatus("已打开谱面管理器下载页", "#7dffa0");
+        }
+        else
+        {
+            SetStatus("打开谱面管理器下载页失败", "#ff5a6a");
         }
 
-        var binDirectory = Path.GetDirectoryName(_startBatPath);
-        var tomlPath = string.IsNullOrWhiteSpace(binDirectory) ? null : Path.Combine(binDirectory, "AppleChu.toml");
-        if (tomlPath is null || !File.Exists(tomlPath))
-        {
-            SetStatus("未找到 AppleChu.toml，请先完成迁移", "#ff5a6a");
-            return;
-        }
-
-        try
-        {
-            PostMessage("applechu-config", new { content = File.ReadAllText(tomlPath), path = tomlPath });
-        }
-        catch
-        {
-            SetStatus("读取 AppleChu.toml 失败", "#ff5a6a");
-        }
-    }
-
-    private void SaveAppleChuConfig(ContentPayload payload)
-    {
-        if (string.IsNullOrWhiteSpace(_startBatPath) || payload.Content is null)
-        {
-            SetStatus("保存 AppleChu.toml 失败", "#ff5a6a");
-            return;
-        }
-
-        var binDirectory = Path.GetDirectoryName(_startBatPath);
-        var tomlPath = string.IsNullOrWhiteSpace(binDirectory) ? null : Path.Combine(binDirectory, "AppleChu.toml");
-        if (tomlPath is null || !File.Exists(tomlPath))
-        {
-            SetStatus("未找到 AppleChu.toml", "#ff5a6a");
-            return;
-        }
-
-        try
-        {
-            var content = SetTomlValue(payload.Content, "BypassAppUser", "enable", "true");
-            File.WriteAllText(tomlPath, content);
-            SetStatus("AppleChu.toml 已保存", "#7dffa0");
-        }
-        catch
-        {
-            SetStatus("保存 AppleChu.toml 失败", "#ff5a6a");
-        }
+        System.Windows.MessageBox.Show(
+            "请登录 GitHub 账号后下载最新版本。",
+            "下载谱面管理器",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
     }
 
     private bool CopyAppleChuFiles()

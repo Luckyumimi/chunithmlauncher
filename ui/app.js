@@ -12,7 +12,6 @@ const state = {
   themeColor: '#fdd500', backgroundImagePath: '', displays: [],
 };
 let testTimer;
-let settingsPageTimer;
 let theme = localStorage.getItem('chunithm-theme') || 'light';
 const defaultPortalUrl = 'https://portal.mumur.net/';
 const readStoredValue = (key, legacyKey) => localStorage.getItem(key) || localStorage.getItem(legacyKey) || '';
@@ -300,156 +299,6 @@ function syncAppleChuStatus() {
   button.disabled = enabled;
 }
 
-const appleChuFields = [
-  ['网络与显示', 'Dns', [['default', '默认服务器', 'text'], ['aimedb', 'AimeDB 服务器', 'text']], 'Keychip', [['id', 'Keychip ID', 'text']], 'System', [['RefreshRate', '刷新率', 'number']], 'Window', [['enable', '启用窗口设置', 'bool'], ['windowed', '窗口运行', 'bool'], ['framed', '显示窗口边框', 'bool'], ['monitor', '显示器编号', 'number']]],
-  ['游戏功能', 'SkipStartup', [['enable', '跳过启动画面', 'bool']], 'FreePlay', [['enable', '免费游玩', 'bool'], ['custom_text', '免费游玩显示文本', 'text']], 'DisableTimer', [['enable', '禁用选歌计时器', 'bool']], 'SkipMapAnimation', [['enable', '跳过地图动画', 'bool']], 'Unlocker', [['enable', '解锁游戏内容', 'bool'], ['unlockChara', '解锁角色', 'bool'], ['unlockMusic', '解锁乐曲', 'bool'], ['unlockNamePlate', '解锁铭牌', 'bool'], ['unlockSystemVoice', '解锁系统语音', 'bool'], ['unlockEvent', '解锁活动', 'bool'], ['unlockMapIcon', '解锁跑图小人', 'bool'], ['unlockTrophy', '解锁称号', 'bool']], 'UnlockTracks', [['enable', '解锁曲数上限', 'bool'], ['max', '最大曲数', 'number']], 'CustomTimers', [['enable', '自定义计时器', 'bool'], ['map_select', '地图选择秒数', 'number'], ['ticket_select', '票券选择秒数', 'number'], ['course_select', '课题选择秒数', 'number']], 'Autoplay', [['enable', '自动游玩', 'bool'], ['hotkey', '自动游玩切换键', 'text']], 'Unlock120fps', [['enable', '解锁 120fps', 'bool']], 'Bypass1080p', [['enable', '绕过 1080P 检测', 'bool']], 'Bypass120hz', [['enable', '绕过 120Hz 检测', 'bool']], 'DpiAware', [['enable', 'DPI 感知', 'bool']], 'ForceSharedAudio', [['enable', '强制共享音频', 'bool']], 'Force2chAudio', [['enable', '强制双声道', 'bool']], 'DisableEncryption', [['enable', '关闭网络加密', 'bool']], 'DisableTLS', [['enable', '关闭 TLS', 'bool']]],
-  ['IO 设置', 'ChuniIo', [['path', '控制器 DLL 路径', 'text']], 'AimeIo', [['path', '读卡器 DLL 路径', 'text']], 'Aime', [['aimePath', 'Aime 文件路径', 'text']]],
-  ['高级', 'Amdaemon', [['enable', '启用 AM Daemon', 'bool'], ['AutoStart', '由游戏启动 AM Daemon', 'bool'], ['HideWindow', '隐藏控制台窗口', 'bool'], ['TerminateOnExit', '退出时终止 AM Daemon', 'bool']], 'Dns', [['enable', '启用 DNS 映射', 'bool'], ['router', '店内路由服务器', 'text'], ['startup', '启动认证服务器', 'text'], ['billing', '计费服务器', 'text'], ['title', '标题服务器', 'text'], ['replaceHost', '替换 HTTP Host', 'bool']], 'Keychip', [['enable', '启用 Keychip', 'bool'], ['gameId', '游戏 ID', 'text'], ['platformId', '平台 ID', 'text']], 'System', [['Mode', '机台模式', 'text'], ['EnableConsole', '开启控制台', 'bool']], 'VFS', [['option', '选项资源目录', 'text'], ['amfs', 'AMFS 目录', 'text'], ['appdata', 'APPDATA 目录', 'text'], ['allowAmfsDownloads', '允许写入 AMFS 下载内容', 'bool']], 'ChuniIo', [['enable', '启用控制器 IO', 'bool'], ['path32', '32 位 DLL 路径', 'text'], ['path64', '64 位 DLL 路径', 'text']], 'AimeIo', [['enable', '启用读卡器 IO', 'bool'], ['path32', '32 位 DLL 路径', 'text'], ['path64', '64 位 DLL 路径', 'text']], 'Aime', [['enable', '启用 Aime 读卡器', 'bool'], ['scan', '扫卡键键码', 'number']], 'Buttons', [['enable', '启用按键输入', 'bool'], ['test', 'Test 键键码', 'number'], ['service', 'Service 键键码', 'number'], ['coin', '投币键键码', 'number']], 'NetLog', [['enable', '网络请求日志', 'bool']], 'FpsDisplay', [['enable', 'FPS 显示', 'bool']], 'FrameLock', [['enable', '帧率锁定', 'bool'], ['fps', '目标帧率', 'number']]]
-];
-
-function makeAppleChuEditor() {
-  if (byId('appleChuEditorPage')) return;
-  const settingsCard = byId('settingsModal').querySelector('.modal-card.settings');
-  settingsCard.classList.add('settings-paged');
-  const mainPage = document.createElement('div'); mainPage.className = 'settings-main-page'; mainPage.id = 'settingsMainPage';
-  Array.from(settingsCard.children).forEach(child => mainPage.appendChild(child));
-  const editorPage = document.createElement('div'); editorPage.className = 'settings-subpage applechu-editor'; editorPage.id = 'appleChuEditorPage';
-  editorPage.innerHTML = '<div class="modal-heading"><div><h2>编辑 AppleChu.toml</h2></div><button class="app-button" id="btnCloseAppleChu">返回</button></div><div class="scroll-body" id="appleChuEditorBody"></div><button class="app-button primary wide" id="btnSaveAppleChu">保存 AppleChu.toml</button>';
-  settingsCard.append(mainPage, editorPage);
-  byId('settingsModal').classList.add('settings-resting');
-  byId('btnCloseAppleChu').onclick = () => setAppleChuEditorOpen(false);
-  byId('btnSaveAppleChu').onclick = saveAppleChuEditor;
-}
-
-function setAppleChuEditorOpen(open) {
-  const settingsModal = byId('settingsModal');
-  window.clearTimeout(settingsPageTimer);
-  settingsModal.classList.remove('applechu-settled', 'settings-resting');
-  void settingsModal.offsetWidth;
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    settingsModal.classList.toggle('applechu-open', open);
-    settingsPageTimer = window.setTimeout(() => {
-      settingsModal.classList.add(open ? 'applechu-settled' : 'settings-resting');
-    }, 440);
-  }));
-}
-
-function escapeRegex(value) { return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-function readTomlValue(content, section, key) {
-  const header = new RegExp(`^\\[${escapeRegex(section)}\\]\\s*$`, 'm').exec(content);
-  if (!header) return '';
-  const afterHeader = header.index + header[0].length;
-  const nextHeaderOffset = content.slice(afterHeader).search(/\r?\n\[/);
-  const block = content.slice(afterHeader, nextHeaderOffset < 0 ? content.length : afterHeader + nextHeaderOffset);
-  const match = new RegExp(`^\\s*#?\\s*${escapeRegex(key)}\\s*=\\s*(.*)$`, 'm').exec(block);
-  if (!match) return '';
-  const raw = match[1].trim();
-  const quoted = raw.match(/^(['"])(.*)\1$/);
-  if (!quoted) return raw;
-  // TOML uses a doubled backslash for a literal backslash. Decode it once
-  // before placing the value in the editor, otherwise each save doubles it.
-  return quoted[2].replace(/\\\\/g, '\\').replace(/\\"/g, '"');
-}
-function writeTomlValue(content, section, key, value, type) {
-  const formatted = type === 'bool' ? (value === 'true' ? 'true' : 'false') : type === 'number' ? (value.trim() || '0') : `"${value.replaceAll('\\', '\\\\').replaceAll('"', '\\"')}"`;
-  const header = new RegExp(`^\\[${escapeRegex(section)}\\]\\s*$`, 'm').exec(content);
-  const line = `${key} = ${formatted}`;
-  if (!header) return `${content.trimEnd()}\n\n[${section}]\n${line}\n`;
-  const afterHeader = header.index + header[0].length;
-  const nextHeaderOffset = content.slice(afterHeader).search(/\r?\n\[/);
-  const end = nextHeaderOffset < 0 ? content.length : afterHeader + nextHeaderOffset;
-  const block = content.slice(afterHeader, end);
-  // 保留行首原有的注释前缀(#):被注释的配置(如 #monitor = 0)保存后仍保持注释,
-  // 避免把"使用默认值"的配置项误改成"显式生效"。
-  const keyPattern = new RegExp(`^(\\s*#?\\s*)${escapeRegex(key)}\\s*=.*$`, 'm');
-  const updated = keyPattern.test(block) ? block.replace(keyPattern, `$1${line}`) : `${block.replace(/\s*$/, '')}\n${line}\n`;
-  return content.slice(0, afterHeader) + updated + content.slice(end);
-}
-function renderAppleChuEditor(content, path) {
-  makeAppleChuEditor();
-  const body = byId('appleChuEditorBody'); body.replaceChildren(); body.dataset.content = content;
-  appleChuFields.forEach(group => {
-    const advanced = group[0] === '高级';
-    const section = document.createElement('section'); section.className = `section${advanced ? ' applechu-advanced' : ''}`;
-    const heading = document.createElement('h3'); heading.textContent = group[0];
-    let advancedToggle;
-    let advancedContent;
-    let advancedContentInner;
-    if (advanced) {
-      advancedToggle = document.createElement('button'); advancedToggle.type = 'button'; advancedToggle.className = 'app-button compact applechu-advanced-toggle'; advancedToggle.textContent = '展开'; advancedToggle.setAttribute('aria-expanded', 'false');
-      advancedContent = document.createElement('div'); advancedContent.className = 'applechu-advanced-content';
-      advancedContentInner = document.createElement('div'); advancedContentInner.className = 'applechu-advanced-content-inner'; advancedContent.appendChild(advancedContentInner);
-      advancedToggle.onclick = () => {
-        const open = section.classList.toggle('open');
-        advancedToggle.setAttribute('aria-expanded', String(open)); advancedToggle.textContent = open ? '收起' : '展开';
-        if (open) {
-          // Let the grid animation establish the expanded layout, then align
-          // the Advanced heading with the top edge of the editor scroller.
-          requestAnimationFrame(() => requestAnimationFrame(() => {
-            const bodyRect = body.getBoundingClientRect();
-            const headingRect = advancedHeading.getBoundingClientRect();
-            const targetTop = Math.max(0, body.scrollTop + headingRect.top - bodyRect.top - 2);
-            body.scrollTo({ top: targetTop, behavior: 'smooth' });
-          }));
-        }
-      };
-    }
-    if (advancedToggle) {
-      const advancedHeading = document.createElement('div'); advancedHeading.className = 'applechu-advanced-heading';
-      advancedHeading.append(heading, advancedToggle); section.appendChild(advancedHeading);
-    } else {
-      section.appendChild(heading);
-    }
-    if (advancedContent) section.appendChild(advancedContent);
-    for (let index = 1; index < group.length; index += 2) {
-      const sectionName = group[index]; const fields = group[index + 1];
-      const configGroup = document.createElement('div'); configGroup.className = 'applechu-config-group'; configGroup.dataset.tomlSection = sectionName;
-      const sectionLabel = document.createElement('small'); sectionLabel.className = 'applechu-section-label'; sectionLabel.textContent = `[${sectionName}]`; configGroup.appendChild(sectionLabel);
-      fields.forEach(([key, label, type]) => {
-        const row = document.createElement(type === 'bool' ? 'label' : 'div'); row.className = `applechu-field${type === 'bool' ? ' checkbox applechu-check' : ''}`;
-        if (key === 'enable') row.classList.add('applechu-enable');
-        let control;
-        if (type === 'bool') { control = document.createElement('input'); control.type = 'checkbox'; control.checked = readTomlValue(content, sectionName, key).toLowerCase() === 'true'; row.append(control, document.createElement('span'), document.createTextNode(label)); }
-        else {
-          control = document.createElement('input'); control.type = type === 'number' ? 'number' : 'text'; control.value = readTomlValue(content, sectionName, key);
-          if (type === 'number') {
-            control.addEventListener('wheel', event => {
-              event.preventDefault();
-              byId('appleChuEditorBody').scrollTop += event.deltaY;
-            }, { passive: false });
-          }
-          const fieldShell = document.createElement('div'); fieldShell.className = 'field-shell'; fieldShell.appendChild(control);
-          const fieldLabel = document.createElement('span'); fieldLabel.className = 'applechu-field-label'; fieldLabel.textContent = label;
-          row.append(fieldLabel, fieldShell);
-        }
-        control.dataset.section = sectionName; control.dataset.key = key; control.dataset.type = type; configGroup.appendChild(row);
-      });
-      const enableControl = configGroup.querySelector('[data-key="enable"][type="checkbox"]');
-      if (enableControl) {
-        const syncDependentFields = () => {
-          configGroup.querySelectorAll('[data-key]:not([data-key="enable"])').forEach(control => {
-            const disabled = !enableControl.checked;
-            control.setAttribute('aria-disabled', String(disabled));
-            control.tabIndex = disabled ? -1 : 0;
-            control.closest('.applechu-field')?.classList.toggle('disabled', disabled);
-          });
-        };
-        enableControl.addEventListener('change', syncDependentFields);
-        syncDependentFields();
-      }
-      (advancedContentInner || section).appendChild(configGroup);
-    }
-    body.appendChild(section);
-  });
-  setAppleChuEditorOpen(true);
-}
-function saveAppleChuEditor() {
-  const body = byId('appleChuEditorBody'); let content = body?.dataset.content;
-  if (content === undefined) return;
-  body.querySelectorAll('[data-section]').forEach(control => { content = writeTomlValue(content, control.dataset.section, control.dataset.key, control.dataset.type === 'bool' ? String(control.checked) : control.value, control.dataset.type); });
-  post('save-applechu-config', { content }); body.dataset.content = content; setAppleChuEditorOpen(false);
-}
-
 function handleMessage(event) {
   const data = event.data || event; if (!data?.type) return; const p = data.payload || {};
   if (data.type === 'init') init(p);
@@ -463,7 +312,6 @@ function handleMessage(event) {
     render();
   }
   if (data.type === 'update-displays') { state.displays = p.displays || []; state.primaryDisplay = state.displays.find(item => item.selected)?.id || ''; state.primaryDisplayName = p.primaryDisplayName || '未选择'; fillDisplays(byId('displaySelect'), state.primaryDisplay); fillDisplays(byId('displaySelectSetting'), state.primaryDisplay); render(); }
-  if (data.type === 'applechu-config') renderAppleChuEditor(p.content || '', p.path || 'AppleChu.toml');
   if (data.type === 'test-switch-state') {
     if (p.active) {
       byId('btnTestSwitch').textContent = `恢复原始分辨率 (${p.timeoutSeconds || 15}s)`;
@@ -486,7 +334,7 @@ byId('themeSelectTriggerFirstRun').onkeydown = event => {
   if (event.key === 'Escape') setThemeDropdownOpen(false);
   if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setThemeDropdownOpen(true); }
 };
-byId('btnCloseSettings').onclick = () => { if (byId('settingsModal').classList.contains('applechu-open')) setAppleChuEditorOpen(false); else show('settingsModal', false); };
+byId('btnCloseSettings').onclick = () => show('settingsModal', false);
 byId('btnSaveSettings').onclick = saveSettings; byId('btnSave').onclick = saveSettings;
 byId('btnPickBat').onclick = () => post('pick-start-bat'); byId('btnPickBatSetting').onclick = () => post('pick-start-bat-preview');
 byId('btnDetectDisplays').onclick = detectDisplays; byId('btnDetectDisplaysSetting').onclick = detectDisplays;
@@ -504,8 +352,8 @@ byId('displaySelectTriggerFirstRun').onkeydown = event => {
   if (event.key === 'Escape') setFirstRunDropdownOpen(false);
   if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setFirstRunDropdownOpen(true); }
 };
-byId('btnMigrateToAppleChu').onclick = () => post('migrate-segatools-to-applechu');
-byId('btnEditAppleChu').onclick = () => post('open-applechu-editor');
+byId('btnMigrateToAppleChu').onclick = () => post('open-chuchart-manager-actions');
+byId('btnEditAppleChu').onclick = () => post('open-chuchart-manager-actions');
 byId('btnBrowseBg').onclick = () => post('pick-background-image-preview'); byId('btnCheckUpdate').onclick = () => post('check-update'); byId('btnOpenGithubHome').onclick = () => post('open-github-home');
 byId('smartDisplayToggle').onchange = event => { state.smartDisplayEnabled = event.target.checked; post('set-smart-display', { enabled: state.smartDisplayEnabled }); };
 byId('target60HzToggle').onchange = event => { byId('targetModeSetting').value = event.target.checked ? '1920×1080 @ 60Hz' : '1920×1080 @ 120Hz'; };

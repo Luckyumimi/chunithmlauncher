@@ -224,15 +224,8 @@ public partial class MainWindow : Window
             case "migrate-segatools-to-applechu":
                 MigrateSegatoolsToAppleChu();
                 break;
-            case "open-applechu-editor":
-                OpenAppleChuEditor();
-                break;
-            case "save-applechu-config":
-                if (DeserializePayload<ContentPayload>(message) is { } appleChuConfig)
-                {
-                    SaveAppleChuConfig(appleChuConfig);
-                }
-
+            case "open-chuchart-manager-actions":
+                OpenChuChartManagerActionsPage();
                 break;
             case "check-update":
                 _ = CheckForUpdatesAsync();

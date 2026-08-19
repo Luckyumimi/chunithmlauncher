@@ -143,12 +143,11 @@ public partial class MainWindow
             Log($"启动游戏命令: {_startBatPath}");
             var psi = new ProcessStartInfo
             {
-                FileName = "cmd.exe",
-                // /d disables cmd AutoRun hooks; /s /c call runs the selected
-                // batch as its own command and is independent of other CMDs.
-                Arguments = $"/d /s /c call \"{_startBatPath}\"",
+                // 直接以 ShellExecute 打开 bat,等同双击该文件:
+                // 由系统按文件关联(cmd.exe)运行,窗口可见,bat 内的 pause 等
+                // 交互行为与双击完全一致,不再隐藏窗口或用 /c call 包装。
+                FileName = _startBatPath,
                 UseShellExecute = true,
-                WindowStyle = ProcessWindowStyle.Hidden,
                 WorkingDirectory = Path.GetDirectoryName(_startBatPath),
             };
 

@@ -335,6 +335,18 @@ byId('themeSelectTriggerFirstRun').onkeydown = event => {
   if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setThemeDropdownOpen(true); }
 };
 byId('btnCloseSettings').onclick = () => show('settingsModal', false);
+byId('btnDonate').onclick = () => { show('donationModal', true); byId('btnCopyDonation').focus(); };
+byId('btnCloseDonation').onclick = () => show('donationModal', false);
+byId('btnCopyDonation').onclick = async () => {
+  const address = byId('donationAddress').textContent.trim();
+  const hint = byId('donationHint');
+  try {
+    await navigator.clipboard.writeText(address);
+    hint.textContent = '地址已复制到剪贴板。请确认网络为 TRON（TRC-20）。';
+  } catch {
+    hint.textContent = '复制失败，请手动选择并复制上方地址。';
+  }
+};
 byId('btnSaveSettings').onclick = saveSettings; byId('btnSave').onclick = saveSettings;
 byId('btnPickBat').onclick = () => post('pick-start-bat'); byId('btnPickBatSetting').onclick = () => post('pick-start-bat-preview');
 byId('btnDetectDisplays').onclick = detectDisplays; byId('btnDetectDisplaysSetting').onclick = detectDisplays;
@@ -364,6 +376,9 @@ document.addEventListener('click', event => {
   if (!byId('displayDropdownSetting')?.contains(event.target)) setDisplayDropdownOpen(false);
   if (!byId('displayDropdownFirstRun')?.contains(event.target)) setFirstRunDropdownOpen(false);
   if (!byId('themeDropdownFirstRun')?.contains(event.target)) setThemeDropdownOpen(false);
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && byId('donationModal')?.classList.contains('show')) show('donationModal', false);
 });
 window.addEventListener('resize', positionDisplayDropdown);
 window.addEventListener('resize', positionFirstRunDropdown);

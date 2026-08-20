@@ -55,6 +55,14 @@
 
 ![自定义背景](docs/image/screenshot-wallpaper.png)
 
+
+## 捐赠
+
+USDT（TRON）：  
+```
+TF3TK5jT6dBVqY3JTpGJaVmzhBzryq8DhN
+```
+
 ## 开源许可证
 
 本项目采用 **GNU Affero General Public License v3.0 (AGPL-3.0)**。

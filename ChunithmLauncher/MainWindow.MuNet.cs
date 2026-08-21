@@ -38,6 +38,7 @@ public partial class MainWindow
         else
         {
             SendInit();
+            _ = CheckAnnouncementAsync();
         }
     }
 

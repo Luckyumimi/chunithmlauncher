@@ -119,5 +119,6 @@ public partial class MainWindow
         public string? ThemeColor { get; set; }
         public string? GameWindowTitle { get; set; }
         public string? BackgroundImagePath { get; set; }
+        public string? LastReadAnnouncementId { get; set; }
     }
 }

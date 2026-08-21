@@ -230,6 +230,18 @@ public partial class MainWindow : Window
             case "check-update":
                 _ = CheckForUpdatesAsync();
                 break;
+            case "check-announcement":
+                _ = CheckAnnouncementAsync(forceShow: true);
+                break;
+            case "open-announcement-link":
+                if (DeserializePayload<UrlPayload>(message) is { Url: { } announcementUrl }
+                    && Uri.TryCreate(announcementUrl, UriKind.Absolute, out var announcementUri)
+                    && announcementUri.Scheme == Uri.UriSchemeHttps)
+                {
+                    _ = TryOpenUrl(announcementUri.AbsoluteUri);
+                }
+
+                break;
             case "open-github-home":
                 OpenGithubHomePage();
                 break;

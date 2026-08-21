@@ -290,6 +290,23 @@ function init(payload) {
   show('firstRun', !state.startBatPath || !state.primaryDisplay);
 }
 
+function showAnnouncement(payload) {
+  const title = String(payload.title || '').trim();
+  const body = String(payload.body || '').trim();
+  if (!title || !body) return;
+
+  byId('announcementTitle').textContent = title;
+  byId('announcementBody').textContent = body;
+  const actionButton = byId('btnAnnouncementAction');
+  const action = payload.action;
+  const hasAction = action && typeof action.url === 'string' && /^https:\/\//i.test(action.url);
+  actionButton.hidden = !hasAction;
+  actionButton.textContent = hasAction ? String(action.label || '查看详情') : '';
+  actionButton.dataset.url = hasAction ? action.url : '';
+  show('announcementModal', true);
+  byId(hasAction ? 'btnAnnouncementAction' : 'btnCloseAnnouncement').focus();
+}
+
 function syncAppleChuStatus() {
   const button = byId('btnMigrateToAppleChu');
   if (!button) return;
@@ -302,6 +319,7 @@ function syncAppleChuStatus() {
 function handleMessage(event) {
   const data = event.data || event; if (!data?.type) return; const p = data.payload || {};
   if (data.type === 'init') init(p);
+  if (data.type === 'announcement') showAnnouncement(p);
   if (data.type === 'status') status(p.text || '待机', p.color || '#5caa74');
   if (data.type === 'update-target') { state.targetMode = p.value || ''; byId('targetModeSetting').value = state.targetMode; render(); }
   if (data.type === 'update-original') { state.originalMode = p.value || ''; byId('originalModeInputSetting').value = state.originalMode; render(); }
@@ -335,8 +353,14 @@ byId('themeSelectTriggerFirstRun').onkeydown = event => {
   if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setThemeDropdownOpen(true); }
 };
 byId('btnCloseSettings').onclick = () => show('settingsModal', false);
+byId('btnCheckAnnouncement').onclick = () => post('check-announcement');
 byId('btnDonate').onclick = () => { show('donationModal', true); byId('btnCopyDonation').focus(); };
 byId('btnCloseDonation').onclick = () => show('donationModal', false);
+byId('btnCloseAnnouncement').onclick = () => show('announcementModal', false);
+byId('btnAnnouncementAction').onclick = () => {
+  const url = byId('btnAnnouncementAction').dataset.url;
+  if (url) post('open-announcement-link', { url });
+};
 byId('btnCopyDonation').onclick = async () => {
   const address = byId('donationAddress').textContent.trim();
   const hint = byId('donationHint');
@@ -379,6 +403,7 @@ document.addEventListener('click', event => {
 });
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && byId('donationModal')?.classList.contains('show')) show('donationModal', false);
+  if (event.key === 'Escape' && byId('announcementModal')?.classList.contains('show')) show('announcementModal', false);
 });
 window.addEventListener('resize', positionDisplayDropdown);
 window.addEventListener('resize', positionFirstRunDropdown);

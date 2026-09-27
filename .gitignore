@@ -2,6 +2,8 @@
 **/bin/
 **/obj/
 artifacts/
+/ui-dist/
+/ui-vue/node_modules/
 
 # IDE
 .vs/

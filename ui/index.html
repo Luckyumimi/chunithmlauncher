@@ -1,47 +1,595 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chunithm Launcher</title>
-  <script>if (localStorage.getItem('chunithm-theme') === 'dark') document.documentElement.classList.add('theme-dark-preload');</script>
-  <link rel="stylesheet" href="styles.css" />
+<head>  <meta charset="utf-8" />  <meta name="viewport" content="width=device-width, initial-scale=1" />  <title>Chunithm Launcher</title>  <script>if (localStorage.getItem('chunithm-theme') === 'dark') document.documentElement.classList.add('theme-dark-preload');</script>  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <div class="page">
-    <div class="blob blob-a"></div><div class="blob blob-b"></div><div class="texture"></div>
-    <main class="shell">
-      <header class="topbar entrance e1">
-        <nav class="app-switcher" aria-label="页面切换"><button id="portalTab">打开MuNET</button></nav>
-        <div class="top-actions"><span class="status-pill"><i id="statusDot"></i><span id="statusText">待机</span></span><button class="app-button theme-button" id="themeToggle"><svg class="theme-icon" id="themeIcon" viewBox="0 0 1024 1024" aria-hidden="true"></svg><span id="themeLabel">深色</span></button><button class="app-button" id="btnSettings">设置</button></div>
-      </header>
-      <section class="grid">
-        <article class="app-panel status-panel entrance e2">
-          <div class="target-label">目标模式</div><div class="target-value" id="targetMode">1920×1080 @ 120Hz</div>
-          <div class="stats"><div><span>原始分辨率</span><b id="originalMode">未读取</b></div><div><span>主显示器</span><b id="primaryDisplay">未选择</b></div></div>
-          <hr />
-          <label class="target-label launch-mode-label">启动模式</label>
-          <div class="segmented" id="launchMode"><button data-mode="smart" class="active">智能切换</button><button data-mode="manual">仅启动</button></div>
-          <div class="bottom-controls"><label class="checkbox"><input type="checkbox" id="smartDisplayToggle" /><span></span>独占显示器</label><button class="app-button compact" id="btnTestSwitch">测试切换</button></div>
-        </article>
-        <article class="app-panel launch-panel entrance e3">
-          <span class="visually-hidden" id="startBatPath" aria-hidden="true"></span>
-          <button class="app-button primary launch" id="btnLaunch">▶　启动游戏</button>
-        </article>
-      </section>
-      <footer><span id="version">v2.5.0</span></footer>
-    </main>
+<body>  <div class="page">    <div class="texture">
+</div>    <main class="launcher-shell">      <aside class="launcher-rail" aria-label="主导航">        <button class="rail-brand" data-view="home" aria-label="返回首页">
+<span>CQL</span>
+</button>        <nav class="rail-nav">          <button class="rail-link active" data-view="home">
+<img class="rail-icon asset-icon" src="assets/首页%281%29.png" data-icon-light="assets/首页%281%29.png" data-icon-dark="assets/首页.png" alt="" aria-hidden="true" />
+<span>首页</span>
+</button>          <button class="rail-link" data-view="activities">
+<img class="rail-icon asset-icon" src="assets/活动%281%29.png" data-icon-light="assets/活动%281%29.png" data-icon-dark="assets/活动.png" alt="" aria-hidden="true" />
+<span>活动</span>
+</button>          <button class="rail-link" data-view="scores">
+<span class="rail-icon rating-icon" aria-hidden="true">Rating</span>
+<span>查分</span>
+</button>          <button class="rail-link" data-view="shop">
+<img class="rail-icon asset-icon" src="assets/商城%20%281%29.png" data-icon-light="assets/商城%20%281%29.png" data-icon-dark="assets/商城.png" alt="" aria-hidden="true" />
+<span>商城</span>
+</button>          <button class="rail-link" data-view="social">
+<img class="rail-icon asset-icon" src="assets/好友%20%281%29.png" data-icon-light="assets/好友%20%281%29.png" data-icon-dark="assets/好友.png" alt="" aria-hidden="true" />
+<span>好友</span>
+</button>          <button class="rail-link" data-view="aime">
+<img class="rail-icon asset-icon aime-rail-icon" src="assets/aime-rail.png" alt="" aria-hidden="true" />
+<span>Aime</span>
+</button>        </nav>        <div class="rail-bottom">
+<button class="rail-link" data-view="checkin">
+<img class="rail-icon asset-icon" src="assets/签到%20%281%29.png" data-icon-light="assets/签到%20%281%29.png" data-icon-dark="assets/签到.png" alt="" aria-hidden="true" />
+<span>签到</span>
+</button>
+<button class="rail-link" id="btnSettings">
+<img class="rail-icon asset-icon" src="assets/设置%20%281%29.png" data-icon-light="assets/设置%20%281%29.png" data-icon-dark="assets/设置.png" alt="" aria-hidden="true" />
+<span>设置</span>
+</button>
+</div>      </aside>      <section class="launcher-stage">        <span class="visually-hidden" id="startBatPath" aria-hidden="true">
+</span>        <header class="topbar entrance e1">          <div class="home-title-block topbar-title">
 
-  </div>
-
-  <div class="modal-backdrop" id="firstRun"><div class="modal-card"><h2>首次配置</h2><p>先完成游戏路径、主显示器和界面主题配置。</p><div class="section"><h3>启动与显示器</h3><label>start.bat 路径</label><div class="row"><div class="field-shell"><input id="startBat" readonly placeholder="请选择 start.bat" /></div><button class="app-button compact" id="btnPickBat">选择</button></div><label>主显示器</label><div class="row display-select-row"><div class="display-picker" id="displayDropdownFirstRun"><button type="button" class="display-picker-trigger" id="displaySelectTriggerFirstRun" aria-haspopup="listbox" aria-expanded="false"><span id="displaySelectValueFirstRun">请选择主显示器</span><span class="display-picker-chevron" aria-hidden="true"></span></button><div class="display-picker-panel" id="displaySelectPanelFirstRun" role="listbox"><div class="display-picker-options" id="displaySelectOptionsFirstRun"></div></div><select id="displaySelect" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="">请选择主显示器</option></select></div><button class="app-button compact" id="btnDetectDisplays">刷新</button></div><label>界面主题</label><div class="row"><div class="display-picker" id="themeDropdownFirstRun"><button type="button" class="display-picker-trigger" id="themeSelectTriggerFirstRun" aria-haspopup="listbox" aria-expanded="false"><span id="themeSelectValueFirstRun">浅色模式</span><span class="display-picker-chevron" aria-hidden="true"></span></button><div class="display-picker-panel" id="themeSelectPanelFirstRun" role="listbox"><div class="display-picker-options" id="themeSelectOptionsFirstRun"></div></div><select id="themeSelect" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="light">浅色模式</option><option value="dark">深色模式</option></select></div></div></div><button class="app-button primary wide" id="btnSave">完成配置</button></div></div>
-  <div class="modal-backdrop" id="settingsModal"><div class="modal-card settings"><div class="modal-heading"><div><h2>设置</h2><small>选择后即刻生效</small></div><button class="app-button" id="btnCloseSettings">关闭</button></div><div class="scroll-body">
-    <div class="section"><h3>启动与分辨率</h3><label>start.bat 路径</label><div class="row"><div class="field-shell"><input id="startBatSetting" readonly placeholder="请选择 start.bat" /></div><button class="app-button compact" id="btnPickBatSetting">选择</button></div><div class="row wrap applechu-actions"><button class="app-button compact" id="btnMigrateToAppleChu">从segatool迁移至Applechu</button><button class="app-button compact" id="btnEditAppleChu">编辑 AppleChu.toml</button></div><div class="launch-options"><label class="checkbox"><input type="checkbox" id="runBatAsAdministrator" /><span></span>使用管理员权限运行 bat</label><label class="checkbox"><input type="checkbox" id="terminateCmdBeforeLaunch" /><span></span>启动前关闭残留 CMD</label></div><label>主显示器 <small>选择后立即保存</small></label><div class="row display-select-row"><div class="display-picker" id="displayDropdownSetting"><button type="button" class="display-picker-trigger" id="displaySelectTrigger" aria-haspopup="listbox" aria-expanded="false"><span id="displaySelectValue">请选择主显示器</span><span class="display-picker-chevron" aria-hidden="true"></span></button><div class="display-picker-panel" id="displaySelectPanel" role="listbox"><div class="display-picker-options" id="displaySelectOptions"></div></div><select id="displaySelectSetting" class="visually-hidden" tabindex="-1" aria-hidden="true"><option value="">请选择主显示器</option></select></div><button class="app-button compact" id="btnDetectDisplaysSetting">刷新</button></div><label>原始分辨率</label><div class="row"><div class="field-shell"><input id="originalModeInputSetting" placeholder="例如 2560×1440 @ 144Hz" /></div><button class="app-button compact" id="btnReadCurrentSetting">读取</button></div><label>目标分辨率</label><div class="row"><div class="field-shell"><input id="targetModeSetting" readonly value="1920×1080 @ 120Hz" /></div><label class="checkbox"><input type="checkbox" id="target60HzToggle" /><span></span>60Hz</label></div></div>
-    <div class="section"><h3>外观</h3><label>主题色</label><div class="row"><input type="color" id="themeColor" value="#fdd500" /><div class="field-shell"><input id="themeColorText" value="#fdd500" /></div></div><label>背景图片</label><div class="row"><div class="field-shell"><input id="bgImageInput" placeholder="本地路径或 URL" /></div><button class="app-button compact" id="btnBrowseBg">选择</button></div></div>
-    <div class="section"><h3>ALL.Net提供商</h3><label>按钮文字</label><div class="row"><div class="field-shell"><input id="portalButtonText" placeholder="打开MuNET" /></div></div><label>网页链接</label><div class="row"><div class="field-shell"><input id="portalUrl" placeholder="https://portal.mumur.net/" /></div></div></div><div class="section"><h3>关于</h3><div class="about-row"><span>项目主页</span><button class="app-button compact" id="btnOpenGithubHome">GitHub 主页</button><span>版本更新</span><button class="app-button compact" id="btnCheckUpdate">检查更新</button><span>项目公告</span><button class="app-button compact" id="btnCheckAnnouncement">查看公告</button><span>支持项目</span><button class="app-button compact" id="btnDonate">捐赠</button></div></div>
-    </div><button class="app-button primary wide" id="btnSaveSettings">保存设置</button></div></div>
-  <div class="modal-backdrop" id="donationModal"><div class="modal-card donation-card" role="dialog" aria-modal="true" aria-labelledby="donationTitle"><div class="modal-heading"><div><h2 id="donationTitle">支持项目</h2><small>感谢你的支持，捐赠完全自愿</small></div><button class="app-button" id="btnCloseDonation">关闭</button></div><div class="donation-body"><div class="donation-mark" aria-hidden="true">₮</div><p class="donation-copy">如果这个启动器帮到了你，可以通过 USDT（TRON）支持后续维护。</p><div class="donation-network">USDT（TRON）</div><div class="donation-address-row"><code id="donationAddress">TF3TK5jT6dBVqY3JTpGJaVmzhBzryq8DhN</code><button class="app-button compact" id="btnCopyDonation">复制地址</button></div><small class="donation-hint" id="donationHint">请确认网络为 TRON（TRC-20），转账前请仔细核对地址。</small></div></div></div>
-  <div class="modal-backdrop" id="announcementModal"><div class="modal-card announcement-card" role="dialog" aria-modal="true" aria-labelledby="announcementTitle"><div class="modal-heading"><div><h2 id="announcementTitle"></h2><small>项目公告</small></div><button class="app-button" id="btnCloseAnnouncement">关闭</button></div><p class="announcement-body" id="announcementBody"></p><div class="announcement-actions"><button class="app-button primary" id="btnAnnouncementAction" hidden></button></div></div></div>
-  <script src="app.js"></script>
+<strong class="background-readable">Welcome to <em class="background-readable">CHUNITHM!</em></strong>
+</div>          <div class="top-actions">
+<span class="status-pill">
+<i id="statusDot">
+</i>
+<span id="statusText">待机</span>
+</span>
+<button class="app-button theme-button" id="themeToggle">
+<svg class="theme-icon" id="themeIcon" viewBox="0 0 1024 1024" aria-hidden="true">
+</svg>
+<span id="themeLabel">深色</span>
+</button>
+<button class="app-button account-button" id="accountButton">
+<img class="account-avatar" src="assets/迪拉熊头像.png" alt="迪拉熊头像" />
+<span>演示账户　Lv.12</span>
+</button>
+<button class="app-button" id="portalTab">打开MuNET</button>
+</div>        </header>        <div class="view-stack">          <section class="workspace-view active" data-view-panel="home">
+            <div class="hero-copy">
+<p class="eyebrow">SEASON 01　/　COMMUNITY UPDATE</p>
+<h1>Welcome to<br />
+<em>CHUNITHM!</em>
+</h1>
+<p class="hero-subtitle">启动游戏、记录成绩，和同样喜欢 CHUNITHM 的玩家一起探索新的节奏。</p>
+<div class="hero-actions">
+<button class="app-button primary launch" id="btnLaunch">▶　启动游戏</button>
+</div>
+</div>            <div class="home-activity-column">
+<div class="hero-art hero-art-placeholder event-hero">
+<div class="event-image-track">
+<img id="homeEventImage" class="event-image-current" src="assets/events/event-doki.png" alt="心跳文学部联动活动主视觉" />
+<img id="homeEventImageNext" class="event-image-next" src="assets/events/event-doki.png" alt="" aria-hidden="true" />
+</div>
+<div class="event-hero-controls">
+<button id="eventPrev" aria-label="上一张活动"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" /></svg></button>
+<button id="eventNext" aria-label="下一张活动"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" /></svg></button>
+</div>
+</div>
+<div id="eventIndicator" class="event-indicator" aria-label="活动页码"></div>
+<div class="home-lower">
+<article class="news-panel">
+<div class="panel-heading">
+<div>
+<span class="eyebrow">LATEST</span>
+<h2>最新资讯</h2>
+</div>
+<button class="text-action" data-view="activities">查看全部 →</button>
+</div>
+<div class="news-tabs">
+<button class="active" data-news-tab="activities">活动</button>
+<button data-news-tab="announcements">公告</button>
+<button data-news-tab="updates">资讯</button>
+</div>
+<div class="news-list" id="homeNewsList">
+</div>
+</article>
+<article class="mini-card">
+<span class="eyebrow">TODAY</span>
+<strong>每日签到</strong>
+<p>领取今日运势与积分奖励</p>
+<button class="app-button compact" data-view="checkin">去签到</button>
+</article>
+<article class="mini-card score-card">
+<span class="eyebrow">PLAYER DATA</span>
+<strong>12,840 <small>pts</small>
+</strong>
+<p>本周积分　↑ 18%</p>
+<button class="app-button compact" data-view="scores">查看成绩</button>
+</article>
+</div>
+</div>            <div class="home-launch-status">
+<article class="status-panel app-panel">
+<div class="target-label">目标模式</div>
+<div class="target-value" id="targetMode">1920×1080 @ 120Hz</div>
+<div class="stats">
+<div>
+<span>原始分辨率</span>
+<b id="originalMode">未读取</b>
+</div>
+<div>
+<span>主显示器</span>
+<b id="primaryDisplay">未选择</b>
+</div>
+</div>
+<hr />
+<label class="target-label launch-mode-label">启动模式</label>
+<div class="segmented" id="launchMode">
+<button data-mode="smart" class="active">智能切换</button>
+<button data-mode="manual">仅启动</button>
+</div>
+<div class="bottom-controls">
+<label class="checkbox">
+<input type="checkbox" id="smartDisplayToggle" />
+<span>
+</span>独占显示器</label>
+<button class="app-button compact" id="btnTestSwitch">测试切换</button>
+</article>
+</div>          </section>          <section class="workspace-view" data-view-panel="activities">
+<div class="feature-grid event-editorial">
+<div class="event-slide">
+<article class="feature-banner hero-art-placeholder event-feature">
+<div class="event-image-track">
+<img id="activityEventImage" class="event-image-current" src="assets/events/event-doki.png" alt="当前活动宣传图" />
+<img id="activityEventImageNext" class="event-image-next" src="assets/events/event-doki.png" alt="" aria-hidden="true" />
+</div>
+<div class="event-hero-controls">
+<button data-event-prev aria-label="上一张活动"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6" /></svg></button>
+<button data-event-next aria-label="下一张活动"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6" /></svg></button>
+</div>
+</article>
+<div class="event-media-caption">
+<span class="event-index" id="activityEventIndex">01</span>
+<span class="event-media-label">活动档案</span>
+<span class="event-media-rule" aria-hidden="true"></span>
+<span class="event-media-date" id="activityEventMetaDate">09.25 — 10.06</span>
+</div>
+<div class="event-indicator" aria-label="活动页码"></div>
+</div>
+<div class="feature-copy-column">
+<article class="feature-copy">
+<div class="feature-copy-topline">
+<span class="eyebrow background-readable" id="activityEventType">联动活动</span>
+<span class="feature-copy-date background-readable" id="activityEventDate">09.25 — 10.06</span>
+</div>
+<h3 class="background-readable" id="activityEventTitle">9/25(周五)<br />《心跳文学部！》联动活动开始！</h3>
+<p class="background-readable" id="activityEventBody">今天9/22(周二)是莫妮卡的生日！<br />为了纪念生日，将举办《心跳文学部！》联动活动！<br />9/25(周五)起，「Your Reality (Kenji Mizuno Remix)」将登场！<br />活动期间可获得《心跳文学部！》的角色、名牌以及舞台背景！</p>
+<div class="event-tag-row" aria-label="活动内容">
+<span id="activityEventRewardCharacter">角色</span>
+<span id="activityEventRewardNameplate">名牌</span>
+<span id="activityEventRewardStage">舞台背景</span>
+</div>
+</article>
+<button class="app-button primary feature-detail-button">查看活动详情</button>
+</div>
+</div>
+<div class="event-meta-strip" aria-label="活动信息">
+<div><span>活动时间</span><strong id="activityEventMetaDateLabel">09.25 — 10.06</strong></div>
+<div><span>活动类型</span><strong>联动活动</strong></div>
+<div><span>活动奖励</span><strong>角色 / 名牌 / 舞台背景</strong></div>
+</div>
+</section>          <section class="workspace-view" data-view-panel="scores">
+<div class="metric-row">
+<article class="metric-card">
+<span>当前 Rating</span>
+<strong>15.42</strong>
+<small>↑ 0.18 本周</small>
+</article>
+<article class="metric-card">
+<span>最高达成</span>
+<strong>14+</strong>
+<small>EXC 23 首</small>
+</article>
+<article class="metric-card">
+<span>本周游玩</span>
+<strong>18</strong>
+<small>首歌曲</small>
+</article>
+</div>
+<div class="content-grid">
+<article class="content-card score-list">
+<div class="panel-heading">
+<h3>近期成绩</h3>
+<button class="text-action">筛选</button>
+</div>
+<div class="result-row">
+<b>World Vanquisher</b>
+<span>14+　SSS</span>
+<strong>15.78</strong>
+</div>
+<div class="result-row">
+<b>蜘蛛の糸</b>
+<span>14　SS</span>
+<strong>14.92</strong>
+</div>
+<div class="result-row">
+<b>閃鋼のブリューナク</b>
+<span>13+　S</span>
+<strong>13.88</strong>
+</div>
+</article>
+<article class="content-card recommendation">
+<span class="eyebrow">NEXT PLAY</span>
+<h3>推分推荐</h3>
+<p>根据你的近期成绩，试试一首速度和滑键都更接近的曲目。</p>
+<button class="app-button compact">查看推荐</button>
+</article>
+</div>
+</section>          <section class="workspace-view" data-view-panel="shop">
+<div class="shop-toolbar">
+<button class="filter-chip active">全部</button>
+<button class="filter-chip">徽章</button>
+<button class="filter-chip">服饰</button>
+<button class="filter-chip">桌面物件</button>
+</div>
+<div class="product-grid">
+<article class="product-card">
+<div class="product-art">商品图<br />01</div>
+<div>
+<h3>节奏徽章套装</h3>
+<p>限定活动纪念</p>
+<strong>¥ 39</strong>
+</div>
+</article>
+<article class="product-card">
+<div class="product-art purple">商品图<br />02</div>
+<div>
+<h3>街机节奏桌垫</h3>
+<p>防滑织物材质</p>
+<strong>¥ 89</strong>
+</div>
+</article>
+<article class="product-card">
+<div class="product-art blue">商品图<br />03</div>
+<div>
+<h3>曲目收藏卡</h3>
+<p>随机 3 张</p>
+<strong>¥ 19</strong>
+</div>
+</article>
+</div>
+</section>          <section class="workspace-view" data-view-panel="checkin">
+<div class="page-heading">
+<span class="eyebrow background-readable">DAILY ROUTINE / 04</span>
+<h2 class="background-readable">每日签到</h2>
+<p class="background-readable">每天打开启动器，抽取一份属于今天的节奏运势。</p>
+</div>
+<div class="checkin-layout">
+<article class="fortune-card">
+<span class="eyebrow">TODAY'S FORTUNE</span>
+<strong>大吉</strong>
+<p>适合挑战熟悉曲目的高难度谱面，今天的手感会比平时更稳定。</p>
+<button class="app-button primary">抽取今日运势</button>
+</article>
+<article class="calendar-card">
+<div class="panel-heading">
+<h3>连续签到</h3>
+<strong>4 / 7 天</strong>
+</div>
+<div class="checkin-days">
+<b>一</b>
+<b>二</b>
+<b>三</b>
+<b>四</b>
+<b>五</b>
+<b>六</b>
+<b>日</b>
+<span class="done">✓</span>
+<span class="done">✓</span>
+<span class="done">✓</span>
+<span class="today">+20</span>
+<span>
+</span>
+<span>
+</span>
+<span>
+</span>
+</div>
+</article>
+</div>
+</section>          <section class="workspace-view" data-view-panel="social">
+<div class="page-heading social-heading">
+<h2 class="background-readable">好友动态</h2>
+</div>
+<div class="social-layout">
+<div class="social-list">
+<article class="friend-row">
+<div class="avatar-placeholder">A</div>
+<div>
+<strong>ArcaeaPlayer</strong>
+<p>刚刚完成了「World Vanquisher」的 SSS</p>
+</div>
+<span>15.78</span>
+</article>
+<article class="friend-row">
+<div class="avatar-placeholder pink">M</div>
+<div>
+<strong>Mira</strong>
+<p>更新了个人简介：今晚继续推分</p>
+</div>
+<button class="app-button compact">查看主页</button>
+</article>
+</div>
+<aside class="content-card friends-panel">
+<div class="friends-panel-heading">
+<div>
+<span class="eyebrow">FRIENDS</span>
+<h3>在线好友</h3>
+</div>
+<span class="friends-count">3 人在线</span>
+</div>
+<form class="friend-search" id="friendSearchForm">
+<div class="field-shell"><input id="friendSearchInput" type="search" placeholder="搜索好友昵称或 ID" aria-label="搜索好友昵称或 ID" /></div>
+<button class="app-button compact" type="submit">添加</button>
+</form>
+<div class="online-friends" aria-label="在线好友列表">
+<div class="online-friend"><span class="online-avatar">A</span><span><strong>ArcaeaPlayer</strong><small>正在挑战 World Vanquisher</small></span><i aria-label="在线"></i></div>
+<div class="online-friend"><span class="online-avatar pink">M</span><span><strong>Mira</strong><small>准备开始推分</small></span><i aria-label="在线"></i></div>
+<div class="online-friend"><span class="online-avatar blue">K</span><span><strong>KuroNeko</strong><small>刚刚查看了活动</small></span><i aria-label="在线"></i></div>
+</div>
+</aside>
+</div>
+</section>          <section class="workspace-view" data-view-panel="aime">
+<div class="page-heading">
+<h2 class="background-readable aime-title">下载Android Aime NFC 读卡器</h2>
+</div>
+<div class="aime-layout">
+<article class="phone-placeholder">
+<img src="assets/nfc-aime-reader.png" alt="NFC Aime Reader 手机应用截图" />
+</article>
+<article class="aime-steps">
+<div>
+<b class="background-readable">01</b>
+<h3 class="background-readable">安装应用</h3>
+<p class="background-readable">下载并安装 NFC Aime Reader。</p>
+</div>
+<div>
+<b class="background-readable">02</b>
+<h3 class="background-readable">打开 NFC</h3>
+<p class="background-readable">将手机靠近 Aime 卡片完成读取。</p>
+</div>
+<div>
+<b class="background-readable">03</b>
+<h3 class="background-readable">连接游戏</h3>
+<p class="background-readable">按照项目说明配置本地读卡器。</p>
+</div>
+<a class="app-button primary" href="https://github.com/Luckyumimi/NfcAimeReader" target="_blank" rel="noreferrer">查看项目说明　↗</a>
+</article>
+</div>
+</section>        </div>        <footer>
+<span class="background-readable" id="version">v2.5.0</span>
+<span class="background-readable">CHUNITHM Launcher / Thesis Edition</span>
+</footer>      </section>    </main>  </div>  <div class="modal-backdrop" id="firstRun">
+<div class="modal-card">
+<h2>首次配置</h2>
+<p>先完成游戏路径、主显示器和界面主题配置。</p>
+<div class="section">
+<h3>启动与显示器</h3>
+<label>start.bat 路径</label>
+<div class="row">
+<div class="field-shell">
+<input id="startBat" readonly placeholder="请选择 start.bat" />
+</div>
+<button class="app-button compact" id="btnPickBat">选择</button>
+</div>
+<label>主显示器</label>
+<div class="row display-select-row">
+<div class="display-picker" id="displayDropdownFirstRun">
+<button type="button" class="display-picker-trigger" id="displaySelectTriggerFirstRun" aria-haspopup="listbox" aria-expanded="false">
+<span id="displaySelectValueFirstRun">请选择主显示器</span>
+<span class="display-picker-chevron" aria-hidden="true">
+</span>
+</button>
+<div class="display-picker-panel" id="displaySelectPanelFirstRun" role="listbox">
+<div class="display-picker-options" id="displaySelectOptionsFirstRun">
+</div>
+</div>
+<select id="displaySelect" class="visually-hidden" tabindex="-1" aria-hidden="true">
+<option value="">请选择主显示器</option>
+</select>
+</div>
+<button class="app-button compact" id="btnDetectDisplays">刷新</button>
+</div>
+<label>界面主题</label>
+<div class="row">
+<div class="display-picker" id="themeDropdownFirstRun">
+<button type="button" class="display-picker-trigger" id="themeSelectTriggerFirstRun" aria-haspopup="listbox" aria-expanded="false">
+<span id="themeSelectValueFirstRun">浅色模式</span>
+<span class="display-picker-chevron" aria-hidden="true">
+</span>
+</button>
+<div class="display-picker-panel" id="themeSelectPanelFirstRun" role="listbox">
+<div class="display-picker-options" id="themeSelectOptionsFirstRun">
+</div>
+</div>
+<select id="themeSelect" class="visually-hidden" tabindex="-1" aria-hidden="true">
+<option value="light">浅色模式</option>
+<option value="dark">深色模式</option>
+</select>
+</div>
+</div>
+</div>
+<button class="app-button primary wide" id="btnSave">完成配置</button>
+</div>
+</div>  <div class="modal-backdrop" id="settingsModal">
+<div class="modal-card settings">
+<div class="modal-heading">
+<div>
+<h2>设置</h2>
+<small>选择后即刻生效</small>
+</div>
+<button class="app-button" id="btnCloseSettings">关闭</button>
+</div>
+<div class="scroll-body">    <div class="section">
+<h3>启动与分辨率</h3>
+<label>start.bat 路径</label>
+<div class="row">
+<div class="field-shell">
+<input id="startBatSetting" readonly placeholder="请选择 start.bat" />
+</div>
+<button class="app-button compact" id="btnPickBatSetting">选择</button>
+</div>
+<div class="row wrap applechu-actions">
+<button class="app-button compact" id="btnMigrateToAppleChu">从segatool迁移至Applechu</button>
+<button class="app-button compact" id="btnEditAppleChu">编辑 AppleChu.toml</button>
+</div>
+<div class="launch-options">
+<label class="checkbox">
+<input type="checkbox" id="runBatAsAdministrator" />
+<span>
+</span>使用管理员权限运行 bat</label>
+<label class="checkbox">
+<input type="checkbox" id="terminateCmdBeforeLaunch" />
+<span>
+</span>启动前关闭残留 CMD</label>
+</div>
+<label>主显示器 <small>选择后立即保存</small>
+</label>
+<div class="row display-select-row">
+<div class="display-picker" id="displayDropdownSetting">
+<button type="button" class="display-picker-trigger" id="displaySelectTrigger" aria-haspopup="listbox" aria-expanded="false">
+<span id="displaySelectValue">请选择主显示器</span>
+<span class="display-picker-chevron" aria-hidden="true">
+</span>
+</button>
+<div class="display-picker-panel" id="displaySelectPanel" role="listbox">
+<div class="display-picker-options" id="displaySelectOptions">
+</div>
+</div>
+<select id="displaySelectSetting" class="visually-hidden" tabindex="-1" aria-hidden="true">
+<option value="">请选择主显示器</option>
+</select>
+</div>
+<button class="app-button compact" id="btnDetectDisplaysSetting">刷新</button>
+</div>
+<label>原始分辨率</label>
+<div class="row">
+<div class="field-shell">
+<input id="originalModeInputSetting" readonly aria-readonly="true" placeholder="例如 2560×1440 @ 144Hz" />
+</div>
+<button class="app-button compact" id="btnReadCurrentSetting">读取</button>
+</div>
+<label>目标分辨率</label>
+<div class="row">
+<div class="field-shell">
+<input id="targetModeSetting" readonly value="1920×1080 @ 120Hz" />
+</div>
+<label class="checkbox">
+<input type="checkbox" id="target60HzToggle" />
+<span>
+</span>60Hz</label>
+</div>
+</div>    <div class="section">
+<h3>外观</h3>
+<label>语言</label>
+<div class="row">
+<div class="display-picker" id="languageDropdownSetting">
+<button type="button" class="display-picker-trigger" id="languageSelectTrigger" aria-haspopup="listbox" aria-expanded="false">
+<span id="languageSelectValue">跟随系统</span>
+<span class="display-picker-chevron" aria-hidden="true"></span>
+</button>
+<div class="display-picker-panel" id="languageSelectPanel" role="listbox">
+<div class="display-picker-options" id="languageSelectOptions"></div>
+</div>
+<select id="languageSelect" class="visually-hidden" tabindex="-1" aria-hidden="true">
+<option value="system">跟随系统</option>
+<option value="zh-CN">简体中文</option>
+<option value="en-US">English</option>
+<option value="ja-JP">日本語</option>
+<option value="ko-KR">한국어</option>
+<option value="fr-FR">Français</option>
+<option value="es-ES">Español</option>
+<option value="de-DE">Deutsch</option>
+</select>
+</div>
+</div>
+<label>主题色</label>
+<div class="row">
+<input type="color" id="themeColor" value="#fdd500" />
+<div class="field-shell">
+<input id="themeColorText" value="#fdd500" />
+</div>
+</div>
+<label>背景图片</label>
+<div class="row">
+<div class="field-shell">
+<input id="bgImageInput" placeholder="本地路径或 URL" />
+</div>
+<button class="app-button compact" id="btnBrowseBg">选择</button>
+</div>
+</div>    <div class="section">
+<h3>ALL.Net提供商</h3>
+<label>按钮文字</label>
+<div class="row">
+<div class="field-shell">
+<input id="portalButtonText" placeholder="打开MuNET" />
+</div>
+</div>
+<label>网页链接</label>
+<div class="row">
+<div class="field-shell">
+<input id="portalUrl" placeholder="https://portal.mumur.net/" />
+</div>
+</div>
+</div>
+<div class="section">
+<h3>关于</h3>
+<div class="about-row">
+<span>项目主页</span>
+<button class="app-button compact" id="btnOpenGithubHome">GitHub 主页</button>
+<span>版本更新</span>
+<button class="app-button compact" id="btnCheckUpdate">检查更新</button>
+<span>支持项目</span>
+<button class="app-button compact" id="btnDonate">捐赠</button>
+</div>
+</div>    </div>
+<button class="app-button primary wide" id="btnSaveSettings">保存设置</button>
+</div>
+</div>  <div class="modal-backdrop" id="donationModal">
+<div class="modal-card donation-card" role="dialog" aria-modal="true" aria-labelledby="donationTitle">
+<div class="modal-heading">
+<div>
+<h2 id="donationTitle">支持项目</h2>
+<small>感谢你的支持，捐赠完全自愿</small>
+</div>
+<button class="app-button" id="btnCloseDonation">关闭</button>
+</div>
+<div class="donation-body">
+<div class="donation-mark" aria-hidden="true">₮</div>
+<p class="donation-copy">如果这个启动器帮到了你，可以通过 USDT（TRON）支持后续维护。</p>
+<div class="donation-network">USDT（TRON）</div>
+<div class="donation-address-row">
+<code id="donationAddress">TF3TK5jT6dBVqY3JTpGJaVmzhBzryq8DhN</code>
+<button class="app-button compact" id="btnCopyDonation">复制地址</button>
+</div>
+<small class="donation-hint" id="donationHint">请确认网络为 TRON（TRC-20），转账前请仔细核对地址。</small>
+</div>
+</div>
+</div>  <div class="modal-backdrop" id="announcementModal">
+<div class="modal-card announcement-card" role="dialog" aria-modal="true" aria-labelledby="announcementTitle">
+<div class="modal-heading">
+<div>
+<h2 id="announcementTitle">
+</h2>
+<small>项目公告</small>
+</div>
+<button class="app-button" id="btnCloseAnnouncement">关闭</button>
+</div>
+<p class="announcement-body" id="announcementBody">
+</p>
+<div class="announcement-actions">
+<button class="app-button primary" id="btnAnnouncementAction" hidden>
+</button>
+</div>
+</div>
+</div>  <script src="app.js">
+</script>
 </body>
 </html>

@@ -58,6 +58,7 @@ public partial class MainWindow
         _config.RunBatAsAdministrator = _runBatAsAdministrator;
         _config.TerminateCmdBeforeLaunch = _terminateCmdBeforeLaunch;
         _config.ThemeColor = _themeColor;
+        _config.Language = _language;
         _config.GameWindowTitle = _gameWindowTitle;
         _config.BackgroundImagePath = _backgroundImagePath;
 
@@ -88,6 +89,7 @@ public partial class MainWindow
         _runBatAsAdministrator = _config.RunBatAsAdministrator;
         _terminateCmdBeforeLaunch = _config.TerminateCmdBeforeLaunch;
         if (!string.IsNullOrWhiteSpace(_config.ThemeColor)) _themeColor = _config.ThemeColor;
+        if (!string.IsNullOrWhiteSpace(_config.Language)) _language = _config.Language;
         if (!string.IsNullOrWhiteSpace(_config.GameWindowTitle)) _gameWindowTitle = _config.GameWindowTitle;
         if (!string.IsNullOrWhiteSpace(_config.BackgroundImagePath)) _backgroundImagePath = _config.BackgroundImagePath;
         if (!string.IsNullOrWhiteSpace(_config.TargetMode)) _targetMode = _config.TargetMode;
@@ -117,6 +119,7 @@ public partial class MainWindow
         public bool RunBatAsAdministrator { get; set; } = true;
         public bool TerminateCmdBeforeLaunch { get; set; } = true;
         public string? ThemeColor { get; set; }
+        public string? Language { get; set; }
         public string? GameWindowTitle { get; set; }
         public string? BackgroundImagePath { get; set; }
         public string? LastReadAnnouncementId { get; set; }

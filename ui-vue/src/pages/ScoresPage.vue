@@ -1,0 +1,7 @@
+<script setup lang="ts">
+import type { ViewAction } from '../components/types';
+const emit = defineEmits<{ (event: 'action', action: ViewAction): void }>();
+</script>
+<template>
+  <section class="workspace-view" data-view-panel="scores"><div class="page-heading"><span class="eyebrow background-readable">PLAYER DATA / 02</span><h2 class="background-readable">查分与推分</h2><p class="background-readable">用一眼可读的方式回顾最近成绩，找到下一首想挑战的曲目。</p></div><div class="metric-row"><article class="metric-card"><span>当前 Rating</span><strong>15.42</strong><small>↑ 0.18 本周</small></article><article class="metric-card"><span>最高达成</span><strong>14+</strong><small>EXC 23 首</small></article><article class="metric-card"><span>本周游玩</span><strong>18</strong><small>首歌曲</small></article></div><div class="content-grid"><article class="content-card score-list"><div class="panel-heading"><h3>近期成绩</h3><button class="text-action" type="button">筛选</button></div><div class="result-row"><b>World Vanquisher</b><span>14+　SSS</span><strong>15.78</strong></div><div class="result-row"><b>蜘蛛の糸</b><span>14　SS</span><strong>14.92</strong></div><div class="result-row"><b>閃鋼のブリューナク</b><span>13+　S</span><strong>13.88</strong></div></article><article class="content-card recommendation"><span class="eyebrow">NEXT PLAY</span><h3>推分推荐</h3><p>根据你的近期成绩，试试一首速度和滑键都更接近的曲目。</p><button class="app-button compact" type="button" @click="emit('action', 'view-recommendation')">查看推荐</button></article></div></section>
+</template>

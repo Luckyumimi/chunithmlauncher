@@ -26,6 +26,7 @@ public partial class MainWindow : Window
     };
     private static readonly HttpClient UpdateHttpClient = CreateUpdateHttpClient();
     private const string GithubRepoHomeUrl = "https://github.com/luckyumimi/chunithmlauncher";
+    private const string LauncherUiHost = "launcher.chunithm.local";
     private const string GithubLatestReleaseApi = "https://api.github.com/repos/luckyumimi/chunithmlauncher/releases/latest";
     private const string GithubLatestReleasePage = "https://github.com/luckyumimi/chunithmlauncher/releases/latest";
 
@@ -38,6 +39,7 @@ public partial class MainWindow : Window
     private string _targetMode = DefaultTargetMode;
     private string _launchMode = "smart";
     private string _themeColor = "#fdd500";
+    private string _language = "system";
     private const string DefaultGameWindowTitle = "teaGfx DirectX Release";
     private string _gameWindowTitle = DefaultGameWindowTitle;
     private string? _backgroundImagePath;
@@ -81,13 +83,22 @@ public partial class MainWindow : Window
         WebView.CoreWebView2.Settings.AreDevToolsEnabled = false;
         WebView.CoreWebView2.Settings.IsZoomControlEnabled = false;
         WebView.CoreWebView2.WebMessageReceived += OnWebMessageReceived;
+        WebView.CoreWebView2.ProcessFailed += (_, args) => Log($"WebView process failed: {args.ProcessFailedKind}");
+        await WebView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("""
+            window.addEventListener('error', function (event) {
+                window.chrome.webview.postMessage({ type: 'webview-error', payload: { message: event.message, source: event.filename, line: event.lineno, column: event.colno } });
+            });
+            window.addEventListener('unhandledrejection', function (event) {
+                window.chrome.webview.postMessage({ type: 'webview-error', payload: { message: String(event.reason) } });
+            });
+            """);
         WebView.NavigationCompleted += OnNavigationCompleted;
 
         LoadConfig();
         DetectDisplays();
         ApplyConfigToState();
 
-        WebView.Source = new Uri(ResolveUiIndexPath());
+        NavigateToLauncherUi();
         ApplyWindowBackdrop();
         _ = CheckForUpdatesOnStartupAsync();
     }
@@ -146,6 +157,9 @@ public partial class MainWindow : Window
 
         switch (message.Type)
         {
+            case "webview-error":
+                Log($"WebView script error: {message.Payload}");
+                break;
             case "pick-start-bat":
                 PickStartBat();
                 break;
@@ -279,18 +293,26 @@ public partial class MainWindow : Window
 
     private string ResolveUiIndexPath()
     {
+        // 当前使用仓库内的静态 ui/ 前端。Vue 迁移目录保留在 ui-vue/，
+        // 但不参与启动器运行，避免发布产物或旧的 ui-dist/ 覆盖当前页面。
+        var repositoryRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
         var output = Path.Combine(AppContext.BaseDirectory, "ui", "index.html");
         if (File.Exists(output))
         {
             return output;
         }
 
-        // 开发环境回退:dotnet run / IDE 调试时 BaseDirectory 位于
-        // bin\<Configuration>\net10.0-windows\,向上 4 级(..\..\..\..)即回到仓库根,
-        // 直接读取 ui\ 源文件。该相对路径依赖开发目录结构,仅开发环境有效;
-        // 发布包中 ui\ 已随程序复制到输出目录,上面的分支会先命中,不会走到这里。
-        var fallback = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "ui", "index.html"));
-        return fallback;
+        return Path.Combine(repositoryRoot, "ui", "index.html");
+    }
+
+    private void NavigateToLauncherUi()
+    {
+        var uiDirectory = Path.GetDirectoryName(ResolveUiIndexPath())!;
+        WebView.CoreWebView2!.SetVirtualHostNameToFolderMapping(
+            LauncherUiHost,
+            uiDirectory,
+            CoreWebView2HostResourceAccessKind.Deny);
+        WebView.CoreWebView2.Navigate($"https://{LauncherUiHost}/index.html");
     }
 
     private static string GetAppVersion()

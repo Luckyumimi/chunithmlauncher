@@ -1,0 +1,5 @@
+<script setup lang="ts">
+import type { ViewAction } from '../components/types';
+const emit = defineEmits<{ (event: 'action', action: ViewAction): void }>();
+</script>
+<template><section class="workspace-view" data-view-panel="aime"><div class="page-heading"><span class="eyebrow background-readable">AIME ON MOBILE / 06</span><h2 class="background-readable">用手机读取 Aime</h2><p class="background-readable">用 Android 手机的 NFC 功能，读取并管理你的街机卡片。</p></div><div class="aime-layout"><article class="phone-placeholder"><span>手机截图占位</span><b>NFC / GUIDE</b></article><article class="aime-steps"><div><b class="background-readable">01</b><h3 class="background-readable">安装应用</h3><p class="background-readable">下载并安装 NFC Aime Reader。</p></div><div><b class="background-readable">02</b><h3 class="background-readable">打开 NFC</h3><p class="background-readable">将手机靠近 Aime 卡片完成读取。</p></div><div><b class="background-readable">03</b><h3 class="background-readable">连接游戏</h3><p class="background-readable">按照项目说明配置本地读卡器。</p></div><button class="app-button primary" type="button" @click="emit('action', 'open-aime-project')">查看项目说明　↗</button></article></div></section></template>

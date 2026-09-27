@@ -1,0 +1,5 @@
+:root { color-scheme: light; --hue: 200; --bg: rgba(51, 47, 60, .08); --hover-bg: rgba(51, 47, 60, .14); --focus--bg: rgba(253, 213, 0, .18); --border-hover-c: #fdd500; --text-color: #332f3c; --select-selected-text-c: #6654c8; }
+* { box-sizing: border-box; }
+html, body, #app { min-height: 100%; margin: 0; }
+body { min-width: 320px; }
+body.dark-mode { color-scheme: dark; --bg: rgba(255, 255, 255, .08); --hover-bg: rgba(255, 255, 255, .12); --focus--bg: rgba(255, 255, 255, .13); --border-hover-c: #b3c6ff; --text-color: #f2f2f2; --select-selected-text-c: #b3c6ff; }

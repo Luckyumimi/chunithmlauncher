@@ -64,6 +64,11 @@ Invoke-DotNetPublish @(
   "-o", $appOutput
 )
 
+$publishedUi = Join-Path $appOutput "ui"
+if (-not (Test-Path -LiteralPath (Join-Path $publishedUi "index.html"))) {
+  throw "Static ui/ front end was not included in the published app: $publishedUi"
+}
+
 # Self-contained bootstrapper: runs without .NET and opens the runtime download page if needed.
 Invoke-DotNetPublish @(
   $bootstrapperProject,

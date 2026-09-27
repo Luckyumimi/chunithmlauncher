@@ -31,6 +31,7 @@ public partial class MainWindow
 
     private async void OnNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
     {
+        Log($"WebView navigation completed: success={e.IsSuccess}, status={e.WebErrorStatus}");
         if (_isMuNetPage)
         {
             await InjectMuNetBackButtonAsync();
@@ -75,6 +76,6 @@ public partial class MainWindow
     private void ReturnToLauncher()
     {
         _isMuNetPage = false;
-        WebView.CoreWebView2?.Navigate(new Uri(ResolveUiIndexPath()).AbsoluteUri);
+        NavigateToLauncherUi();
     }
 }

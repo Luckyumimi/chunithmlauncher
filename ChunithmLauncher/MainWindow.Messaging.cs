@@ -17,7 +17,8 @@ public partial class MainWindow
         bool? RunBatAsAdministrator,
         bool? TerminateCmdBeforeLaunch,
         string? ThemeColor,
-        string? BackgroundImagePath);
+        string? BackgroundImagePath,
+        string? Language);
 
     private sealed record PrimaryDisplayPayload(string? PrimaryDisplay);
 
@@ -90,7 +91,13 @@ public partial class MainWindow
         {
             _themeColor = settings.ThemeColor;
         }
+
+        if (settings.Language is "system" or "zh-CN" or "en-US" or "ja-JP" or "ko-KR" or "fr-FR" or "es-ES" or "de-DE")
+        {
+            _language = settings.Language;
+        }
     }
+
 
     private void ApplyPrimaryDisplay(PrimaryDisplayPayload payload)
     {
@@ -118,6 +125,7 @@ public partial class MainWindow
             runBatAsAdministrator = _runBatAsAdministrator,
             terminateCmdBeforeLaunch = _terminateCmdBeforeLaunch,
             themeColor = _themeColor,
+            language = _language,
             backgroundImagePath = _backgroundImagePath ?? string.Empty,
             version = GetAppVersion(),
             displays = _displays.Select(d => new { id = d.Id, name = d.Name, selected = d.Selected }).ToArray(),

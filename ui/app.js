@@ -2645,6 +2645,15 @@ byId('friendSearchForm')?.addEventListener('submit', event => {
 byId('btnSettings').onclick = () => { fillSettings(); show('settingsModal', true); };
 byId('portalTab').onclick = openPortal;
 byId('themeToggle').onclick = () => applyTheme(theme === 'dark' ? 'light' : 'dark');
+byId('windowMinimize').onclick = () => post('window-minimize');
+byId('windowClose').onclick = () => post('window-close');
+const startWindowDrag = event => {
+  if (event.button !== 0 || event.target.closest('.top-actions')) return;
+  event.preventDefault();
+  post('window-drag');
+};
+document.querySelector('.window-drag-region')?.addEventListener('mousedown', startWindowDrag);
+document.querySelector('.topbar')?.addEventListener('mousedown', startWindowDrag);
 byId('themeSelect').onchange = event => applyTheme(event.target.value);
 byId('languageSelectTrigger').onclick = () => setLanguageDropdownOpen(!byId('languageDropdownSetting').classList.contains('open'));
 byId('languageSelectTrigger').onkeydown = event => {

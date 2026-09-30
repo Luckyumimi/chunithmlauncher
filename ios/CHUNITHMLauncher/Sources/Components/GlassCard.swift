@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 
 struct GlassCard<Content: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
     let content: Content
 
     init(@ViewBuilder content: () -> Content) {
@@ -11,17 +12,30 @@ struct GlassCard<Content: View>: View {
     var body: some View {
         content
             .padding(20)
+            .background(LauncherPalette.surfaceGradient(colorScheme).opacity(0.34), in: .rect(cornerRadius: 24))
             .glassEffect(.regular, in: .rect(cornerRadius: 24))
+            .animation(.easeInOut(duration: 0.35), value: colorScheme)
     }
 }
 
 struct GlassActionButton<Label: View>: View {
+    @Environment(\.colorScheme) private var colorScheme
     let role: ButtonRole?
     let action: () -> Void
     let label: Label
+    let minHeight: CGFloat
+    let horizontalPadding: CGFloat
 
-    init(role: ButtonRole? = nil, action: @escaping () -> Void, @ViewBuilder label: () -> Label) {
+    init(
+        role: ButtonRole? = nil,
+        minHeight: CGFloat = 44,
+        horizontalPadding: CGFloat = 16,
+        action: @escaping () -> Void,
+        @ViewBuilder label: () -> Label
+    ) {
         self.role = role
+        self.minHeight = minHeight
+        self.horizontalPadding = horizontalPadding
         self.action = action
         self.label = label()
     }
@@ -30,10 +44,12 @@ struct GlassActionButton<Label: View>: View {
         Button(role: role, action: action) {
             label
                 .font(.headline)
-                .frame(minHeight: 44)
-                .padding(.horizontal, 16)
+                .frame(minHeight: minHeight)
+                .padding(.horizontal, horizontalPadding)
         }
         .buttonStyle(.glass)
+        .tint(LauncherPalette.accent)
+        .animation(.easeInOut(duration: 0.35), value: colorScheme)
     }
 }
 
@@ -41,12 +57,44 @@ enum LauncherPalette {
     static var accent: Color {
         Color(hex: UserDefaults.standard.string(forKey: "themeColorHex") ?? "fdd500")
     }
+
+    static func accentGradient(_ hex: String? = nil) -> LinearGradient {
+        let color = Color(hex: hex ?? UserDefaults.standard.string(forKey: "themeColorHex") ?? "fdd500")
+        return LinearGradient(
+            colors: [color.opacity(0.96), color.opacity(0.62)],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
     static func background(_ scheme: ColorScheme) -> Color {
         Color(hex: scheme == .dark ? "222222" : "e9e7ee")
     }
+
+    static func backgroundGradient(_ scheme: ColorScheme) -> LinearGradient {
+        LinearGradient(
+            colors: scheme == .dark
+                ? [Color(hex: "111317"), Color(hex: "252831")]
+                : [Color(hex: "f8f7fb"), Color(hex: "e4e2eb")],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
     static func surface(_ scheme: ColorScheme) -> Color {
         Color(hex: scheme == .dark ? "333333" : "f5f2f9")
     }
+
+    static func surfaceGradient(_ scheme: ColorScheme) -> LinearGradient {
+        LinearGradient(
+            colors: scheme == .dark
+                ? [Color(hex: "37393e"), Color(hex: "292b30")]
+                : [Color(hex: "ffffff"), Color(hex: "f0edf5")],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
     static func control(_ scheme: ColorScheme) -> Color {
         Color(hex: scheme == .dark ? "454545" : "e9e7ee")
     }
@@ -62,7 +110,8 @@ struct ContentCard<Content: View>: View {
         content
             .padding(20)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(LauncherPalette.surface(scheme), in: .rect(cornerRadius: 24))
+            .background(LauncherPalette.surfaceGradient(scheme), in: .rect(cornerRadius: 24))
+            .animation(.easeInOut(duration: 0.35), value: scheme)
     }
 }
 

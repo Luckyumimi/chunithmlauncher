@@ -26,3 +26,28 @@ extension Color {
         #endif
     }
 }
+
+enum ThemeColorOption: String, CaseIterable, Identifiable {
+    case yellow = "fdd500"
+    case cyan = "18c7d9"
+    case blue = "4f8cff"
+    case purple = "9b7cff"
+    case pink = "f06a9b"
+    case orange = "f28c45"
+    case green = "35c778"
+
+    var id: String { rawValue }
+    var color: Color { Color(hex: rawValue) }
+
+    var name: String {
+        switch self {
+        case .yellow: return "Yellow"
+        case .cyan: return "Cyan"
+        case .blue: return "Blue"
+        case .purple: return "Purple"
+        case .pink: return "Pink"
+        case .orange: return "Orange"
+        case .green: return "Green"
+        }
+    }
+}

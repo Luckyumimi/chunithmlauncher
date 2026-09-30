@@ -51,7 +51,7 @@ struct AimeStep: Codable, Identifiable {
 }
 
 enum LauncherSection: String, CaseIterable, Hashable, Identifiable {
-    case home, activities, rating, shop, friends, aime, checkin, settings
+    case home, activities, rating, shop, friends, aime, settings
 
     var id: String { rawValue }
 
@@ -63,7 +63,6 @@ enum LauncherSection: String, CaseIterable, Hashable, Identifiable {
         case .shop: return "nav.shop"
         case .friends: return "nav.friends"
         case .aime: return "nav.aime"
-        case .checkin: return "nav.checkin"
         case .settings: return "nav.settings"
         }
     }
@@ -76,7 +75,6 @@ enum LauncherSection: String, CaseIterable, Hashable, Identifiable {
         case .shop: return "bag.fill"
         case .friends: return "person.2.fill"
         case .aime: return "wave.3.right.circle"
-        case .checkin: return "checkmark.seal.fill"
         case .settings: return "gearshape.fill"
         }
     }

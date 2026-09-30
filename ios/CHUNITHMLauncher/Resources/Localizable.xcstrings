@@ -4210,6 +4210,162 @@
         "es": {"stringUnit": {"state": "translated", "value": "Dirección web"}},
         "de": {"stringUnit": {"state": "translated", "value": "Webadresse"}}
       }
+    },
+    "news.latest.eyebrow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "LATEST"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "最新资讯"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "LATEST"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "최신"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "DERNIÈRES INFOS"}},
+        "es": {"stringUnit": {"state": "translated", "value": "NOVEDADES"}},
+        "de": {"stringUnit": {"state": "translated", "value": "NEUIGKEITEN"}}
+      }
+    },
+    "news.viewAll": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "View all"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "查看全部"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "すべて見る"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "전체 보기"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Tout voir"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Ver todo"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Alle anzeigen"}}
+      }
+    },
+    "news.tab.activity": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Activity"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "活动"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "イベント"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "활동"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Activité"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Actividad"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Aktivität"}}
+      }
+    },
+    "news.tab.announcement": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Announcements"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "公告"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "お知らせ"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "공지"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Annonces"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Anuncios"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Ankündigungen"}}
+      }
+    },
+    "news.tab.information": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Information"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "资讯"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "情報"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "정보"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Informations"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Información"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Informationen"}}
+      }
+    },
+    "profile.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Profile"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "个人主页"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "プロフィール"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "프로필"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Profil"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Perfil"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Profil"}}
+      }
+    },
+    "profile.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "CHUNITHM Player"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "CHUNITHM 玩家"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "CHUNITHM プレイヤー"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "CHUNITHM 플레이어"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Joueur CHUNITHM"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Jugador de CHUNITHM"}},
+        "de": {"stringUnit": {"state": "translated", "value": "CHUNITHM-Spieler"}}
+      }
+    },
+    "profile.handle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "@chunithm_player"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "@chunithm_player"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "@chunithm_player"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "@chunithm_player"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "@chunithm_player"}},
+        "es": {"stringUnit": {"state": "translated", "value": "@chunithm_player"}},
+        "de": {"stringUnit": {"state": "translated", "value": "@chunithm_player"}}
+      }
+    },
+    "profile.stat.rating": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Rating"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "Rating"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "レーティング"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "레이팅"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Rating"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Rating"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Rating"}}
+      }
+    },
+    "profile.stat.scores": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Scores"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "成绩"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "スコア"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "점수"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Scores"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Puntuaciones"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Punkte"}}
+      }
+    },
+    "profile.stat.events": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Events"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "活动"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "イベント"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "이벤트"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Événements"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Eventos"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Events"}}
+      }
+    },
+    "profile.about": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "About me"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "关于我"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "自己紹介"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "내 소개"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "À propos de moi"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Sobre mí"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Über mich"}}
+      }
+    },
+    "profile.bio": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Exploring new charts, collecting memories, and keeping every session bright."}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "探索新谱面，收集每一次游玩留下的回忆。"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "新しい譜面を遊びながら、プレイの思い出を集めています。"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "새로운 채보를 탐험하고 모든 플레이의 추억을 모읍니다."}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Je découvre de nouvelles partitions et collectionne les souvenirs de chaque session."}},
+        "es": {"stringUnit": {"state": "translated", "value": "Exploro nuevas canciones y guardo recuerdos de cada sesión."}},
+        "de": {"stringUnit": {"state": "translated", "value": "Ich entdecke neue Charts und sammle Erinnerungen aus jeder Session."}}
+      }
     }
   },
   "version": "1.0"

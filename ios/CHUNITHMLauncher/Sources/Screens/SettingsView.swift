@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @AppStorage("languageOverride") private var languageOverride = "system"
     @AppStorage("appearanceMode") private var appearanceMode = "system"
     @AppStorage("themeColorHex") private var themeColorHex = "fdd500"
@@ -31,7 +32,11 @@ struct SettingsView: View {
             Section("settings.appearance") {
                 Picker("settings.appearance", selection: Binding(
                     get: { appearanceMode },
-                    set: { value in withAnimation(.easeInOut(duration: 0.35)) { appearanceMode = value } }
+                    set: { value in
+                        withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.35)) {
+                            appearanceMode = value
+                        }
+                    }
                 )) {
                     ForEach(appearances, id: \.0) { item in
                         Text(LocalizedStringKey(item.1)).tag(item.0)
@@ -40,9 +45,41 @@ struct SettingsView: View {
                 .pickerStyle(.segmented)
             }
             Section("settings.themeColor") {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 42), spacing: 14)], spacing: 14) {
+                    ForEach(ThemeColorOption.allCases) { option in
+                        Button {
+                            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.25)) {
+                                themeColorHex = option.rawValue
+                            }
+                        } label: {
+                            Circle()
+                                .fill(option.color)
+                                .frame(width: 34, height: 34)
+                                .overlay {
+                                    if themeColorHex.uppercased() == option.rawValue.uppercased() {
+                                        Image(systemName: "checkmark")
+                                            .font(.caption.weight(.bold))
+                                            .foregroundStyle(.white)
+                                    }
+                                }
+                                .overlay {
+                                    Circle()
+                                        .stroke(.primary.opacity(0.16), lineWidth: 1)
+                                }
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(Text(option.name))
+                        .accessibilityAddTraits(themeColorHex.uppercased() == option.rawValue.uppercased() ? .isSelected : [])
+                    }
+                }
+                .padding(.vertical, 4)
                 ColorPicker("settings.themeColor", selection: Binding(
                     get: { Color(hex: themeColorHex) },
-                    set: { themeColorHex = $0.hexString ?? themeColorHex }
+                    set: { newColor in
+                        withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.25)) {
+                            themeColorHex = newColor.hexString ?? themeColorHex
+                        }
+                    }
                 ), supportsOpacity: false)
             }
             Section("settings.allnet") {
@@ -57,7 +94,8 @@ struct SettingsView: View {
             }
         }
         .scrollContentBackground(.hidden)
-        .background(LauncherPalette.background(colorScheme))
+        .background(LauncherPalette.backgroundGradient(colorScheme))
         .navigationTitle("nav.settings")
+        .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: colorScheme)
     }
 }

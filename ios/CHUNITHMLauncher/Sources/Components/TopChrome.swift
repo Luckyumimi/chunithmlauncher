@@ -8,26 +8,34 @@ struct TopChrome: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             GlassEffectContainer(spacing: 12) {
-                HStack(spacing: 10) {
-                Label("status.ready", systemImage: "circle.fill")
-                    .foregroundStyle(.green)
-                    .frame(minWidth: 86, minHeight: 44)
-                GlassActionButton { openURL(URL(string: allNetURL) ?? ExternalLinks.munet) } label: {
-                    Label(allNetButtonText, systemImage: "safari")
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.72)
+                HStack(spacing: 8) {
+                    Label("status.ready", systemImage: "circle.fill")
+                        .foregroundStyle(.green)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .frame(minHeight: 34)
+
+                    GlassActionButton(minHeight: 34, horizontalPadding: 11) {
+                        openURL(URL(string: allNetURL) ?? ExternalLinks.munet)
+                    } label: {
+                        Label(allNetButtonText, systemImage: "safari")
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                    }
+                    .fixedSize(horizontal: true, vertical: false)
+
+                    GlassActionButton(minHeight: 34, horizontalPadding: 11) {
+                        openURL(ExternalLinks.github)
+                    } label: {
+                        Label("link.github", systemImage: "chevron.left.forwardslash.chevron.right")
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                    }
+                    .fixedSize(horizontal: true, vertical: false)
                 }
-                .frame(width: 96)
-                GlassActionButton { openURL(ExternalLinks.github) } label: {
-                    Label("link.github", systemImage: "chevron.left.forwardslash.chevron.right")
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.72)
-                }
-                .frame(width: 96)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .trailing)
         .padding(.horizontal, 2)
         .font(.subheadline.weight(.semibold))
     }
-}
 }

@@ -19,6 +19,15 @@ namespace ChunithmLauncher;
 
 public partial class MainWindow : Window
 {
+    private const uint WmNcLButtonDown = 0x00A1;
+    private static readonly IntPtr HtCaption = new(2);
+
+    [DllImport("user32.dll")]
+    private static extern bool ReleaseCapture();
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -99,7 +108,6 @@ public partial class MainWindow : Window
         ApplyConfigToState();
 
         NavigateToLauncherUi();
-        ApplyWindowBackdrop();
         _ = CheckForUpdatesOnStartupAsync();
     }
 
@@ -187,6 +195,15 @@ public partial class MainWindow : Window
                     SendInit();
                 }
 
+                break;
+            case "window-minimize":
+                WindowState = WindowState.Minimized;
+                break;
+            case "window-close":
+                Close();
+                break;
+            case "window-drag":
+                TryStartWindowDrag();
                 break;
             case "set-primary-display":
                 if (DeserializePayload<PrimaryDisplayPayload>(message) is { } primaryDisplay)
@@ -289,6 +306,19 @@ public partial class MainWindow : Window
                 PickBackgroundImage(previewOnly: true);
                 break;
         }
+    }
+
+    private void TryStartWindowDrag()
+    {
+        var windowHandle = new WindowInteropHelper(this).Handle;
+        if (windowHandle == IntPtr.Zero)
+        {
+            return;
+        }
+
+        // Let Windows continue the current left-button gesture as a caption drag.
+        _ = ReleaseCapture();
+        _ = SendMessage(windowHandle, WmNcLButtonDown, HtCaption, IntPtr.Zero);
     }
 
     private string ResolveUiIndexPath()

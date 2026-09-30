@@ -1,0 +1,124 @@
+{
+  "events": [
+    {
+      "id": "doki",
+      "date": "09.25 — 10.06",
+      "titleKey": "event.doki.title",
+      "bodyKey": "event.doki.body",
+      "imageName": "event-doki",
+      "tags": [
+        "event.tag.character",
+        "event.tag.nameplate",
+        "event.tag.stage"
+      ]
+    },
+    {
+      "id": "songs",
+      "date": "09.25",
+      "titleKey": "event.songs.title",
+      "bodyKey": "event.songs.body",
+      "imageName": "event-songs",
+      "tags": [
+        "event.tag.music",
+        "event.tag.update"
+      ]
+    },
+    {
+      "id": "emperor",
+      "date": "09.18 — 09.30",
+      "titleKey": "event.emperor.title",
+      "bodyKey": "event.emperor.body",
+      "imageName": "event-emperor",
+      "tags": [
+        "event.tag.event",
+        "event.tag.reward"
+      ]
+    }
+  ],
+  "friends": [
+    {
+      "id": "arcaea",
+      "name": "ArcaeaPlayer",
+      "initial": "A",
+      "activityKey": "friend.arcaea",
+      "colorHex": "b9a22c"
+    },
+    {
+      "id": "mira",
+      "name": "Mira",
+      "initial": "M",
+      "activityKey": "friend.mira",
+      "colorHex": "e2a0bd"
+    },
+    {
+      "id": "kuro",
+      "name": "KuroNeko",
+      "initial": "K",
+      "activityKey": "friend.kuro",
+      "colorHex": "85bfd0"
+    }
+  ],
+  "scores": [
+    {
+      "id": "1",
+      "title": "World Vanquisher",
+      "difficulty": "MASTER 14+",
+      "rating": "15.78",
+      "status": "SSS"
+    },
+    {
+      "id": "2",
+      "title": "Your Reality",
+      "difficulty": "EXPERT 12",
+      "rating": "14.26",
+      "status": "SS"
+    },
+    {
+      "id": "3",
+      "title": "LaVI-Bavellabion",
+      "difficulty": "MASTER 13+",
+      "rating": "13.91",
+      "status": "S+"
+    }
+  ],
+  "shopItems": [
+    {
+      "id": "1",
+      "titleKey": "shop.card",
+      "detailKey": "shop.card.detail",
+      "colorHex": "f2bb68"
+    },
+    {
+      "id": "2",
+      "titleKey": "shop.nameplate",
+      "detailKey": "shop.nameplate.detail",
+      "colorHex": "8fb8d6"
+    },
+    {
+      "id": "3",
+      "titleKey": "shop.stage",
+      "detailKey": "shop.stage.detail",
+      "colorHex": "cc8eb3"
+    }
+  ],
+  "aimeSteps": [
+    {
+      "id": "1",
+      "number": "01",
+      "titleKey": "aime.step.install",
+      "detailKey": "aime.step.install.detail"
+    },
+    {
+      "id": "2",
+      "number": "02",
+      "titleKey": "aime.step.nfc",
+      "detailKey": "aime.step.nfc.detail"
+    },
+    {
+      "id": "3",
+      "number": "03",
+      "titleKey": "aime.step.connect",
+      "detailKey": "aime.step.connect.detail"
+    }
+  ]
+}

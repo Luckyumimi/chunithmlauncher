@@ -2,16 +2,11 @@ name: Build
 
 on:
   push:
-    branches:
-      - main
-      - master
-    tags:
-      - "v*"
   pull_request:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
 
     steps:
@@ -47,4 +42,81 @@ jobs:
         with:
           name: ChunithmLauncher-win-x64
           path: artifacts/github-action/publish
+          if-no-files-found: error
+
+  build-ipados:
+    # GitHub's public preview runner includes Xcode 27 and the iPadOS 27 SDK.
+    runs-on: xcode-27
+    env:
+      PROSEKA_URL_SCHEME_VALUE: ${{ vars.PROSEKA_URL_SCHEME }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 27
+        shell: bash
+        run: |
+          sudo xcode-select -s /Applications/Xcode_27.app
+          xcodebuild -version
+
+      - name: Archive unsigned iPadOS app
+        shell: bash
+        env:
+          CONFIGURATION: Release
+        run: |
+          set -euo pipefail
+          rm -rf build
+          xcodebuild \
+            -project ios/CHUNITHMLauncher/CHUNITHMLauncher.xcodeproj \
+            -scheme CHUNITHMLauncher \
+            -sdk iphoneos \
+            -configuration "$CONFIGURATION" \
+            -destination 'generic/platform=iOS' \
+            -archivePath build/CHUNITHMLauncher.xcarchive \
+            archive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=- \
+            PROSEKA_URL_SCHEME_VALUE="$PROSEKA_URL_SCHEME_VALUE"
+
+      - name: Package unsigned IPA and manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          app_path="build/CHUNITHMLauncher.xcarchive/Products/Applications/CHUNITHMLauncher.app"
+          test -d "$app_path"
+          rm -rf build/Payload
+          mkdir -p build/Payload
+          cp -R "$app_path" build/Payload/CHUNITHMLauncher.app
+          (cd build && /usr/bin/zip -qry CHUNITHMLauncher-iPadOS27-unsigned.ipa Payload)
+          sdk_version="$(xcrun --sdk iphoneos --show-sdk-version)"
+          xcode_version="$(xcodebuild -version | tr '\n' ' ' | sed 's/[[:space:]]*$//')"
+          app_version="$(sed -n 's/^MARKETING_VERSION = //p' ios/CHUNITHMLauncher/Config/Base.xcconfig | tr -d '\r')"
+          ipa_sha256="$(shasum -a 256 build/CHUNITHMLauncher-iPadOS27-unsigned.ipa | awk '{print $1}')"
+          proseka_configured=false
+          if [[ -n "${PROSEKA_URL_SCHEME_VALUE:-}" ]]; then proseka_configured=true; fi
+          cat > build/build-manifest.json <<EOF
+          {
+            "commit": "${GITHUB_SHA}",
+            "appVersion": "${app_version}",
+            "xcode": "${xcode_version}",
+            "sdk": "${sdk_version}",
+            "ipaSha256": "${ipa_sha256}",
+            "prosekaUrlSchemeConfigured": ${proseka_configured},
+            "signed": false
+          }
+          EOF
+          unzip -l build/CHUNITHMLauncher-iPadOS27-unsigned.ipa
+          plutil -p build/Payload/CHUNITHMLauncher.app/Info.plist
+          codesign -dv build/Payload/CHUNITHMLauncher.app 2>&1 || true
+          shasum -a 256 build/CHUNITHMLauncher-iPadOS27-unsigned.ipa
+
+      - name: Upload unsigned iPadOS artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChunithmLauncher-iPadOS27-unsigned
+          path: |
+            build/CHUNITHMLauncher-iPadOS27-unsigned.ipa
+            build/build-manifest.json
           if-no-files-found: error

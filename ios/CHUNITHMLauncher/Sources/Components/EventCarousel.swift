@@ -10,6 +10,7 @@ struct EventCarousel: View {
                 VStack(alignment: .leading, spacing: 14) {
                     LocalImage(event.imageName, contentMode: .fit)
                         .frame(maxWidth: .infinity)
+                        .frame(height: 238)
                         .clipShape(.rect(cornerRadius: 24))
                     Text(LocalizedStringKey(event.titleKey))
                         .font(.title2.weight(.bold))
@@ -29,8 +30,11 @@ struct EventCarousel: View {
                 .padding(.horizontal, 4)
             }
         }
-        .frame(minHeight: 360)
+        .frame(maxWidth: .infinity)
+        .frame(height: 410)
         .tabViewStyle(.page(indexDisplayMode: .automatic))
-        .animation(reduceMotion ? nil : .snappy, value: state.selectedEventID)
+        .transaction { transaction in
+            if reduceMotion { transaction.animation = nil }
+        }
     }
 }

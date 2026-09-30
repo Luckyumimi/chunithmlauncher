@@ -64,21 +64,24 @@
       "title": "World Vanquisher",
       "difficulty": "MASTER 14+",
       "rating": "15.78",
-      "status": "SSS"
+      "status": "SSS",
+      "imageName": "rating-world"
     },
     {
       "id": "2",
       "title": "Your Reality",
       "difficulty": "EXPERT 12",
       "rating": "14.26",
-      "status": "SS"
+      "status": "SS",
+      "imageName": "rating-your"
     },
     {
       "id": "3",
       "title": "LaVI-Bavellabion",
       "difficulty": "MASTER 13+",
       "rating": "13.91",
-      "status": "S+"
+      "status": "S+",
+      "imageName": "rating-lavi"
     }
   ],
   "shopItems": [
@@ -86,19 +89,22 @@
       "id": "1",
       "titleKey": "shop.card",
       "detailKey": "shop.card.detail",
-      "colorHex": "f2bb68"
+      "colorHex": "f2bb68",
+      "category": "badge"
     },
     {
       "id": "2",
       "titleKey": "shop.nameplate",
       "detailKey": "shop.nameplate.detail",
-      "colorHex": "8fb8d6"
+      "colorHex": "8fb8d6",
+      "category": "clothing"
     },
     {
       "id": "3",
       "titleKey": "shop.stage",
       "detailKey": "shop.stage.detail",
-      "colorHex": "cc8eb3"
+      "colorHex": "cc8eb3",
+      "category": "desk"
     }
   ],
   "aimeSteps": [

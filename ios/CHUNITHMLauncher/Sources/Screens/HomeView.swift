@@ -20,28 +20,43 @@ struct HomeView: View {
                         Text("home.subtitle").foregroundStyle(.secondary)
                     }
                     Spacer()
-                    TopChrome(state: state)
+                    TopChrome()
                 }
 
                 AdaptiveColumns(width: availableWidth,
                     leading: {
-                        GlassCard { EventCarousel(state: state) }
+                        GlassCard {
+                            VStack(alignment: .leading, spacing: 12) {
+                                EventCarousel(state: state)
+                                Text("home.announcement")
+                                    .font(.headline.weight(.bold))
+                                    .foregroundStyle(.primary)
+                            }
+                        }
                     },
                     trailing: {
-                        VStack(alignment: .leading, spacing: 18) {
-                            ContentCard {
-                                VStack(alignment: .leading, spacing: 14) {
-                                    Text("home.target").font(.caption.weight(.bold)).foregroundStyle(.secondary)
-                                    Text("1920×1080 @ 120Hz").font(.title2.weight(.bold))
-                                    Divider()
-                                    Label("home.ready", systemImage: "checkmark.circle.fill").foregroundStyle(.green)
+                        ContentCard {
+                            VStack(alignment: .leading, spacing: 16) {
+                                HStack(spacing: 12) {
+                                    LocalImage("迪拉熊头像", contentMode: .fill)
+                                        .frame(width: 52, height: 52)
+                                        .clipShape(Circle())
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text("account.demo").font(.headline)
+                                        Text("home.welcome").font(.title3.weight(.bold))
+                                    }
                                 }
+                                Divider()
+                                Label("home.ready", systemImage: "checkmark.circle.fill")
+                                    .foregroundStyle(.green)
+                                Spacer(minLength: 12)
+                                GlassActionButton(action: prosekaLauncher.launch) {
+                                    Label("proseka.launch", systemImage: "play.fill")
+                                        .frame(maxWidth: .infinity, minHeight: 48)
+                                }
+                                .tint(LauncherPalette.accent)
                             }
-                            GlassActionButton(action: prosekaLauncher.launch) {
-                                Label("proseka.launch", systemImage: "play.fill")
-                                    .frame(maxWidth: .infinity)
-                            }
-                            .tint(LauncherPalette.accent)
+                            .frame(maxWidth: .infinity, minHeight: 410, alignment: .topLeading)
                         }
                     }
                 )

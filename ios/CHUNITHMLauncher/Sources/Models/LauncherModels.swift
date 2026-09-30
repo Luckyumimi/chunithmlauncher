@@ -32,6 +32,7 @@ struct ScoreEntry: Codable, Identifiable {
     let difficulty: String
     let rating: String
     let status: String
+    let imageName: String?
 }
 
 struct ShopItem: Codable, Identifiable {
@@ -39,6 +40,7 @@ struct ShopItem: Codable, Identifiable {
     let titleKey: String
     let detailKey: String
     let colorHex: String
+    let category: String?
 }
 
 struct AimeStep: Codable, Identifiable {

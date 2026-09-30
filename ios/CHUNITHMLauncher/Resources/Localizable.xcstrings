@@ -4042,6 +4042,174 @@
           }
         }
       }
+    },
+    "home.announcement": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Latest announcement"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "公告"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "お知らせ"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "공지"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Annonce"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Anuncio"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Ankündigung"}}
+      }
+    },
+    "activities.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "View details"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "查看详情"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "詳細を見る"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "상세 보기"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Voir les détails"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Ver detalles"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Details anzeigen"}}
+      }
+    },
+    "shop.filter.all": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "All"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "全部"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "すべて"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "전체"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Tous"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Todo"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Alle"}}
+      }
+    },
+    "shop.filter.badge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Badges"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "徽章"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "バッジ"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "배지"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Badges"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Insignias"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Abzeichen"}}
+      }
+    },
+    "shop.filter.clothing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Clothing"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "服饰"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "衣装"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "의상"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Vêtements"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Ropa"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Kleidung"}}
+      }
+    },
+    "shop.filter.desk": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Desk items"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "桌面物件"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "デスク用品"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "데스크 아이템"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Objets de bureau"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Artículos de escritorio"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Schreibtischartikel"}}
+      }
+    },
+    "friends.online": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Online friends"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "在线好友"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "オンラインの友達"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "온라인 친구"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Amis en ligne"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Amigos en línea"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Online-Freunde"}}
+      }
+    },
+    "friends.profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "View profile"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "查看主页"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "プロフィールを見る"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "프로필 보기"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Voir le profil"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Ver perfil"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Profil anzeigen"}}
+      }
+    },
+    "friend.activity.score": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Just earned SSS on World Vanquisher"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "刚刚完成了「World Vanquisher」的 SSS"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "「World Vanquisher」でSSSを達成"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "World Vanquisher에서 SSS 달성"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Vient d'obtenir SSS sur World Vanquisher"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Acaba de lograr SSS en World Vanquisher"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Gerade SSS bei World Vanquisher erreicht"}}
+      }
+    },
+    "friend.activity.profile": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Updated their profile"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "更新了个人简介：今晚继续推分"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "プロフィールを更新"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "프로필을 업데이트함"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "A mis à jour son profil"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Actualizó su perfil"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Profil aktualisiert"}}
+      }
+    },
+    "settings.themeColor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Accent color"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "主题色"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "アクセントカラー"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "강조 색상"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Couleur d'accent"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Color de énfasis"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Akzentfarbe"}}
+      }
+    },
+    "settings.allnet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "ALL.Net provider"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "ALL.Net提供商"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "ALL.Netプロバイダー"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "ALL.Net 제공업체"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Fournisseur ALL.Net"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Proveedor ALL.Net"}},
+        "de": {"stringUnit": {"state": "translated", "value": "ALL.Net-Anbieter"}}
+      }
+    },
+    "settings.allnet.button": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Button label"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "按钮文字"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "ボタンの文字"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "버튼 문구"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Texte du bouton"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Texto del botón"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Buttontext"}}
+      }
+    },
+    "settings.allnet.url": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Web address"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "网页链接"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "ウェブリンク"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "웹 링크"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Adresse web"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Dirección web"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Webadresse"}}
+      }
     }
   },
   "version": "1.0"

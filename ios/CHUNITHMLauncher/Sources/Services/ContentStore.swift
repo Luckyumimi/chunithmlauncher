@@ -21,14 +21,14 @@ enum ContentStore {
             Friend(id: "kuro", name: "KuroNeko", initial: "K", activityKey: "friend.kuro", colorHex: "85bfd0")
         ],
         scores: [
-            ScoreEntry(id: "1", title: "World Vanquisher", difficulty: "MASTER 14+", rating: "15.78", status: "SSS"),
-            ScoreEntry(id: "2", title: "Your Reality", difficulty: "EXPERT 12", rating: "14.26", status: "SS"),
-            ScoreEntry(id: "3", title: "LaVI-Bavellabion", difficulty: "MASTER 13+", rating: "13.91", status: "S+ ")
+            ScoreEntry(id: "1", title: "World Vanquisher", difficulty: "MASTER 14+", rating: "15.78", status: "SSS", imageName: "rating-world"),
+            ScoreEntry(id: "2", title: "Your Reality", difficulty: "EXPERT 12", rating: "14.26", status: "SS", imageName: "rating-your"),
+            ScoreEntry(id: "3", title: "LaVI-Bavellabion", difficulty: "MASTER 13+", rating: "13.91", status: "S+ ", imageName: "rating-lavi")
         ],
         shopItems: [
-            ShopItem(id: "1", titleKey: "shop.card", detailKey: "shop.card.detail", colorHex: "f2bb68"),
-            ShopItem(id: "2", titleKey: "shop.nameplate", detailKey: "shop.nameplate.detail", colorHex: "8fb8d6"),
-            ShopItem(id: "3", titleKey: "shop.stage", detailKey: "shop.stage.detail", colorHex: "cc8eb3")
+            ShopItem(id: "1", titleKey: "shop.card", detailKey: "shop.card.detail", colorHex: "f2bb68", category: "badge"),
+            ShopItem(id: "2", titleKey: "shop.nameplate", detailKey: "shop.nameplate.detail", colorHex: "8fb8d6", category: "clothing"),
+            ShopItem(id: "3", titleKey: "shop.stage", detailKey: "shop.stage.detail", colorHex: "cc8eb3", category: "desk")
         ],
         aimeSteps: [
             AimeStep(id: "1", number: "01", titleKey: "aime.step.install", detailKey: "aime.step.install.detail"),
@@ -37,4 +37,3 @@ enum ContentStore {
         ]
     )
 }
-

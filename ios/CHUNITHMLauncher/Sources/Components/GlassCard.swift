@@ -38,7 +38,9 @@ struct GlassActionButton<Label: View>: View {
 }
 
 enum LauncherPalette {
-    static let accent = Color(hex: "fdd500")
+    static var accent: Color {
+        Color(hex: UserDefaults.standard.string(forKey: "themeColorHex") ?? "fdd500")
+    }
     static func background(_ scheme: ColorScheme) -> Color {
         Color(hex: scheme == .dark ? "222222" : "e9e7ee")
     }
@@ -79,13 +81,13 @@ struct AdaptiveColumns<Leading: View, Trailing: View>: View {
     var body: some View {
         if width >= 780 && !typeSize.isAccessibilitySize {
             HStack(alignment: .top, spacing: 24) {
-                leading.frame(maxWidth: .infinity)
-                trailing.frame(width: min(340, width * 0.38))
+                leading.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                trailing.frame(width: min(390, width * 0.38), maxHeight: .infinity, alignment: .top)
             }
         } else {
             VStack(alignment: .leading, spacing: 24) {
-                leading
-                trailing
+                leading.frame(maxWidth: .infinity, alignment: .leading)
+                trailing.frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
@@ -124,6 +126,8 @@ struct LocalImage: View {
             } else if let url = Bundle.main.url(forResource: name, withExtension: "png", subdirectory: "Events"), let image = UIImage(contentsOfFile: url.path) {
                 Image(uiImage: image).resizable().aspectRatio(contentMode: contentMode)
             } else if let url = Bundle.main.url(forResource: name, withExtension: "png"), let image = UIImage(contentsOfFile: url.path) {
+                Image(uiImage: image).resizable().aspectRatio(contentMode: contentMode)
+            } else if let url = Bundle.main.url(forResource: name, withExtension: "jpg", subdirectory: "Rating"), let image = UIImage(contentsOfFile: url.path) {
                 Image(uiImage: image).resizable().aspectRatio(contentMode: contentMode)
             } else {
                 RoundedRectangle(cornerRadius: 20).fill(.secondary.opacity(0.2))

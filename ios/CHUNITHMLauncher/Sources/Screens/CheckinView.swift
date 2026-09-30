@@ -21,7 +21,8 @@ struct CheckinView: View {
                                 .frame(minWidth: 120, minHeight: 46)
                         }
                     }
-                    .frame(width: min(420, max(260, proxy.size.width - 88)), minHeight: 300)
+                    .frame(width: min(420, max(260, proxy.size.width - 88)))
+                    .frame(minHeight: 300)
                 }
                 .frame(maxWidth: .infinity)
                 Spacer(minLength: 10)

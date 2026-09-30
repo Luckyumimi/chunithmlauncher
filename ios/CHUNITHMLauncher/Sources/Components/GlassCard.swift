@@ -82,7 +82,9 @@ struct AdaptiveColumns<Leading: View, Trailing: View>: View {
         if width >= 780 && !typeSize.isAccessibilitySize {
             HStack(alignment: .top, spacing: 24) {
                 leading.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-                trailing.frame(width: min(390, width * 0.38), maxHeight: .infinity, alignment: .top)
+                trailing
+                    .frame(width: min(390, width * 0.38), alignment: .top)
+                    .frame(maxHeight: .infinity, alignment: .top)
             }
         } else {
             VStack(alignment: .leading, spacing: 24) {

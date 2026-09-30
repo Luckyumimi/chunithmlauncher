@@ -50,7 +50,7 @@ struct AimeStep: Codable, Identifiable {
     let detailKey: String
 }
 
-enum LauncherSection: String, CaseIterable, Identifiable {
+enum LauncherSection: String, CaseIterable, Hashable, Identifiable {
     case home, activities, rating, shop, friends, aime, checkin, settings
 
     var id: String { rawValue }

@@ -30,3 +30,4 @@ struct TopChrome: View {
         .font(.subheadline.weight(.semibold))
     }
 }
+}

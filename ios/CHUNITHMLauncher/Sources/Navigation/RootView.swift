@@ -12,8 +12,13 @@ struct RootView: View {
 
     var body: some View {
         NavigationSplitView {
-            List(LauncherSection.allCases, selection: $state.selectedSection) { section in
-                Label(section.titleKey, systemImage: section.systemImage).tag(section)
+            List(selection: Binding<LauncherSection?>(
+                get: { state.selectedSection },
+                set: { if let section = $0 { state.selectedSection = section } }
+            )) {
+                ForEach(LauncherSection.allCases) { section in
+                    Label(section.titleKey, systemImage: section.systemImage).tag(section)
+                }
             }
             .navigationTitle("app.title")
             .listStyle(.sidebar)

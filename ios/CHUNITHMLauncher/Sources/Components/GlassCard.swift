@@ -53,6 +53,26 @@ struct GlassActionButton<Label: View>: View {
     }
 }
 
+struct GlassCircleButton<Label: View>: View {
+    let action: () -> Void
+    let label: Label
+
+    init(action: @escaping () -> Void, @ViewBuilder label: () -> Label) {
+        self.action = action
+        self.label = label()
+    }
+
+    var body: some View {
+        Button(action: action) {
+            label
+                .frame(width: 44, height: 44)
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .glassEffect(.regular, in: .circle)
+    }
+}
+
 enum LauncherPalette {
     static var accent: Color {
         Color(hex: UserDefaults.standard.string(forKey: "themeColorHex") ?? "fdd500")

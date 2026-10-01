@@ -16,13 +16,15 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 26) {
-                HStack(alignment: .firstTextBaseline) {
-                    VStack(alignment: .leading, spacing: 5) {
-                        welcomeTitle
-                            .font(.largeTitle.weight(.bold))
-                    }
-                    Spacer()
+                HStack(alignment: .center, spacing: 16) {
+                    welcomeTitle
+                        .font(.largeTitle.weight(.bold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                        .layoutPriority(1)
+                    Spacer(minLength: 8)
                     TopChrome()
+                        .layoutPriority(1)
                 }
 
                 AdaptiveColumns(width: availableWidth,
@@ -35,7 +37,7 @@ struct HomeView: View {
                                     .foregroundStyle(.primary)
                             }
                         }
-                        .frame(maxWidth: .infinity, minHeight: 620, alignment: .topLeading)
+                        .frame(maxWidth: .infinity, minHeight: 484, alignment: .topLeading)
                     },
                     trailing: {
                         ContentCard {
@@ -63,8 +65,6 @@ struct HomeView: View {
 
                                 Divider()
 
-                                Spacer(minLength: 0)
-
                                 GlassActionButton(action: prosekaLauncher.launch) {
                                     Label("proseka.launch", systemImage: "play.fill")
                                         .frame(maxWidth: .infinity, minHeight: 48)
@@ -73,7 +73,7 @@ struct HomeView: View {
                                 .tint(.white)
                             }
                             .padding(.top, 12)
-                            .frame(maxWidth: .infinity, minHeight: 620, alignment: .top)
+                            .frame(maxWidth: .infinity, minHeight: 484, alignment: .top)
                         }
                     }
                 )

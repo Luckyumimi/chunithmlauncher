@@ -6,36 +6,33 @@ struct TopChrome: View {
     @AppStorage("allNetURL") private var allNetURL = "https://portal.mumur.net/"
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            GlassEffectContainer(spacing: 12) {
-                HStack(spacing: 8) {
-                    Label("home.subscribed", systemImage: "circle.fill")
-                        .foregroundStyle(.green)
+        GlassEffectContainer(spacing: 12) {
+            HStack(spacing: 8) {
+                Label("home.subscribed", systemImage: "circle.fill")
+                    .foregroundStyle(.green)
+                    .fixedSize(horizontal: true, vertical: false)
+                    .frame(minHeight: 34)
+
+                GlassActionButton(minHeight: 34, horizontalPadding: 11) {
+                    openURL(URL(string: allNetURL) ?? ExternalLinks.munet)
+                } label: {
+                    Label(allNetButtonText, systemImage: "safari")
+                        .lineLimit(1)
                         .fixedSize(horizontal: true, vertical: false)
-                        .frame(minHeight: 34)
-
-                    GlassActionButton(minHeight: 34, horizontalPadding: 11) {
-                        openURL(URL(string: allNetURL) ?? ExternalLinks.munet)
-                    } label: {
-                        Label(allNetButtonText, systemImage: "safari")
-                            .lineLimit(1)
-                            .fixedSize(horizontal: true, vertical: false)
-                    }
-                    .fixedSize(horizontal: true, vertical: false)
-
-                    GlassActionButton(minHeight: 34, horizontalPadding: 11) {
-                        openURL(ExternalLinks.github)
-                    } label: {
-                        Label("link.github", systemImage: "chevron.left.forwardslash.chevron.right")
-                            .lineLimit(1)
-                            .fixedSize(horizontal: true, vertical: false)
-                    }
-                    .fixedSize(horizontal: true, vertical: false)
                 }
+                .fixedSize(horizontal: true, vertical: false)
+
+                GlassActionButton(minHeight: 34, horizontalPadding: 11) {
+                    openURL(ExternalLinks.github)
+                } label: {
+                    Label("link.github", systemImage: "chevron.left.forwardslash.chevron.right")
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
+                }
+                .fixedSize(horizontal: true, vertical: false)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .trailing)
-        .padding(.horizontal, 2)
+        .fixedSize(horizontal: true, vertical: false)
         .font(.subheadline.weight(.semibold))
     }
 }

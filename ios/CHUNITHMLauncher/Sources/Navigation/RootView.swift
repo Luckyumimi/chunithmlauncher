@@ -70,14 +70,18 @@ private struct TabContentView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 }
                 .toolbar {
-                    ToolbarItemGroup(placement: .topBarLeading) {
+                    ToolbarItem(placement: .topBarLeading) {
                         if tabBarPlacement == .topBar {
-                            Button {
-                            state.isSettingsPresented = true
+                            GlassCircleButton {
+                                state.isSettingsPresented = true
                             } label: {
                                 Image(systemName: "gearshape.fill")
                             }
                             .accessibilityLabel("nav.settings")
+                        }
+                    }
+                    ToolbarItem(placement: .topBarLeading) {
+                        if tabBarPlacement == .topBar {
                             CheckinToolbarButton()
                         }
                     }
@@ -115,13 +119,11 @@ private struct SidebarHeader: View {
 
     var body: some View {
         HStack {
-            Button(action: onSettings) {
+            Spacer(minLength: 0)
+            GlassCircleButton(action: onSettings) {
                 Image(systemName: "gearshape.fill")
-                    .frame(width: 36, height: 36)
             }
-            .buttonStyle(.plain)
             .accessibilityLabel("nav.settings")
-            Spacer()
         }
         .padding(.horizontal, 14)
         .padding(.top, 8)
@@ -133,14 +135,13 @@ private struct CheckinToolbarButton: View {
     @AppStorage("checkedInToday") private var checkedIn = false
 
     var body: some View {
-        Button {
+        GlassActionButton(minHeight: 40, horizontalPadding: 14) {
             checkedIn = true
         } label: {
-            Label(
-                LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"),
-                systemImage: checkedIn ? "calendar.badge.checkmark" : "calendar.badge.plus"
-            )
-            .labelStyle(.titleAndIcon)
+            HStack(spacing: 7) {
+                Image(systemName: checkedIn ? "calendar.badge.checkmark" : "calendar.badge.plus")
+                Text(LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"))
+            }
             .fixedSize(horizontal: true, vertical: false)
         }
         .accessibilityLabel(LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"))
@@ -151,7 +152,7 @@ private struct SidebarCheckinCard: View {
     @AppStorage("checkedInToday") private var checkedIn = false
 
     var body: some View {
-        Button {
+        GlassActionButton(minHeight: 46, horizontalPadding: 14) {
             checkedIn = true
         } label: {
             HStack(spacing: 10) {
@@ -168,8 +169,6 @@ private struct SidebarCheckinCard: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .buttonStyle(.glass)
-        .tint(LauncherPalette.accent)
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
     }

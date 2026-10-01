@@ -72,18 +72,7 @@ private struct TabContentView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         if tabBarPlacement == .topBar {
-                            GlassEffectContainer(spacing: 0) {
-                                HStack(spacing: 12) {
-                                    GlassCircleButton {
-                                        state.isSettingsPresented = true
-                                    } label: {
-                                        Image(systemName: "gearshape.fill")
-                                    }
-                                    .accessibilityLabel("nav.settings")
-
-                                    CheckinToolbarButton()
-                                }
-                            }
+                            CheckinToolbarButton()
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
@@ -117,19 +106,14 @@ private struct TabContentView: View {
 
 private struct SidebarHeader: View {
     let onSettings: () -> Void
-    @Environment(\.tabBarPlacement) private var tabBarPlacement
 
     var body: some View {
-        Group {
-            if tabBarPlacement == .sidebar {
-                HStack {
-                    GlassCircleButton(action: onSettings) {
-                        Image(systemName: "gearshape.fill")
-                    }
-                    .accessibilityLabel("nav.settings")
-                    Spacer(minLength: 0)
-                }
+        HStack {
+            GlassCircleButton(action: onSettings) {
+                Image(systemName: "gearshape.fill")
             }
+            .accessibilityLabel("nav.settings")
+            Spacer(minLength: 0)
         }
         .padding(.horizontal, 14)
         .padding(.top, 8)

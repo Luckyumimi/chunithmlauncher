@@ -6,7 +6,7 @@ struct ActivitiesView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 24) {
+            VStack(alignment: .leading, spacing: 16) {
                 SectionHeader("activities.title", eyebrow: "activities.eyebrow")
                 ForEach(state.content.events) { event in
                     GlassCard {
@@ -23,7 +23,7 @@ struct ActivitiesView: View {
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity, minHeight: 620, alignment: .topLeading)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)

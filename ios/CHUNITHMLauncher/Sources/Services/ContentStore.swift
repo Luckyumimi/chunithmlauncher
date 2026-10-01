@@ -12,8 +12,8 @@ enum ContentStore {
 
     private static let fallback = LauncherContent(
         events: [
-            LauncherEvent(id: "doki", date: "09.25 — 10.06", titleKey: "event.doki.title", bodyKey: "event.doki.body", imageName: "event-doki", tags: ["event.tag.character", "event.tag.nameplate", "event.tag.stage"]),
-            LauncherEvent(id: "songs", date: "09.25", titleKey: "event.songs.title", bodyKey: "event.songs.body", imageName: "event-songs", tags: ["event.tag.music", "event.tag.update"])
+            LauncherEvent(id: "doki", date: "09.25 — 10.06", titleKey: "event.doki.title", bodyKey: "event.doki.body", detailKey: "event.doki.detail", imageName: "event-doki", tags: ["event.tag.character", "event.tag.nameplate", "event.tag.stage"]),
+            LauncherEvent(id: "songs", date: "09.25", titleKey: "event.songs.title", bodyKey: "event.songs.body", detailKey: "event.songs.detail", imageName: "event-songs", tags: ["event.tag.music", "event.tag.update"])
         ],
         friends: [
             Friend(id: "arcaea", name: "ArcaeaPlayer", initial: "A", activityKey: "friend.arcaea", colorHex: "b9a22c"),

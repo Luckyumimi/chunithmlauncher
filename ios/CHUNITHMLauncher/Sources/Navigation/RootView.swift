@@ -22,7 +22,6 @@ struct RootView: View {
             }
         }
         .tabViewStyle(.sidebarAdaptable)
-        .scrollDisabled(true)
         .tabViewSidebarBottomBar {
             VStack(alignment: .leading, spacing: 8) {
                 SidebarCheckinCard()
@@ -39,13 +38,11 @@ struct RootView: View {
         .sheet(isPresented: $state.isProfilePresented) {
             NavigationStack {
                 ProfileView()
-                    .scrollDisabled(false)
             }
         }
         .sheet(isPresented: $state.isSettingsPresented) {
             NavigationStack {
                 SettingsView()
-                    .scrollDisabled(false)
             }
         }
         .onChange(of: state.selectedSection) { _, _ in
@@ -91,7 +88,6 @@ private struct TabContentView: View {
                     }
                 }
             }
-            .scrollDisabled(false)
         }
     }
 

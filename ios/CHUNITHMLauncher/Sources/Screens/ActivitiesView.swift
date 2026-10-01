@@ -5,35 +5,43 @@ struct ActivitiesView: View {
     @State private var detailEvent: LauncherEvent?
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                SectionHeader("activities.title", eyebrow: "activities.eyebrow")
-                ForEach(state.content.events) { event in
-                    GlassCard {
-                        ViewThatFits(in: .horizontal) {
-                            HStack(alignment: .top, spacing: 24) {
-                                eventImage(event)
-                                    .frame(width: 420, height: 250)
-                                activityCopy(event)
-                            }
-                            VStack(alignment: .leading, spacing: 16) {
-                                eventImage(event)
-                                    .frame(maxWidth: .infinity, minHeight: 220, maxHeight: 300)
-                                activityCopy(event)
-                            }
-                        }
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    SectionHeader("activities.title", eyebrow: "activities.eyebrow")
+                    ForEach(state.content.events) { event in
+                        activityCard(event, availableWidth: proxy.size.width - 56)
                     }
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(28)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(28)
         }
         .navigationTitle("nav.activities")
         .sheet(item: $detailEvent) { event in
             ActivityDetailView(event: event)
                 .presentationDetents([.medium, .large])
         }
+    }
+
+    @ViewBuilder
+    private func activityCard(_ event: LauncherEvent, availableWidth: CGFloat) -> some View {
+        GlassCard {
+            if availableWidth >= 900 {
+                HStack(alignment: .top, spacing: 24) {
+                    eventImage(event)
+                        .frame(width: 420, height: 250)
+                    activityCopy(event)
+                }
+            } else {
+                VStack(alignment: .leading, spacing: 16) {
+                    eventImage(event)
+                        .frame(maxWidth: .infinity, minHeight: 220, maxHeight: 300)
+                    activityCopy(event)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
     }
 
     private func eventImage(_ event: LauncherEvent) -> some View {

@@ -22,10 +22,11 @@ struct RootView: View {
             }
         }
         .tabViewStyle(.sidebarAdaptable)
+        .scrollDisabled(true)
         .tabViewSidebarBottomBar {
             VStack(alignment: .leading, spacing: 8) {
                 SidebarCheckinCard()
-                SidebarSettingsButton {
+                SidebarSettingsRow {
                     state.isSettingsPresented = true
                 }
             }
@@ -38,11 +39,13 @@ struct RootView: View {
         .sheet(isPresented: $state.isProfilePresented) {
             NavigationStack {
                 ProfileView()
+                    .scrollDisabled(false)
             }
         }
         .sheet(isPresented: $state.isSettingsPresented) {
             NavigationStack {
                 SettingsView()
+                    .scrollDisabled(false)
             }
         }
         .onChange(of: state.selectedSection) { _, _ in
@@ -88,6 +91,7 @@ private struct TabContentView: View {
                     }
                 }
             }
+            .scrollDisabled(false)
         }
     }
 
@@ -104,19 +108,26 @@ private struct TabContentView: View {
     }
 }
 
-private struct SidebarSettingsButton: View {
+private struct SidebarSettingsRow: View {
     let onSettings: () -> Void
 
     var body: some View {
-        HStack {
-            GlassCircleButton(action: onSettings) {
-                Image(systemName: "gearshape.fill")
+        Button(action: onSettings) {
+            HStack(spacing: 16) {
+                Image(systemName: "gearshape")
+                    .frame(width: 28)
+                Text("nav.settings")
+                Spacer(minLength: 0)
             }
-            .accessibilityLabel("nav.settings")
-            Spacer(minLength: 0)
+            .font(.body.weight(.medium))
+            .foregroundStyle(.primary)
+            .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
+            .contentShape(Rectangle())
         }
-        .padding(.horizontal, 14)
+        .buttonStyle(.plain)
+        .padding(.horizontal, 24)
         .padding(.bottom, 8)
+        .accessibilityLabel("nav.settings")
     }
 }
 

@@ -41,31 +41,46 @@ struct HomeView: View {
                     },
                     trailing: {
                         ContentCard(fillsAvailableHeight: true) {
-                            VStack(spacing: 18) {
-                                LocalImage("迪拉熊头像", contentMode: .fill)
-                                    .frame(width: 118, height: 118)
-                                    .clipShape(Circle())
-                                    .overlay(Circle().stroke(LauncherPalette.accent, lineWidth: 4))
-                                    .shadow(color: LauncherPalette.accent.opacity(0.24), radius: 16)
+                            VStack(spacing: 0) {
+                                Spacer(minLength: 8)
 
-                                VStack(spacing: 4) {
-                                    Text("profile.name")
-                                        .font(.title2.weight(.bold))
-                                    Text("profile.handle")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
+                                VStack(spacing: 12) {
+                                    LocalImage("迪拉熊头像", contentMode: .fill)
+                                        .frame(width: 118, height: 118)
+                                        .clipShape(Circle())
+                                        .overlay(Circle().stroke(LauncherPalette.accent, lineWidth: 4))
+                                        .shadow(color: LauncherPalette.accent.opacity(0.24), radius: 16)
+
+                                    VStack(spacing: 4) {
+                                        Text("profile.name")
+                                            .font(.title2.weight(.bold))
+                                        Text("profile.handle")
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+                                    }
+
+                                    Divider()
+
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundStyle(.green)
+                                        Text("home.subscribed")
+                                            .font(.subheadline.weight(.semibold))
+                                    }
                                 }
-
-                                HStack(spacing: 8) {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundStyle(.green)
-                                    Text("home.subscribed")
-                                        .font(.subheadline.weight(.semibold))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 18)
+                                .background(
+                                    LauncherPalette.surfaceGradient(colorScheme).opacity(0.78),
+                                    in: .rect(cornerRadius: 3)
+                                )
+                                .overlay {
+                                    Rectangle()
+                                        .stroke(.white.opacity(colorScheme == .dark ? 0.12 : 0.32), lineWidth: 1)
                                 }
+                                .shadow(color: .black.opacity(0.22), radius: 14, y: 5)
 
-                                Divider()
-
-                                Spacer(minLength: 12)
+                                Spacer(minLength: 20)
 
                                 GlassActionButton(action: prosekaLauncher.launch) {
                                     Label("proseka.launch", systemImage: "play.fill")
@@ -74,7 +89,7 @@ struct HomeView: View {
                                 .background(LauncherPalette.accentGradient(), in: .capsule)
                                 .tint(.white)
                             }
-                            .padding(.top, 12)
+                            .padding(.vertical, 4)
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         }
                     }

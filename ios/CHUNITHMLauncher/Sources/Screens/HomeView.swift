@@ -29,7 +29,7 @@ struct HomeView: View {
 
                 AdaptiveColumns(width: availableWidth,
                     leading: {
-                        ContentCard {
+                        ContentCard(fillsAvailableHeight: true) {
                             VStack(alignment: .leading, spacing: 12) {
                                 EventCarousel(state: state)
                                 Text("home.announcement")
@@ -37,10 +37,10 @@ struct HomeView: View {
                                     .foregroundStyle(.primary)
                             }
                         }
-                        .frame(maxWidth: .infinity, minHeight: 484, alignment: .topLeading)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
                     },
                     trailing: {
-                        ContentCard {
+                        ContentCard(fillsAvailableHeight: true) {
                             VStack(spacing: 18) {
                                 LocalImage("迪拉熊头像", contentMode: .fill)
                                     .frame(width: 118, height: 118)
@@ -65,6 +65,8 @@ struct HomeView: View {
 
                                 Divider()
 
+                                Spacer(minLength: 12)
+
                                 GlassActionButton(action: prosekaLauncher.launch) {
                                     Label("proseka.launch", systemImage: "play.fill")
                                         .frame(maxWidth: .infinity, minHeight: 48)
@@ -73,7 +75,7 @@ struct HomeView: View {
                                 .tint(.white)
                             }
                             .padding(.top, 12)
-                            .frame(maxWidth: .infinity, minHeight: 484, alignment: .top)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                         }
                     }
                 )

@@ -122,16 +122,28 @@ enum LauncherPalette {
 
 struct ContentCard<Content: View>: View {
     @Environment(\.colorScheme) private var scheme
+    let fillsAvailableHeight: Bool
     let content: Content
 
-    init(@ViewBuilder content: () -> Content) { self.content = content() }
+    init(fillsAvailableHeight: Bool = false, @ViewBuilder content: () -> Content) {
+        self.fillsAvailableHeight = fillsAvailableHeight
+        self.content = content()
+    }
 
     var body: some View {
-        content
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(LauncherPalette.surfaceGradient(scheme), in: .rect(cornerRadius: 24))
-            .animation(.easeInOut(duration: 0.35), value: scheme)
+        Group {
+            if fillsAvailableHeight {
+                content
+                    .padding(20)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            } else {
+                content
+                    .padding(20)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .background(LauncherPalette.surfaceGradient(scheme), in: .rect(cornerRadius: 24))
+        .animation(.easeInOut(duration: 0.35), value: scheme)
     }
 }
 
@@ -149,10 +161,11 @@ struct AdaptiveColumns<Leading: View, Trailing: View>: View {
 
     var body: some View {
         if width >= 780 && !typeSize.isAccessibilitySize {
-            HStack(alignment: .top, spacing: 24) {
-                leading.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            let trailingWidth = min(390, width * 0.38)
+            EqualHeightRow(trailingWidth: trailingWidth, spacing: 24) {
+                leading.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 trailing
-                    .frame(width: min(390, width * 0.38), alignment: .top)
+                    .frame(width: trailingWidth)
                     .frame(maxHeight: .infinity, alignment: .top)
             }
         } else {
@@ -161,6 +174,51 @@ struct AdaptiveColumns<Leading: View, Trailing: View>: View {
                 trailing.frame(maxWidth: .infinity, alignment: .leading)
             }
         }
+    }
+}
+
+private struct EqualHeightRow: Layout {
+    let trailingWidth: CGFloat
+    let spacing: CGFloat
+
+    func sizeThatFits(
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout Cache
+    ) -> CGSize {
+        guard subviews.count >= 2 else { return .zero }
+
+        let availableWidth = proposal.width ?? trailingWidth + spacing
+        let leadingWidth = max(0, availableWidth - trailingWidth - spacing)
+        let leadingSize = subviews[0].sizeThatFits(.init(width: leadingWidth, height: nil))
+        let trailingSize = subviews[1].sizeThatFits(.init(width: trailingWidth, height: nil))
+
+        return CGSize(
+            width: availableWidth,
+            height: max(leadingSize.height, trailingSize.height)
+        )
+    }
+
+    func placeSubviews(
+        in bounds: CGRect,
+        proposal: ProposedViewSize,
+        subviews: Subviews,
+        cache: inout Cache
+    ) {
+        guard subviews.count >= 2 else { return }
+
+        let leadingWidth = max(0, bounds.width - trailingWidth - spacing)
+        let rowProposal = ProposedViewSize(width: leadingWidth, height: bounds.height)
+        subviews[0].place(
+            at: CGPoint(x: bounds.minX, y: bounds.minY),
+            anchor: .topLeading,
+            proposal: rowProposal
+        )
+        subviews[1].place(
+            at: CGPoint(x: bounds.maxX - trailingWidth, y: bounds.minY),
+            anchor: .topLeading,
+            proposal: ProposedViewSize(width: trailingWidth, height: bounds.height)
+        )
     }
 }
 

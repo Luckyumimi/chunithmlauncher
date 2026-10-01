@@ -72,17 +72,18 @@ private struct TabContentView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         if tabBarPlacement == .topBar {
-                            GlassCircleButton {
-                                state.isSettingsPresented = true
-                            } label: {
-                                Image(systemName: "gearshape.fill")
+                            GlassEffectContainer(spacing: 0) {
+                                HStack(spacing: 12) {
+                                    GlassCircleButton {
+                                        state.isSettingsPresented = true
+                                    } label: {
+                                        Image(systemName: "gearshape.fill")
+                                    }
+                                    .accessibilityLabel("nav.settings")
+
+                                    CheckinToolbarButton()
+                                }
                             }
-                            .accessibilityLabel("nav.settings")
-                        }
-                    }
-                    ToolbarItem(placement: .topBarLeading) {
-                        if tabBarPlacement == .topBar {
-                            CheckinToolbarButton()
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {

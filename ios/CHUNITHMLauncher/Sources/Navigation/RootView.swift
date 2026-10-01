@@ -17,47 +17,15 @@ struct RootView: View {
         TabView(selection: $state.selectedSection) {
             ForEach(LauncherSection.allCases) { section in
                 Tab(section.titleKey, systemImage: section.systemImage, value: section) {
-                    NavigationStack {
-                        GeometryReader { proxy in
-                            destination(for: section, width: proxy.size.width)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                        }
-                        .toolbar {
-                            ToolbarItemGroup(placement: .topBarLeading) {
-                                Button {
-                                    state.selectedSection = .settings
-                                } label: {
-                                    Image(systemName: "gearshape.fill")
-                                }
-                                .accessibilityLabel("nav.settings")
-
-                                CheckinToolbarButton()
-                            }
-                            ToolbarItem(placement: .topBarTrailing) {
-                                NavigationLink {
-                                    ProfileView(state: state)
-                                } label: {
-                                    LocalImage("迪拉熊头像", contentMode: .fill)
-                                        .frame(width: 34, height: 34)
-                                        .clipShape(Circle())
-                                }
-                                .buttonStyle(.glass)
-                                .accessibilityLabel("profile.title")
-                            }
-                        }
-                    }
-                    .background(LauncherPalette.backgroundGradient(colorScheme ?? systemColorScheme).ignoresSafeArea())
+                    TabContentView(section: section, state: state)
                 }
             }
         }
         .tabViewStyle(.sidebarAdaptable)
-        .contentToolbar(for: .tabViewSidebar) {
-            Button {
-                state.selectedSection = .settings
-            } label: {
-                Image(systemName: "gearshape.fill")
+        .tabViewSidebarHeader {
+            SidebarHeader {
+                state.isSettingsPresented = true
             }
-            .accessibilityLabel("nav.settings")
         }
         .tabViewSidebarBottomBar {
             SidebarCheckinCard()
@@ -67,6 +35,66 @@ struct RootView: View {
         .environment(\.locale, locale ?? Locale.current)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: appearanceMode)
         .animation(reduceMotion ? nil : .snappy, value: state.selectedSection)
+        .sheet(isPresented: $state.isProfilePresented) {
+            NavigationStack {
+                ProfileView()
+            }
+        }
+        .sheet(isPresented: $state.isSettingsPresented) {
+            NavigationStack {
+                SettingsView()
+            }
+        }
+        .onChange(of: state.selectedSection) { _, _ in
+            state.isProfilePresented = false
+            state.isSettingsPresented = false
+        }
+    }
+
+}
+
+private struct TabContentView: View {
+    let section: LauncherSection
+    @ObservedObject var state: AppState
+    @Environment(\.tabBarPlacement) private var tabBarPlacement
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        ZStack {
+            LauncherPalette.backgroundGradient(colorScheme)
+                .ignoresSafeArea()
+
+            NavigationStack {
+                GeometryReader { proxy in
+                    destination(for: section, width: proxy.size.width)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
+                .toolbar {
+                    ToolbarItemGroup(placement: .topBarLeading) {
+                        if tabBarPlacement == .topBar {
+                            Button {
+                            state.isSettingsPresented = true
+                            } label: {
+                                Image(systemName: "gearshape.fill")
+                            }
+                            .accessibilityLabel("nav.settings")
+                            CheckinToolbarButton()
+                        }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            state.isProfilePresented = true
+                        } label: {
+                            LocalImage("迪拉熊头像", contentMode: .fill)
+                                .frame(width: 38, height: 38)
+                                .clipShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("profile.title")
+                    }
+                }
+            }
+        }
     }
 
     @ViewBuilder
@@ -78,8 +106,26 @@ struct RootView: View {
         case .shop: ShopView(state: state)
         case .friends: FriendsView(state: state)
         case .aime: AimeView(state: state)
-        case .settings: SettingsView()
         }
+    }
+}
+
+private struct SidebarHeader: View {
+    let onSettings: () -> Void
+
+    var body: some View {
+        HStack {
+            Button(action: onSettings) {
+                Image(systemName: "gearshape.fill")
+                    .frame(width: 36, height: 36)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("nav.settings")
+            Spacer()
+        }
+        .padding(.horizontal, 14)
+        .padding(.top, 8)
+        .padding(.bottom, 4)
     }
 }
 
@@ -92,8 +138,10 @@ private struct CheckinToolbarButton: View {
         } label: {
             Label(
                 LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"),
-                systemImage: checkedIn ? "checkmark.circle.fill" : "checkmark.seal"
+                systemImage: checkedIn ? "calendar.badge.checkmark" : "calendar.badge.plus"
             )
+            .labelStyle(.titleAndIcon)
+            .fixedSize(horizontal: true, vertical: false)
         }
         .accessibilityLabel(LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"))
     }
@@ -128,7 +176,6 @@ private struct SidebarCheckinCard: View {
 }
 
 private struct ProfileView: View {
-    @ObservedObject var state: AppState
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {

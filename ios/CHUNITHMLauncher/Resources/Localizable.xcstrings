@@ -483,7 +483,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "Welcome to CHUNITHM!"
+            "value": "欢迎来到CHUNITHM！"
           }
         },
         "ja": {
@@ -657,6 +657,18 @@
             "value": "Bereit"
           }
         }
+      }
+    },
+    "home.subscribed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Subscribed"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "已订阅"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "購読済み"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "구독됨"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Abonné"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Suscrito"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Abonniert"}}
       }
     },
     "home.latest": {
@@ -1176,6 +1188,18 @@
         }
       }
     },
+    "event.doki.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "Today, 9/22 (Tue), is Monika’s birthday!\nTo celebrate, we are holding a Doki Doki Literature Club! collaboration.\nYour Reality (Kenji Mizuno Remix) arrives on 9/25 (Fri).\nEarn characters, nameplates and stage backgrounds during the event!"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "今天9/22（周二）是莫妮卡的生日！\n为了纪念生日，将举办《心跳文学部！》联动活动！\n9/25（周五）起，「Your Reality (Kenji Mizuno Remix)」将登场！\n活动期间可获得《心跳文学部！》的角色、名牌以及舞台背景！"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "今日は9/22(火)、モニカの誕生日です！\n誕生日を記念して、「ドキドキ文芸部！」コラボイベントを開催します！\n9/25(金)から「Your Reality (Kenji Mizuno Remix)」が登場！\nイベント期間中にキャラクター、ネームプレート、背景を獲得できます！"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "오늘 9/22(화)는 모니카의 생일입니다!\n생일을 기념해 「두근두근 문예부!」 콜라보 이벤트를 개최합니다!\n9/25(금)부터 「Your Reality (Kenji Mizuno Remix)」가 등장합니다!\n이벤트 기간 동안 캐릭터와 명찰, 스테이지 배경을 획득할 수 있습니다!"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Le 22/9 (mar.) est l’anniversaire de Monika !\nPour le célébrer, une collaboration Doki Doki Literature Club ! est organisée.\n« Your Reality (Kenji Mizuno Remix) » arrive le 25/9 (ven.).\nObtenez des personnages, des plaques et des arrière-plans de scène !"}},
+        "es": {"stringUnit": {"state": "translated", "value": "¡Hoy, 22/9 (mar.), es el cumpleaños de Monika!\nPara celebrarlo, organizamos una colaboración de Doki Doki Literature Club.\n« Your Reality (Kenji Mizuno Remix) » llegará el 25/9 (vie.).\nConsigue personajes, placas de nombre y fondos de escenario durante el evento."}},
+        "de": {"stringUnit": {"state": "translated", "value": "Am 22.9. (Di.) hat Monika Geburtstag!\nZu diesem Anlass findet eine Kooperation mit Doki Doki Literature Club! statt.\n„Your Reality (Kenji Mizuno Remix)“ erscheint am 25.9. (Fr.).\nWährend des Events kannst du Charaktere, Namensschilder und Bühnenhintergründe erhalten!"}}
+      }
+    },
     "event.doki.body": {
       "extractionState": "manual",
       "localizations": {
@@ -1270,6 +1294,18 @@
         }
       }
     },
+    "event.songs.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "From 9/25 (Fri), LaVI-Bavellabion joins POPS & ANIME and 奇々解体 joins VARIETY.\nThe popular きゅうくらりん also gets an ULTIMA chart.\nCome and try them!"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "从9/25（周五）起，POPS＆ANIME中「LaVI-Bavellabion」，VARIETY中「奇々解体」将在CHUNITHM登场！\n此外，大受欢迎的曲目「きゅうくらりん」将以「ULTIMA」强化版登场哦！\n一定要来玩玩看呢！"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "9/25(金)から、POPS＆ANIMEに「LaVI-Bavellabion」、VARIETYに「奇々解体」がCHUNITHMに登場！\nさらに「きゅうくらりん」が「ULTIMA」譜面で登場します！\nぜひ遊んでみてください！"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "9/25(금)부터 POPS＆ANIME에 「LaVI-Bavellabion」, VARIETY에 「奇々解体」가 CHUNITHM에 등장합니다!\n인기 곡 「きゅうくらりん」도 ULTIMA 채보로 추가됩니다!\n꼭 플레이해 보세요!"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "À partir du 25/9 (ven.), LaVI-Bavellabion arrive dans POPS & ANIME et 奇々解体 dans VARIETY sur CHUNITHM.\nLe morceau populaire きゅうくらりん reçoit aussi un chart ULTIMA.\nVenez les essayer !"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Desde el 25/9 (vie.), LaVI-Bavellabion llegará a POPS & ANIME y 奇々解体 a VARIETY en CHUNITHM.\nLa popular きゅうくらりん también tendrá una chart ULTIMA.\n¡Ven a probarlas!"}},
+        "de": {"stringUnit": {"state": "translated", "value": "Ab dem 25.9. (Fr.) erscheinen LaVI-Bavellabion in POPS & ANIME und 奇々解体 in VARIETY in CHUNITHM.\nDer beliebte Song きゅうくらりん erhält außerdem einen ULTIMA-Chart.\nKomm und probiere sie aus!"}}
+      }
+    },
     "event.songs.body": {
       "extractionState": "manual",
       "localizations": {
@@ -1362,6 +1398,18 @@
             "value": "Ergebnisse des Kaiser-Events"
           }
         }
+      }
+    },
+    "event.emperor.detail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {"stringUnit": {"state": "translated", "value": "The top players from the 9th Emperor Event, held from 9/10 (Thu) to 9/13 (Sun), have been announced.\nTitles have already been awarded.\nThe official leaderboard has been updated!"}},
+        "zh-Hans": {"stringUnit": {"state": "translated", "value": "9/10（周四）～9/13（周日）举办的「第9回 皇帝活动」中排名靠前的用户大公布！\n※称号已发放完毕。\n官方站点的排行榜页面已更新！"}},
+        "ja": {"stringUnit": {"state": "translated", "value": "9/10(木)～9/13(日)に開催された「第9回皇帝イベント」の上位プレイヤーを発表！\n※称号は配布済みです。\n公式サイトのランキングページを更新しました！"}},
+        "ko": {"stringUnit": {"state": "translated", "value": "9/10(목)～9/13(일)에 개최된 제9회 황제 이벤트 상위 플레이어를 발표합니다!\n칭호는 이미 지급되었습니다.\n공식 사이트의 랭킹 페이지가 업데이트되었습니다!"}},
+        "fr": {"stringUnit": {"state": "translated", "value": "Voici les meilleurs joueurs du 9e événement Empereur, organisé du 10/9 au 13/9.\nLes titres ont déjà été distribués.\nLa page du classement officiel a été mise à jour !"}},
+        "es": {"stringUnit": {"state": "translated", "value": "Estos son los mejores jugadores del 9.º evento Emperador, celebrado del 10/9 al 13/9.\nLos títulos ya se han entregado.\nLa clasificación oficial se ha actualizado."}},
+        "de": {"stringUnit": {"state": "translated", "value": "Die besten Spieler des 9. Kaiser-Events vom 10.9. bis 13.9. stehen fest.\nDie Titel wurden bereits vergeben.\nDie offizielle Rangliste wurde aktualisiert!"}}
       }
     },
     "event.emperor.body": {

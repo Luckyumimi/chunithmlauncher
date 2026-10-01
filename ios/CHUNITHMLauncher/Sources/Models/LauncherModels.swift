@@ -14,6 +14,7 @@ struct LauncherEvent: Codable, Identifiable {
     let date: String
     let titleKey: String
     let bodyKey: String
+    let detailKey: String?
     let imageName: String
     let tags: [String]
 }
@@ -51,7 +52,7 @@ struct AimeStep: Codable, Identifiable {
 }
 
 enum LauncherSection: String, CaseIterable, Hashable, Identifiable {
-    case home, activities, rating, shop, friends, aime, settings
+    case home, activities, rating, shop, friends, aime
 
     var id: String { rawValue }
 
@@ -63,7 +64,6 @@ enum LauncherSection: String, CaseIterable, Hashable, Identifiable {
         case .shop: return "nav.shop"
         case .friends: return "nav.friends"
         case .aime: return "nav.aime"
-        case .settings: return "nav.settings"
         }
     }
 
@@ -75,7 +75,6 @@ enum LauncherSection: String, CaseIterable, Hashable, Identifiable {
         case .shop: return "bag.fill"
         case .friends: return "person.2.fill"
         case .aime: return "wave.3.right.circle"
-        case .settings: return "gearshape.fill"
         }
     }
 }

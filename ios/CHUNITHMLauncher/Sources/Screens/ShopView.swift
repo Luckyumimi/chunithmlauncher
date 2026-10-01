@@ -16,7 +16,7 @@ struct ShopView: View {
                             Button {
                                 withAnimation(.snappy) { filter = value }
                             } label: {
-                                Text(LocalizedStringKey("shop.filter.\(value)"))
+                                Text(filterTitleKey(value))
                                     .font(.subheadline.weight(.semibold))
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 9)
@@ -44,5 +44,14 @@ struct ShopView: View {
             .padding(28)
         }
         .navigationTitle("nav.shop")
+    }
+
+    private func filterTitleKey(_ value: String) -> LocalizedStringKey {
+        switch value {
+        case "badge": return "shop.filter.badge"
+        case "clothing": return "shop.filter.clothing"
+        case "desk": return "shop.filter.desk"
+        default: return "shop.filter.all"
+        }
     }
 }

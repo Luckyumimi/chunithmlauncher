@@ -75,7 +75,7 @@ struct FriendsView: View {
                     TextField("friends.search", text: $query)
                 }
                 .padding(12)
-                .background(LauncherPalette.surfaceGradient(colorScheme), in: .rect(cornerRadius: 14))
+                .glassEffect(.regular, in: .rect(cornerRadius: 14))
                 .animation(.easeInOut(duration: 0.35), value: colorScheme)
                 ForEach(filteredFriends) { friend in
                     HStack(spacing: 12) {

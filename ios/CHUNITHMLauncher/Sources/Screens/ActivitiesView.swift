@@ -23,7 +23,7 @@ struct ActivitiesView: View {
                             }
                         }
                     }
-                    .frame(maxWidth: .infinity, minHeight: 300, alignment: .topLeading)
+                    .frame(maxWidth: .infinity, minHeight: 620, alignment: .topLeading)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -58,8 +58,11 @@ struct ActivitiesView: View {
                         .background(.secondary.opacity(0.12), in: .capsule)
                 }
             }
-            GlassActionButton(action: { detailEvent = event }) {
-                Label("activities.detail", systemImage: "arrow.up.right")
+            HStack {
+                Spacer()
+                GlassActionButton(action: { detailEvent = event }) {
+                    Label("activities.detail", systemImage: "arrow.up.right")
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -76,7 +79,7 @@ private struct ActivityDetailView: View {
                     .frame(maxWidth: .infinity, maxHeight: 320)
                     .clipShape(.rect(cornerRadius: 20))
                 Text(LocalizedStringKey(event.titleKey)).font(.title.bold())
-                Text(LocalizedStringKey(event.bodyKey)).foregroundStyle(.secondary)
+                Text(LocalizedStringKey(event.detailKey ?? event.bodyKey)).foregroundStyle(.secondary)
                 Spacer()
             }
             .padding(24)

@@ -9,7 +9,7 @@ struct TopChrome: View {
         ScrollView(.horizontal, showsIndicators: false) {
             GlassEffectContainer(spacing: 12) {
                 HStack(spacing: 8) {
-                    Label("status.ready", systemImage: "circle.fill")
+                    Label("home.subscribed", systemImage: "circle.fill")
                         .foregroundStyle(.green)
                         .fixedSize(horizontal: true, vertical: false)
                         .frame(minHeight: 34)

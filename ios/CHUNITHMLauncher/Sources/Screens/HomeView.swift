@@ -20,7 +20,6 @@ struct HomeView: View {
                     VStack(alignment: .leading, spacing: 5) {
                         welcomeTitle
                             .font(.largeTitle.weight(.bold))
-                        Text("home.subtitle").foregroundStyle(.secondary)
                     }
                     Spacer()
                     TopChrome()
@@ -28,7 +27,7 @@ struct HomeView: View {
 
                 AdaptiveColumns(width: availableWidth,
                     leading: {
-                        GlassCard {
+                        ContentCard {
                             VStack(alignment: .leading, spacing: 12) {
                                 EventCarousel(state: state)
                                 Text("home.announcement")
@@ -36,6 +35,7 @@ struct HomeView: View {
                                     .foregroundStyle(.primary)
                             }
                         }
+                        .frame(maxWidth: .infinity, minHeight: 620, alignment: .topLeading)
                     },
                     trailing: {
                         ContentCard {
@@ -57,11 +57,13 @@ struct HomeView: View {
                                 HStack(spacing: 8) {
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundStyle(.green)
-                                    Text("home.ready")
+                                    Text("home.subscribed")
                                         .font(.subheadline.weight(.semibold))
                                 }
 
                                 Divider()
+
+                                Spacer(minLength: 0)
 
                                 GlassActionButton(action: prosekaLauncher.launch) {
                                     Label("proseka.launch", systemImage: "play.fill")
@@ -70,7 +72,8 @@ struct HomeView: View {
                                 .background(LauncherPalette.accentGradient(), in: .capsule)
                                 .tint(.white)
                             }
-                            .frame(maxWidth: .infinity, minHeight: 480, alignment: .top)
+                            .padding(.top, 12)
+                            .frame(maxWidth: .infinity, minHeight: 620, alignment: .top)
                         }
                     }
                 )

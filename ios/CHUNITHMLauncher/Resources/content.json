@@ -5,6 +5,7 @@
       "date": "09.25 — 10.06",
       "titleKey": "event.doki.title",
       "bodyKey": "event.doki.body",
+      "detailKey": "event.doki.detail",
       "imageName": "event-doki",
       "tags": [
         "event.tag.character",
@@ -17,6 +18,7 @@
       "date": "09.25",
       "titleKey": "event.songs.title",
       "bodyKey": "event.songs.body",
+      "detailKey": "event.songs.detail",
       "imageName": "event-songs",
       "tags": [
         "event.tag.music",
@@ -28,6 +30,7 @@
       "date": "09.18 — 09.30",
       "titleKey": "event.emperor.title",
       "bodyKey": "event.emperor.body",
+      "detailKey": "event.emperor.detail",
       "imageName": "event-emperor",
       "tags": [
         "event.tag.event",

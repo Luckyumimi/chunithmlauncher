@@ -94,7 +94,7 @@ enum LauncherPalette {
     static func backgroundGradient(_ scheme: ColorScheme) -> LinearGradient {
         LinearGradient(
             colors: scheme == .dark
-                ? [Color(hex: "111317"), Color(hex: "252831")]
+                ? [Color(hex: "181b21"), Color(hex: "181b21")]
                 : [Color(hex: "f8f7fb"), Color(hex: "e4e2eb")],
             startPoint: .topLeading,
             endPoint: .bottomTrailing

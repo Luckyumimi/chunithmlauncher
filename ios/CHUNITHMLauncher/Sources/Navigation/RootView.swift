@@ -117,14 +117,19 @@ private struct TabContentView: View {
 
 private struct SidebarHeader: View {
     let onSettings: () -> Void
+    @Environment(\.tabBarPlacement) private var tabBarPlacement
 
     var body: some View {
-        HStack {
-            Spacer(minLength: 0)
-            GlassCircleButton(action: onSettings) {
-                Image(systemName: "gearshape.fill")
+        Group {
+            if tabBarPlacement == .sidebar {
+                HStack {
+                    GlassCircleButton(action: onSettings) {
+                        Image(systemName: "gearshape.fill")
+                    }
+                    .accessibilityLabel("nav.settings")
+                    Spacer(minLength: 0)
+                }
             }
-            .accessibilityLabel("nav.settings")
         }
         .padding(.horizontal, 14)
         .padding(.top, 8)

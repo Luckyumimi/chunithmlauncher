@@ -112,9 +112,11 @@ jobs:
           codesign -dv build/Payload/CHUNITHMLauncher.app 2>&1 || true
           shasum -a 256 build/CHUNITHMLauncher-iPadOS27-unsigned.ipa
 
-      - name: Upload single unsigned IPA artifact
+      - name: Upload unsigned iPadOS artifact
         uses: actions/upload-artifact@v4
         with:
           name: ChunithmLauncher-iPadOS27-unsigned
-          path: build/CHUNITHMLauncher-iPadOS27-unsigned.ipa
+          path: |
+            build/CHUNITHMLauncher-iPadOS27-unsigned.ipa
+            build/build-manifest.json
           if-no-files-found: error

@@ -59,8 +59,6 @@ struct HomeView: View {
                                             .foregroundStyle(.secondary)
                                     }
 
-                                    Divider()
-
                                     HStack(spacing: 8) {
                                         Image(systemName: "checkmark.circle.fill")
                                             .foregroundStyle(.green)
@@ -70,15 +68,6 @@ struct HomeView: View {
                                 }
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 18)
-                                .background(
-                                    LauncherPalette.surfaceGradient(colorScheme).opacity(0.78),
-                                    in: .rect(cornerRadius: 3)
-                                )
-                                .overlay {
-                                    Rectangle()
-                                        .stroke(.white.opacity(colorScheme == .dark ? 0.12 : 0.32), lineWidth: 1)
-                                }
-                                .shadow(color: .black.opacity(0.22), radius: 14, y: 5)
 
                                 Spacer(minLength: 20)
 

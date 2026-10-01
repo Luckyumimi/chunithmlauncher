@@ -22,13 +22,13 @@ struct RootView: View {
             }
         }
         .tabViewStyle(.sidebarAdaptable)
-        .tabViewSidebarHeader {
-            SidebarHeader {
-                state.isSettingsPresented = true
-            }
-        }
         .tabViewSidebarBottomBar {
-            SidebarCheckinCard()
+            VStack(alignment: .leading, spacing: 8) {
+                SidebarCheckinCard()
+                SidebarSettingsButton {
+                    state.isSettingsPresented = true
+                }
+            }
         }
         .tint(Color(hex: themeColorHex))
         .preferredColorScheme(colorScheme)
@@ -104,7 +104,7 @@ private struct TabContentView: View {
     }
 }
 
-private struct SidebarHeader: View {
+private struct SidebarSettingsButton: View {
     let onSettings: () -> Void
 
     var body: some View {
@@ -116,8 +116,7 @@ private struct SidebarHeader: View {
             Spacer(minLength: 0)
         }
         .padding(.horizontal, 14)
-        .padding(.top, 8)
-        .padding(.bottom, 4)
+        .padding(.bottom, 8)
     }
 }
 
@@ -125,14 +124,14 @@ private struct CheckinToolbarButton: View {
     @AppStorage("checkedInToday") private var checkedIn = false
 
     var body: some View {
-        GlassActionButton(minHeight: 40, horizontalPadding: 14) {
+        Button {
             checkedIn = true
         } label: {
-            HStack(spacing: 7) {
-                Image(systemName: checkedIn ? "calendar.badge.checkmark" : "calendar.badge.plus")
-                Text(LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"))
-            }
-            .fixedSize(horizontal: true, vertical: false)
+            Label(
+                LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"),
+                systemImage: checkedIn ? "calendar.badge.checkmark" : "calendar.badge.plus"
+            )
+            .font(.headline)
         }
         .accessibilityLabel(LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"))
     }

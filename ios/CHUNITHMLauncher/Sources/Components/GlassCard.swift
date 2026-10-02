@@ -161,7 +161,7 @@ struct AdaptiveColumns<Leading: View, Trailing: View>: View {
 
     var body: some View {
         if width >= 780 && !typeSize.isAccessibilitySize {
-            let trailingWidth = min(390, width * 0.38)
+            let trailingWidth = min(350, width * 0.34)
             EqualHeightRow(trailingWidth: trailingWidth, spacing: 24) {
                 leading.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 trailing

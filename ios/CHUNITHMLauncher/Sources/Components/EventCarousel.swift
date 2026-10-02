@@ -26,12 +26,12 @@ struct EventCarousel: View {
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.secondary)
                 }
+                .frame(maxWidth: .infinity, alignment: .topLeading)
                 .tag(event.id)
                 .padding(.horizontal, 4)
             }
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 410)
+        .frame(maxWidth: .infinity, minHeight: 410, alignment: .top)
         .tabViewStyle(.page(indexDisplayMode: .automatic))
         .transaction { transaction in
             if reduceMotion { transaction.animation = nil }

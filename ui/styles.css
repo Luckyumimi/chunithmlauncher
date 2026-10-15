@@ -687,6 +687,8 @@ body:not(.dark-mode) .modal-card.settings .app-button:not(.primary):hover { back
 /* A solid inset backs the placeholder caption on every gradient. */
 .product-art { position: relative; isolation: isolate; color: #ffffff !important; font-weight: 700; }
 .product-art::before { content: ''; position: absolute; z-index: -1; inset: calc(50% - 30px) calc(50% - 66px); border-radius: 14px; background: #332f3c; }
+.fortune-card { overflow: hidden; }
+.fortune-card > * { flex-shrink: 0; }
 .checkin-success { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, #5caa74 18%, var(--paper)); color: var(--ink); font-size: 13px; font-weight: 700; }
 .checkin-success.save-error { background: color-mix(in srgb, #bc5861 20%, var(--paper)); }
 .page #btnCheckin.checked-in { background: color-mix(in srgb, #5caa74 24%, var(--paper)); color: var(--ink); cursor: default; opacity: 1; }

@@ -2129,19 +2129,60 @@ function selectWorkspace(view) {
   document.querySelector('.view-stack')?.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function applyShopFilter(category = 'all') {
+// Keep one animation per element so rapid interactions always settle on the latest state.
+const communityAnimations = new Map();
+const communityMotionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+function stopCommunityTransition(element) {
+  communityAnimations.get(element)?.cancel();
+  communityAnimations.delete(element);
+}
+function animateCommunityElement(element, keyframes, options = {}) {
+  stopCommunityTransition(element);
+  if (communityMotionPreference.matches || !element?.getClientRects().length || typeof element.animate !== 'function') return Promise.resolve();
+  const animation = element.animate(keyframes, { duration: 280, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both', ...options });
+  communityAnimations.set(element, animation);
+  return animation.finished.catch(() => {}).finally(() => {
+    if (communityAnimations.get(element) === animation) communityAnimations.delete(element);
+    animation.cancel();
+  });
+}
+communityMotionPreference.addEventListener('change', event => {
+  if (event.matches) {
+    communityAnimations.forEach(animation => animation.cancel());
+    communityAnimations.clear();
+  }
+});
+let shopFilterRevision = 0;
+async function applyShopFilter(category = 'all', { animate = false } = {}) {
+  const grid = byId('shopProductGrid');
   const chips = document.querySelectorAll('[data-shop-filter]');
-  const cards = document.querySelectorAll('#shopProductGrid .product-card');
-  let visible = 0;
+  const cards = grid.querySelectorAll('.product-card');
+  if (animate && document.querySelector('[data-shop-filter].active')?.dataset.shopFilter === category) return;
+  const revision = ++shopFilterRevision;
   chips.forEach(chip => {
     const active = chip.dataset.shopFilter === category;
     chip.classList.toggle('active', active);
     chip.setAttribute('aria-pressed', String(active));
   });
+  const shouldAnimate = animate && !communityMotionPreference.matches && grid.getClientRects().length > 0;
+  if (shouldAnimate) {
+    grid.setAttribute('aria-busy', 'true');
+    await animateCommunityElement(grid, [{ opacity: getComputedStyle(grid).opacity }, { opacity: 0 }], { duration: 100, easing: 'ease-out' });
+    if (revision !== shopFilterRevision) return;
+  } else stopCommunityTransition(grid);
+  let visible = 0;
   cards.forEach(card => {
+    stopCommunityTransition(card);
     card.hidden = category !== 'all' && card.dataset.shopCategory !== category;
-    if (!card.hidden) visible += 1;
+    if (!card.hidden) {
+      if (shouldAnimate) animateCommunityElement(card, [
+        { opacity: 0, transform: 'translateY(12px) scale(.985)' },
+        { opacity: 1, transform: 'translateY(0) scale(1)' }
+      ], { delay: Math.min(visible, 6) * 22 });
+      visible += 1;
+    }
   });
+  grid.removeAttribute('aria-busy');
   byId('shopResultCount').textContent = visible + ' / ' + cards.length + ' ' + t('shopItems');
 }
 
@@ -2212,17 +2253,36 @@ function performCheckin() {
   if (dates.includes(today)) { renderCheckin(); return; }
   try {
     localStorage.setItem(checkinStorageKey, JSON.stringify([...dates, today].sort()));
-    renderCheckin();
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      byId('checkinSuccess').animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, easing: 'ease-out' });
-    }
   } catch {
     const message = byId('checkinSuccess');
     message.hidden = false;
     message.classList.add('save-error');
     message.textContent = t('checkinError');
+    return;
   }
+  const fortuneCard = byId('btnCheckin').closest('.fortune-card');
+  const previousHeight = fortuneCard.getBoundingClientRect().height;
+  renderCheckin();
+  animateCommunityElement(fortuneCard, [
+    { height: previousHeight + 'px' },
+    { height: fortuneCard.getBoundingClientRect().height + 'px' }
+  ], { duration: 340 });
+  [byId('checkinFortune'), byId('checkinFortuneBody'), byId('checkinSuccess'), byId('checkinStreak'), byId('checkinSummary')].forEach((element, index) => {
+    animateCommunityElement(element, [
+      { opacity: 0, transform: 'translateY(10px)' },
+      { opacity: 1, transform: 'translateY(0)' }
+    ], { delay: index * 35, duration: 340 });
+  });
+  animateCommunityElement(byId('btnCheckin'), [
+    { transform: 'scale(.96)' }, { transform: 'scale(1)' }
+  ]);
+  animateCommunityElement(document.querySelector('#checkinDays .today'), [
+    { transform: 'scale(.8)', opacity: .4 },
+    { transform: 'scale(1.12)', opacity: 1, offset: .65 },
+    { transform: 'scale(1)', opacity: 1 }
+  ], { delay: 100, duration: 380 });
 }
+
 let checkinRefreshTimer;
 function scheduleCheckinRefresh() {
   clearTimeout(checkinRefreshTimer);
@@ -2230,19 +2290,37 @@ function scheduleCheckinRefresh() {
   const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
   checkinRefreshTimer = setTimeout(() => { renderCheckin(); scheduleCheckinRefresh(); }, midnight.getTime() - now.getTime() + 100);
 }
-function toggleMiraProfile(visible) {
+let miraProfileRevision = 0;
+let miraProfileTarget = false;
+async function toggleMiraProfile(visible) {
+  if (miraProfileTarget === visible) return;
+  miraProfileTarget = visible;
+  const revision = ++miraProfileRevision;
   const modal = byId('miraProfile');
-  modal.hidden = !visible;
-  document.querySelector('.launcher-shell').inert = visible;
-  if (visible) byId('btnCloseMiraProfile').focus();
-  else byId('btnMiraProfile').focus();
+  const card = modal.querySelector('.profile-popover-card');
+  const wasHidden = modal.hidden;
+  const opacity = wasHidden ? 0 : getComputedStyle(modal).opacity;
+  const transform = wasHidden ? 'translateY(18px) scale(.96)' : getComputedStyle(card).transform;
+  modal.hidden = false;
+  document.querySelector('.launcher-shell').inert = true;
+  if (visible) byId('btnCloseMiraProfile').focus({ preventScroll: true });
+  await Promise.all([
+    animateCommunityElement(modal, [{ opacity }, { opacity: visible ? 1 : 0 }], { duration: visible ? 240 : 180 }),
+    animateCommunityElement(card, [{ transform }, { transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(.97)' }], { duration: visible ? 320 : 180 })
+  ]);
+  if (revision !== miraProfileRevision) return;
+  if (!visible) {
+    modal.hidden = true;
+    document.querySelector('.launcher-shell').inert = false;
+    byId('btnMiraProfile').focus({ preventScroll: true });
+  }
 }
 
 document.addEventListener('click', event => {
   const link = event.target.closest('[data-view]');
   if (link) { event.preventDefault(); selectWorkspace(link.dataset.view); }
   const chip = event.target.closest('[data-shop-filter]');
-  if (chip) applyShopFilter(chip.dataset.shopFilter || 'all');
+  if (chip) applyShopFilter(chip.dataset.shopFilter || 'all', { animate: true });
   const tab = event.target.closest('.news-tabs button');
   if (tab) tab.parentElement?.querySelectorAll('button').forEach(item => item.classList.toggle('active', item === tab));
 });

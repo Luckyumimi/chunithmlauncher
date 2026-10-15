@@ -2112,7 +2112,7 @@ function applyTranslations() {
   setTranslatedText('.community-heading h2', 'communityTitle');
   setTranslatedText('.community-heading p', 'communitySubtitle');
   setTranslatedText('.community-composer label', 'communityComposerLabel');
-  setTranslatedText('#communityComposer button', 'communityPublish');
+  setTranslatedText('#btnCommunityPublish', 'communityPublish');
   setTranslatedText('.community-topic-card .eyebrow', 'communityHotEyebrow');
   setTranslatedText('.community-topic-card h3', 'communityHotTitle');
   setTranslatedText('.community-stats-card .eyebrow', 'communityPulse');

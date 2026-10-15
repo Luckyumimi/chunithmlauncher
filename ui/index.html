@@ -341,12 +341,21 @@
 <form class="community-composer" id="communityComposer">
 <div class="community-composer-avatar" aria-hidden="true">我</div>
 <label class="visually-hidden" for="communityPostInput" data-i18n="communityComposerLabel">发布社区动态</label>
-<input id="communityPostInput" maxlength="120" placeholder="分享一条动态..." data-i18n-placeholder="communityComposerPlaceholder" />
-<select id="communityPostType" aria-label="动态类型" data-i18n-aria="communityPostType">
-<option value="topic" data-i18n="communityTopics">话题</option>
-<option value="score" data-i18n="communityScores">成绩</option>
-<option value="event" data-i18n="communityEvents">活动</option>
+<div class="field-shell community-composer-field"><input id="communityPostInput" maxlength="120" placeholder="分享一条动态..." data-i18n-placeholder="communityComposerPlaceholder" /></div>
+<div class="display-picker community-type-picker" id="communityPostTypeDropdown">
+<button type="button" class="display-picker-trigger" id="communityPostTypeTrigger" aria-haspopup="listbox" aria-expanded="false">
+<span id="communityPostTypeValue">话题</span>
+<span class="display-picker-chevron" aria-hidden="true"></span>
+</button>
+<div class="display-picker-panel" id="communityPostTypePanel" role="listbox">
+<div class="display-picker-options" id="communityPostTypeOptions"></div>
+</div>
+<select id="communityPostType" class="visually-hidden" tabindex="-1" aria-hidden="true">
+<option value="topic">话题</option>
+<option value="score">成绩</option>
+<option value="event">活动</option>
 </select>
+</div>
 <button class="app-button compact primary" type="submit" data-i18n="communityPublish">发布</button>
 </form>
 <div class="community-feed" id="communityFeed" aria-live="polite"></div>

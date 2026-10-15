@@ -2119,8 +2119,10 @@ function applyTranslations() {
   setTranslatedText('.community-stats-card p', 'communityMembers');
   setTranslatedAttribute('.community-filters', 'aria-label', 'communityFilter');
   setTranslatedAttribute('#communityPostType', 'aria-label', 'communityPostType');
+  setTranslatedAttribute('#communityPostTypeTrigger', 'aria-label', 'communityPostType');
   const communityInput = byId('communityPostInput');
   if (communityInput) communityInput.placeholder = t('communityComposerPlaceholder');
+  syncCommunityPostType();
   setTranslatedText('.friends-panel h3', 'onlineFriends');
   setTranslatedText('.friends-count', 'onlineCount');
   setTranslatedText('#friendSearchForm button', 'addFriend');
@@ -2864,6 +2866,54 @@ function setLanguageDropdownOpen(open) {
   if (open) requestAnimationFrame(positionLanguageDropdown);
 }
 
+function syncCommunityPostType(value = byId('communityPostType')?.value || 'topic') {
+  const valueNode = byId('communityPostTypeValue');
+  const optionsNode = byId('communityPostTypeOptions');
+  const select = byId('communityPostType');
+  if (!valueNode || !optionsNode || !select) return;
+  const labels = { topic: t('communityTopics'), score: t('communityScores'), event: t('communityEvents') };
+  select.value = labels[value] ? value : 'topic';
+  valueNode.textContent = labels[select.value];
+  optionsNode.replaceChildren(...Object.entries(labels).map(([key, label]) => {
+    const option = document.createElement('button');
+    option.type = 'button';
+    option.className = 'display-picker-option';
+    option.setAttribute('role', 'option');
+    option.setAttribute('aria-selected', key === select.value ? 'true' : 'false');
+    option.textContent = label;
+    option.onclick = () => {
+      select.value = key;
+      syncCommunityPostType(key);
+      setCommunityPostTypeDropdownOpen(false);
+    };
+    return option;
+  }));
+}
+function positionCommunityPostTypeDropdown() {
+  const dropdown = byId('communityPostTypeDropdown');
+  const trigger = byId('communityPostTypeTrigger');
+  const panel = byId('communityPostTypePanel');
+  if (!dropdown?.classList.contains('open') || !trigger || !panel) return;
+  const rect = trigger.getBoundingClientRect();
+  const gap = 7;
+  const contentHeight = Math.min(280, panel.scrollHeight || 280);
+  const spaceBelow = Math.max(0, window.innerHeight - rect.bottom - gap);
+  const spaceAbove = Math.max(0, rect.top - gap);
+  const opensAbove = spaceBelow < contentHeight && spaceAbove > spaceBelow;
+  const maxHeight = Math.max(0, Math.min(contentHeight, opensAbove ? spaceAbove : spaceBelow));
+  panel.style.setProperty('--dropdown-top', (Math.max(8, opensAbove ? rect.top - gap - maxHeight : rect.bottom + gap)) + 'px');
+  panel.style.setProperty('--dropdown-left', rect.left + 'px');
+  panel.style.setProperty('--dropdown-width', rect.width + 'px');
+  panel.style.setProperty('--dropdown-max-height', maxHeight + 'px');
+}
+function setCommunityPostTypeDropdownOpen(open) {
+  const dropdown = byId('communityPostTypeDropdown');
+  const trigger = byId('communityPostTypeTrigger');
+  if (!dropdown || !trigger) return;
+  dropdown.classList.toggle('open', open);
+  trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) requestAnimationFrame(positionCommunityPostTypeDropdown);
+}
 function fillSettings() {
   byId('runBatAsAdministrator').checked = state.runBatAsAdministrator !== false;
   byId('terminateCmdBeforeLaunch').checked = state.terminateCmdBeforeLaunch !== false;
@@ -3012,6 +3062,11 @@ byId('friendSearchForm')?.addEventListener('submit', event => {
   if (input) input.value = '';
 });
 byId('communityComposer')?.addEventListener('submit', addCommunityPost);
+byId('communityPostTypeTrigger').onclick = () => setCommunityPostTypeDropdownOpen(!byId('communityPostTypeDropdown').classList.contains('open'));
+byId('communityPostTypeTrigger').onkeydown = event => {
+  if (event.key === 'Escape') setCommunityPostTypeDropdownOpen(false);
+  if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setCommunityPostTypeDropdownOpen(true); }
+};
 document.addEventListener('click', event => {
   const filter = event.target.closest('[data-community-filter]');
   if (filter) { communityFilter = filter.dataset.communityFilter || 'all'; renderCommunityFeed({ animate: true }); }
@@ -3102,6 +3157,7 @@ document.addEventListener('click', event => {
   if (!byId('displayDropdownFirstRun')?.contains(event.target)) setFirstRunDropdownOpen(false);
   if (!byId('themeDropdownFirstRun')?.contains(event.target)) setThemeDropdownOpen(false);
   if (!byId('languageDropdownSetting')?.contains(event.target)) setLanguageDropdownOpen(false);
+  if (!byId('communityPostTypeDropdown')?.contains(event.target)) setCommunityPostTypeDropdownOpen(false);
 });
 document.addEventListener('keydown', event => {
   if (!byId('miraProfile').hidden) {
@@ -3120,6 +3176,8 @@ window.addEventListener('resize', positionThemeDropdown);
 window.addEventListener('scroll', positionThemeDropdown, true);
 window.addEventListener('resize', positionLanguageDropdown);
 window.addEventListener('scroll', positionLanguageDropdown, true);
+window.addEventListener('resize', positionCommunityPostTypeDropdown);
+window.addEventListener('scroll', positionCommunityPostTypeDropdown, true);
 document.querySelectorAll('#launchMode button').forEach(button => button.onclick = () => { state.launchMode = button.dataset.mode; post('set-launch-mode', { mode: state.launchMode }); render(); });
 byId('btnTestSwitch').onclick = () => { if (testTimer) { post('restore-original'); clearInterval(testTimer); testTimer = null; byId('btnTestSwitch').textContent = '测试切换'; return; } post('test-switch'); let seconds = 15; byId('btnTestSwitch').textContent = `恢复原始分辨率 (${seconds}s)`; testTimer = setInterval(() => { seconds -= 1; byId('btnTestSwitch').textContent = `恢复原始分辨率 (${seconds}s)`; if (seconds <= 0) { clearInterval(testTimer); testTimer = null; byId('btnTestSwitch').textContent = '测试切换'; } }, 1000); };
 

@@ -730,10 +730,11 @@ body:not(.dark-mode) .modal-card.settings .app-button:not(.primary):hover { back
 .community-composer { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 10px; margin-bottom: 14px; padding: 12px; border-radius: 18px; background: color-mix(in srgb, var(--paper) 82%, transparent); }
 .community-composer-avatar, .community-post-avatar { display: grid; place-items: center; border-radius: 13px; background: color-mix(in srgb, var(--accent) 48%, #555); color: var(--ink); font-weight: 850; }
 .community-composer-avatar { width: 38px; height: 38px; font-size: 12px; }
-.community-composer input, .community-composer select { min-width: 0; height: 40px; border: 0; border-radius: 11px; background: color-mix(in srgb, var(--paper) 86%, #000); color: var(--ink); outline: none; }
-.community-composer input { padding: 0 12px; }
-.community-composer select { padding: 0 10px; }
-.community-composer input:focus, .community-composer select:focus { background: var(--focus-bg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-border) 45%, transparent); }
+.community-composer-field { min-width: 0; }
+.community-composer-field input { width: 100%; height: 44px; min-height: 44px; padding: 0 13px; border: 2px solid transparent; border-radius: 12px; background: #f4f2f6; color: var(--ink); outline: none; }
+.community-composer-field input:hover { background: #f4f2f6; }
+.community-composer-field input:focus { border-color: var(--focus-border); background: #f4f2f6; box-shadow: none; outline: none; }
+.community-composer-field input::placeholder { color: var(--muted); }
 .community-feed { display: grid; gap: 12px; }
 .community-post { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 17px 18px; border-radius: 18px; background: color-mix(in srgb, var(--paper) 82%, transparent); transition: background-color .35s ease, transform .18s ease; }
 .community-post:hover { background: color-mix(in srgb, var(--accent) 9%, var(--paper)); transform: translateY(-2px); }
@@ -764,8 +765,11 @@ body:not(.dark-mode) .modal-card.settings .app-button:not(.primary):hover { back
 .community-stat-bar span { display: block; width: 72%; height: 100%; border-radius: inherit; background: var(--accent); }
 .page.dark .community-composer, .page.dark .community-post, .page.dark .community-topic-card, .page.dark .community-stats-card { background: #333333; color: #f2f2f2; }
 .page:not(.dark) .community-composer, .page:not(.dark) .community-post, .page:not(.dark) .community-topic-card, .page:not(.dark) .community-stats-card { background: #e1dfe5; }
-.page.dark .community-composer input, .page.dark .community-composer select { background: #454545; color: #f2f2f2; }
-.page:not(.dark) .community-composer input, .page:not(.dark) .community-composer select { background: #f5f2f9; }
+.page.dark .community-composer-field input { background: #454545; color: #f2f2f2; }
+.page.dark .community-composer-field input:hover { background: #4d4d4d; }
+.page.dark .community-composer-field input:focus { background: var(--focus-bg); }
+.page.dark .community-composer-field input::placeholder { color: #a0a0a0; }
+.page:not(.dark) .community-composer-field input { background: #f5f2f9; }
 .community-post-action:focus-visible, .community-topic:focus-visible, .community-filters .filter-chip:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 @media (max-width: 820px) { .community-layout { grid-template-columns: 1fr; } .community-sidebar { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .community-toolbar { align-items: flex-start; flex-direction: column; } .community-result-count { align-self: flex-end; } .community-composer { grid-template-columns: auto minmax(0, 1fr) auto; } .community-composer select { grid-column: 2; } .community-composer button { grid-column: 3; grid-row: 2; } .community-sidebar { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .community-toolbar { align-items: flex-start; flex-direction: column; } .community-result-count { align-self: flex-end; } .community-composer { grid-template-columns: auto minmax(0, 1fr) auto; } .community-type-picker { grid-column: 2; } .community-composer button { grid-column: 3; grid-row: 2; } .community-sidebar { grid-template-columns: 1fr; } }

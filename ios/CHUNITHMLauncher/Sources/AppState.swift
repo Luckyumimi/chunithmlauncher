@@ -5,7 +5,6 @@ final class AppState: ObservableObject {
     @Published var selectedSection: LauncherSection = .home
     @Published var isProfilePresented = false
     @Published var isSettingsPresented = false
-    @Published var isCheckinPresented = false
     @Published var content: LauncherContent
     @Published var selectedEventID: String
     let prosekaLauncher = ProsekaLauncher()

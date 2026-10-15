@@ -2963,42 +2963,7 @@
         }
       }
     },
-    "shop.items": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "items"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "件商品"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "アイテム"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "개 상품"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "articles"}},
-        "es": {"stringUnit": {"state": "translated", "value": "artículos"}},
-        "de": {"stringUnit": {"state": "translated", "value": "Artikel"}}
-      }
-    },
-    "shop.placeholder": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "Placeholder item"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "商品占位"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "商品プレースホルダー"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "상품 자리표시자"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "Article provisoire"}},
-        "es": {"stringUnit": {"state": "translated", "value": "Artículo provisional"}},
-        "de": {"stringUnit": {"state": "translated", "value": "Platzhalterartikel"}}
-      }
-    },
-    "shop.placeholder.detail": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "A reserved slot for future rewards."}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "预留给后续奖励的商品位置。"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "今後の報酬用に用意された商品枠です。"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "향후 보상을 위한 상품 자리입니다."}},
-        "fr": {"stringUnit": {"state": "translated", "value": "Un emplacement réservé aux futures récompenses."}},
-        "es": {"stringUnit": {"state": "translated", "value": "Un espacio reservado para futuras recompensas."}},
-        "de": {"stringUnit": {"state": "translated", "value": "Ein reservierter Platz für künftige Belohnungen."}}
-      }
-    },    "checkin.eyebrow": {
+    "checkin.eyebrow": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -4294,30 +4259,7 @@
         "de": {"stringUnit": {"state": "translated", "value": "Webadresse"}}
       }
     },
-    "checkin.success": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "Check-in successful"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "签到成功"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "チェックイン成功"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "출석 성공"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "Check-in réussi"}},
-        "es": {"stringUnit": {"state": "translated", "value": "Check-in completado"}},
-        "de": {"stringUnit": {"state": "translated", "value": "Check-in erfolgreich"}}
-      }
-    },
-    "checkin.reward": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "+50 points added locally"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "本地演示奖励 +50 点"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "ローカルデモ報酬 +50ポイント"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "로컬 데모 보상 +50 포인트"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "+50 points en démo locale"}},
-        "es": {"stringUnit": {"state": "translated", "value": "+50 puntos en la demo local"}},
-        "de": {"stringUnit": {"state": "translated", "value": "+50 Punkte in der lokalen Demo"}}
-      }
-    },    "news.latest.eyebrow": {
+    "news.latest.eyebrow": {
       "extractionState": "manual",
       "localizations": {
         "en": {"stringUnit": {"state": "translated", "value": "LATEST"}},
@@ -4377,66 +4319,7 @@
         "de": {"stringUnit": {"state": "translated", "value": "Informationen"}}
       }
     },
-    "friend.mira.handle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "@mira_sekai"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "@mira_sekai"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "@mira_sekai"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "@mira_sekai"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "@mira_sekai"}},
-        "es": {"stringUnit": {"state": "translated", "value": "@mira_sekai"}},
-        "de": {"stringUnit": {"state": "translated", "value": "@mira_sekai"}}
-      }
-    },
-    "friend.mira.online": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "Online"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "在线"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "オンライン"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "온라인"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "En ligne"}},
-        "es": {"stringUnit": {"state": "translated", "value": "En línea"}},
-        "de": {"stringUnit": {"state": "translated", "value": "Online"}}
-      }
-    },
-    "friend.mira.about": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "About Mira"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "关于 Mira"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "Miraについて"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "Mira 소개"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "À propos de Mira"}},
-        "es": {"stringUnit": {"state": "translated", "value": "Sobre Mira"}},
-        "de": {"stringUnit": {"state": "translated", "value": "Über Mira"}}
-      }
-    },
-    "friend.mira.bio": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "Collecting event badges and chasing a new personal best."}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "正在收集活动徽章，也在挑战新的个人最佳成绩。"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "イベントバッジを集めながら、自己ベストを更新中です。"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "이벤트 배지를 모으며 개인 최고 기록에 도전하고 있어요."}},
-        "fr": {"stringUnit": {"state": "translated", "value": "Je collectionne les badges d’événement et vise un nouveau record personnel."}},
-        "es": {"stringUnit": {"state": "translated", "value": "Colecciono insignias de eventos y busco una nueva marca personal."}},
-        "de": {"stringUnit": {"state": "translated", "value": "Ich sammle Event-Abzeichen und jage eine neue persönliche Bestleistung."}}
-      }
-    },
-    "friend.mira.recent": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {"stringUnit": {"state": "translated", "value": "Recent score"}},
-        "zh-Hans": {"stringUnit": {"state": "translated", "value": "最近成绩"}},
-        "ja": {"stringUnit": {"state": "translated", "value": "最近のスコア"}},
-        "ko": {"stringUnit": {"state": "translated", "value": "최근 성적"}},
-        "fr": {"stringUnit": {"state": "translated", "value": "Score récent"}},
-        "es": {"stringUnit": {"state": "translated", "value": "Puntuación reciente"}},
-        "de": {"stringUnit": {"state": "translated", "value": "Letztes Ergebnis"}}
-      }
-    },    "profile.title": {
+    "profile.title": {
       "extractionState": "manual",
       "localizations": {
         "en": {"stringUnit": {"state": "translated", "value": "Profile"}},

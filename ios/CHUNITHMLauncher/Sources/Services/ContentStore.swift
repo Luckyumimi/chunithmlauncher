@@ -26,9 +26,15 @@ enum ContentStore {
             ScoreEntry(id: "3", title: "LaVI-Bavellabion", difficulty: "MASTER 13+", rating: "13.91", status: "S+ ", imageName: "rating-lavi")
         ],
         shopItems: [
-            ShopItem(id: "1", titleKey: "shop.card", detailKey: "shop.card.detail", colorHex: "f2bb68", category: "badge"),
-            ShopItem(id: "2", titleKey: "shop.nameplate", detailKey: "shop.nameplate.detail", colorHex: "8fb8d6", category: "clothing"),
-            ShopItem(id: "3", titleKey: "shop.stage", detailKey: "shop.stage.detail", colorHex: "cc8eb3", category: "desk")
+            ShopItem(id: "1", titleKey: "shop.card", detailKey: "shop.card.detail", colorHex: "f2bb68", category: "badge", price: "¥ 39"),
+            ShopItem(id: "2", titleKey: "shop.nameplate", detailKey: "shop.nameplate.detail", colorHex: "8fb8d6", category: "clothing", price: "¥ 89"),
+            ShopItem(id: "3", titleKey: "shop.stage", detailKey: "shop.stage.detail", colorHex: "cc8eb3", category: "desk", price: "¥ 19"),
+            ShopItem(id: "4", titleKey: "shop.placeholder", detailKey: "shop.placeholder.detail", colorHex: "e69c83", category: "badge", price: "¥ 49"),
+            ShopItem(id: "5", titleKey: "shop.placeholder", detailKey: "shop.placeholder.detail", colorHex: "d3a5e6", category: "badge", price: "¥ 59"),
+            ShopItem(id: "6", titleKey: "shop.placeholder", detailKey: "shop.placeholder.detail", colorHex: "7fc6c3", category: "clothing", price: "¥ 69"),
+            ShopItem(id: "7", titleKey: "shop.placeholder", detailKey: "shop.placeholder.detail", colorHex: "f1a8bd", category: "clothing", price: "¥ 79"),
+            ShopItem(id: "8", titleKey: "shop.placeholder", detailKey: "shop.placeholder.detail", colorHex: "91b6ed", category: "desk", price: "¥ 29"),
+            ShopItem(id: "9", titleKey: "shop.placeholder", detailKey: "shop.placeholder.detail", colorHex: "b6c983", category: "desk", price: "¥ 39")
         ],
         aimeSteps: [
             AimeStep(id: "1", number: "01", titleKey: "aime.step.install", detailKey: "aime.step.install.detail"),

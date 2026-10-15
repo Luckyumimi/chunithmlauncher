@@ -24,7 +24,9 @@ struct RootView: View {
         .tabViewStyle(.sidebarAdaptable)
         .tabViewSidebarBottomBar {
             VStack(alignment: .leading, spacing: 8) {
-                SidebarCheckinCard()
+                SidebarCheckinCard {
+                    state.isCheckinPresented = true
+                }
                 SidebarSettingsRow {
                     state.isSettingsPresented = true
                 }
@@ -40,6 +42,11 @@ struct RootView: View {
                 ProfileView()
             }
         }
+        .sheet(isPresented: $state.isCheckinPresented) {
+            NavigationStack {
+                CheckinView()
+            }
+        }
         .sheet(isPresented: $state.isSettingsPresented) {
             NavigationStack {
                 SettingsView()
@@ -48,6 +55,7 @@ struct RootView: View {
         .onChange(of: state.selectedSection) { _, _ in
             state.isProfilePresented = false
             state.isSettingsPresented = false
+            state.isCheckinPresented = false
         }
     }
 
@@ -72,7 +80,9 @@ private struct TabContentView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
                         if tabBarPlacement == .topBar {
-                            CheckinToolbarButton()
+                            CheckinToolbarButton {
+                                state.isCheckinPresented = true
+                            }
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
@@ -128,12 +138,11 @@ private struct SidebarSettingsRow: View {
 }
 
 private struct CheckinToolbarButton: View {
+    let onCheckin: () -> Void
     @AppStorage("checkedInToday") private var checkedIn = false
 
     var body: some View {
-        Button {
-            checkedIn = true
-        } label: {
+        Button(action: onCheckin) {
             Label(
                 LocalizedStringKey(checkedIn ? "checkin.done" : "checkin.action"),
                 systemImage: checkedIn ? "calendar.badge.checkmark" : "calendar.badge.plus"
@@ -145,12 +154,11 @@ private struct CheckinToolbarButton: View {
 }
 
 private struct SidebarCheckinCard: View {
+    let onCheckin: () -> Void
     @AppStorage("checkedInToday") private var checkedIn = false
 
     var body: some View {
-        GlassActionButton(minHeight: 46, horizontalPadding: 14) {
-            checkedIn = true
-        } label: {
+        GlassActionButton(minHeight: 46, horizontalPadding: 14, action: onCheckin) {
             HStack(spacing: 10) {
                 Image(systemName: checkedIn ? "checkmark.circle.fill" : "sun.max.fill")
                     .foregroundStyle(checkedIn ? .green : LauncherPalette.accent)

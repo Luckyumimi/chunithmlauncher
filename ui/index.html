@@ -231,37 +231,28 @@
 </article>
 </div>
 </section>          <section class="workspace-view" data-view-panel="shop">
-<div class="shop-toolbar">
-<button class="filter-chip active">全部</button>
-<button class="filter-chip">徽章</button>
-<button class="filter-chip">服饰</button>
-<button class="filter-chip">桌面物件</button>
+<div class="page-heading shop-heading">
+<span class="eyebrow background-readable">COMMUNITY MARKET / 03</span>
+<h2 class="background-readable">周边商城</h2>
+<p class="background-readable">把喜欢的曲目和街机记忆带回桌面。</p>
 </div>
-<div class="product-grid">
-<article class="product-card">
-<div class="product-art">商品图<br />01</div>
-<div>
-<h3>节奏徽章套装</h3>
-<p>限定活动纪念</p>
-<strong>¥ 39</strong>
+<div class="shop-toolbar" role="group" aria-label="商品筛选" data-i18n-aria="shopFilter">
+<button class="filter-chip active" type="button" data-shop-filter="all">全部</button>
+<button class="filter-chip" type="button" data-shop-filter="badge">徽章</button>
+<button class="filter-chip" type="button" data-shop-filter="clothing">服饰</button>
+<button class="filter-chip" type="button" data-shop-filter="desk">桌面物件</button>
+<span class="shop-result-count" id="shopResultCount" aria-live="polite"></span>
 </div>
-</article>
-<article class="product-card">
-<div class="product-art purple">商品图<br />02</div>
-<div>
-<h3>街机节奏桌垫</h3>
-<p>防滑织物材质</p>
-<strong>¥ 89</strong>
-</div>
-</article>
-<article class="product-card">
-<div class="product-art blue">商品图<br />03</div>
-<div>
-<h3>曲目收藏卡</h3>
-<p>随机 3 张</p>
-<strong>¥ 19</strong>
-</div>
-</article>
+<div class="product-grid" id="shopProductGrid">
+<article class="product-card" data-shop-category="badge"><div class="product-art">商品图<br />01</div><div><h3>节奏徽章套装</h3><p>限定活动纪念</p><strong>¥ 39</strong></div></article>
+<article class="product-card" data-shop-category="desk"><div class="product-art purple">商品图<br />02</div><div><h3>街机节奏桌垫</h3><p>防滑织物材质</p><strong>¥ 89</strong></div></article>
+<article class="product-card" data-shop-category="badge"><div class="product-art blue">商品图<br />03</div><div><h3>曲目收藏卡</h3><p>随机 3 张</p><strong>¥ 19</strong></div></article>
+<article class="product-card" data-shop-category="badge"><div class="product-art coral">商品图<br />04</div><div><h3 data-i18n="shopName4">角色纪念徽章</h3><p data-i18n="shopDetail4">活动角色系列</p><strong>¥ 49</strong></div></article>
+<article class="product-card" data-shop-category="clothing"><div class="product-art mint">商品图<br />05</div><div><h3 data-i18n="shopName5">节奏主题腕带</h3><p data-i18n="shopDetail5">轻量弹性材质</p><strong>¥ 59</strong></div></article>
+<article class="product-card" data-shop-category="desk"><div class="product-art gold">商品图<br />06</div><div><h3 data-i18n="shopName6">谱面收藏台卡</h3><p data-i18n="shopDetail6">桌面展示装饰</p><strong>¥ 29</strong></div></article>
+<article class="product-card" data-shop-category="clothing"><div class="product-art lilac">商品图<br />07</div><div><h3 data-i18n="shopName7">节奏主题 T 恤</h3><p data-i18n="shopDetail7">日常穿搭系列</p><strong>¥ 69</strong></div></article>
+<article class="product-card" data-shop-category="clothing"><div class="product-art rose">商品图<br />08</div><div><h3 data-i18n="shopName8">玩家主题挂件</h3><p data-i18n="shopDetail8">背包装饰小物</p><strong>¥ 39</strong></div></article>
+<article class="product-card" data-shop-category="desk"><div class="product-art sky">商品图<br />09</div><div><h3 data-i18n="shopName9">活动桌面摆件</h3><p data-i18n="shopDetail9">后续奖励占位</p><strong>¥ 79</strong></div></article>
 </div>
 </section>          <section class="workspace-view" data-view-panel="checkin">
 <div class="page-heading">
@@ -272,34 +263,17 @@
 <div class="checkin-layout">
 <article class="fortune-card">
 <span class="eyebrow">TODAY'S FORTUNE</span>
-<strong>大吉</strong>
-<p>适合挑战熟悉曲目的高难度谱面，今天的手感会比平时更稳定。</p>
-<button class="app-button primary">抽取今日运势</button>
+<strong id="checkinFortune">待抽取</strong>
+<p id="checkinFortuneBody">抽取今日运势，完成签到并领取 20 点奖励。</p>
+<button class="app-button primary" id="btnCheckin" type="button">抽取今日运势</button><p class="checkin-success" id="checkinSuccess" role="status" aria-live="polite" hidden>签到成功！本地演示奖励已到账 +20 点。</p>
 </article>
 <article class="calendar-card">
 <div class="panel-heading">
 <h3>连续签到</h3>
-<strong>4 / 7 天</strong>
+<strong id="checkinStreak">0 天</strong>
 </div>
-<div class="checkin-days">
-<b>一</b>
-<b>二</b>
-<b>三</b>
-<b>四</b>
-<b>五</b>
-<b>六</b>
-<b>日</b>
-<span class="done">✓</span>
-<span class="done">✓</span>
-<span class="done">✓</span>
-<span class="today">+20</span>
-<span>
-</span>
-<span>
-</span>
-<span>
-</span>
-</div>
+<div class="checkin-days" id="checkinDays" aria-label="本周签到" data-i18n-aria="checkinWeek"></div>
+<p class="checkin-summary" id="checkinSummary"></p>
 </article>
 </div>
 </section>          <section class="workspace-view" data-view-panel="social">
@@ -322,7 +296,7 @@
 <strong>Mira</strong>
 <p>更新了个人简介：今晚继续推分</p>
 </div>
-<button class="app-button compact">查看主页</button>
+<button class="app-button compact" id="btnMiraProfile" type="button">查看主页</button>
 </article>
 </div>
 <aside class="content-card friends-panel">
@@ -374,7 +348,19 @@
 </section>        </div>        <footer>
 <span class="background-readable" id="version">v2.5.0</span>
 <span class="background-readable">CHUNITHM Launcher / Thesis Edition</span>
-</footer>      </section>    </main>  </div>  <div class="modal-backdrop" id="firstRun">
+</footer>      </section>    </main><div class="profile-popover" id="miraProfile" role="dialog" aria-modal="true" aria-labelledby="miraProfileTitle" hidden>
+<div class="profile-popover-card">
+<button class="profile-close" id="btnCloseMiraProfile" type="button" aria-label="关闭" data-i18n-aria="close">×</button>
+<div class="profile-avatar-large pink">M</div>
+<span class="eyebrow">PLAYER PROFILE</span>
+<h2 id="miraProfileTitle">Mira</h2>
+<p class="profile-handle">@mira_sekai　<span data-i18n="online">在线</span></p>
+<div class="profile-stats"><div><strong>14.92</strong><span>Rating</span></div><div><strong>86</strong><span data-i18n="profileScores">成绩</span></div><div><strong>12</strong><span data-i18n="navActivities">活动</span></div></div>
+<div class="profile-bio"><strong data-i18n="miraAbout">关于 Mira</strong><p data-i18n="miraBio">正在收集活动徽章，也在挑战新的个人最佳成绩。</p></div>
+<div class="profile-recent"><strong data-i18n="recentScores">最近成绩</strong><span>Your Reality　EXPERT 12　<b>SS</b></span></div>
+</div>
+</div>
+  </div>  <div class="modal-backdrop" id="firstRun">
 <div class="modal-card">
 <h2>首次配置</h2>
 <p>先完成游戏路径、主显示器和界面主题配置。</p>

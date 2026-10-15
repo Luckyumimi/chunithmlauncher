@@ -5,6 +5,32 @@ const byId = id => document.getElementById(id);
 // labels.  "system" intentionally resolves to the browser/Windows locale and
 // falls back to Simplified Chinese for locales we do not ship yet.
 const UI_TEXT = Object.freeze({
+  "shopFilter": ["商品筛选", "Shop filters", "商品フィルター", "상품 필터", "Filtres produits", "Filtros de productos", "Shop-Filter"],
+  "shopItems": ["件商品", "items", "アイテム", "개 상품", "articles", "artículos", "Artikel"],
+  "checkinSuccess": ["签到成功！本地演示奖励已到账 +20 点。", "Check-in complete! +20 local demo points added.", "チェックイン完了！ローカルデモ報酬 +20ポイント。", "출석 완료! 로컬 데모 보상 +20 포인트.", "Check-in réussi ! +20 points de démo locale.", "¡Check-in completado! +20 puntos de demo local.", "Check-in abgeschlossen! +20 Demo-Punkte hinzugefügt."],
+  "checkinPending": ["待抽取", "Not drawn", "未抽選", "아직 추첨 전", "Non tiré", "Sin sortear", "Noch nicht gezogen"],
+  "checkinFortuneBody": ["抽取今日运势，完成签到并领取 20 点奖励。", "Draw today's fortune, check in, and claim 20 points.", "今日の運勢を引いて、チェックインして20ポイントを受け取ろう。", "오늘의 운세를 뽑고 출석하여 20포인트를 받으세요.", "Tirez la fortune du jour et recevez 20 points.", "Saca tu fortuna y recibe 20 puntos.", "Ziehe dein Tagesglück und erhalte 20 Punkte."],
+  "checkinAlready": ["今日已签到", "Checked in today", "本日チェックイン済み", "오늘 출석 완료", "Déjà pointé aujourd’hui", "Ya has hecho check-in hoy", "Heute eingecheckt"],
+  "checkinWeek": ["本周签到", "Weekly check-in", "今週のチェックイン", "주간 출석", "Check-in hebdomadaire", "Check-in semanal", "Wöchentlicher Check-in"],
+  "profileScores": ["成绩", "Scores", "スコア", "점수", "Scores", "Puntuaciones", "Punkte"],
+  "miraAbout": ["关于 Mira", "About Mira", "Miraについて", "Mira 소개", "À propos de Mira", "Sobre Mira", "Über Mira"],
+  "miraBio": ["正在收集活动徽章，也在挑战新的个人最佳成绩。", "Collecting event badges and chasing a new personal best.", "イベントバッジを集めながら、自己ベストを更新中です。", "이벤트 배지를 모으며 개인 최고 기록에 도전하고 있어요.", "Je collectionne les badges d’événement et vise un nouveau record personnel.", "Colecciono insignias de eventos y busco una nueva marca personal.", "Ich sammle Event-Abzeichen und jage eine neue persönliche Bestleistung."],
+  "checkinError": ["签到未保存，请重试。","Check-in could not be saved. Please retry.","保存できませんでした。再試行してください。","저장하지 못했습니다. 다시 시도해 주세요.","Enregistrement impossible. Réessayez.","No se pudo guardar. Reinténtalo.","Speichern fehlgeschlagen. Bitte erneut versuchen."],
+  "checkinStreakValue": ["连续 {count} 天","{count}-day streak","{count}日連続","{count}일 연속","{count} jours de suite","{count} días seguidos","{count} Tage in Folge"],
+  "checkinTotal": ["累计签到 {days} 天 · 本地积分 {points}","{days} check-ins · {points} local points","合計{days}日 · ローカル{points}ポイント","총 {days}일 · 로컬 {points}포인트","{days} check-ins · {points} points locaux","{days} registros · {points} puntos locales","{days} Check-ins · {points} lokale Punkte"],
+  "checkinDayDone": ["已签到","Checked in","チェックイン済み","출석 완료","Pointé","Registrado","Eingecheckt"],
+  "shopName4": ["角色纪念徽章","Character badge","キャラクターバッジ","캐릭터 배지","Badge de personnage","Insignia de personaje","Charakter-Abzeichen"],
+  "shopDetail4": ["活动角色系列","Event character collection","イベントキャラクターシリーズ","이벤트 캐릭터 시리즈","Collection de personnages","Colección de personajes","Event-Charakterserie"],
+  "shopName5": ["节奏主题腕带","Rhythm wristband","リズムリストバンド","리듬 손목밴드","Bracelet rythmique","Pulsera rítmica","Rhythmus-Armband"],
+  "shopDetail5": ["轻量弹性材质","Lightweight stretch fabric","軽量ストレッチ素材","가벼운 신축성 소재","Tissu extensible léger","Tejido elástico ligero","Leichtes Stretchmaterial"],
+  "shopName6": ["谱面收藏台卡","Chart display card","譜面ディスプレイカード","채보 전시 카드","Carte de partition","Tarjeta de partituras","Chart-Aufsteller"],
+  "shopDetail6": ["桌面展示装饰","Desktop decoration","デスク用ディスプレイ","책상 장식","Décoration de bureau","Decoración de escritorio","Schreibtischdekoration"],
+  "shopName7": ["节奏主题 T 恤","Rhythm T-shirt","リズムTシャツ","리듬 티셔츠","T-shirt rythmique","Camiseta rítmica","Rhythmus-T-Shirt"],
+  "shopDetail7": ["日常穿搭系列","Everyday wear collection","デイリーウェアシリーズ","데일리웨어 시리즈","Collection quotidienne","Colección de diario","Alltagskollektion"],
+  "shopName8": ["玩家主题挂件","Player bag charm","プレイヤーバッグチャーム","플레이어 가방 장식","Breloque de joueur","Colgante de jugador","Spieler-Anhänger"],
+  "shopDetail8": ["背包装饰小物","A charm for your backpack","バッグ用アクセサリー","백팩 장식 소품","Accessoire de sac","Accesorio para mochila","Rucksack-Accessoire"],
+  "shopName9": ["活动桌面摆件","Event desk ornament","イベント卓上フィギュア","이벤트 책상 장식","Objet de bureau événementiel","Adorno de evento","Event-Schreibtischfigur"],
+  "shopDetail9": ["后续奖励占位","Preview of a future reward","今後の報酬プレビュー","향후 보상 미리보기","Aperçu de récompense","Vista previa de recompensa","Vorschau einer Belohnung"],
   "appTitle": [
     "Chunithm Launcher",
     "Chunithm Launcher",
@@ -1952,8 +1978,8 @@ let activeLanguage = languagePreference === 'system' ? detectSystemLanguage() : 
 let currentStatus = '';
 const t = key => UI_TEXT[key]?.[LANGUAGE_INDEX[activeLanguage] ?? 0] ?? UI_TEXT[key]?.[0] ?? key;
 const textKeyByChinese = new Map(Object.entries(UI_TEXT).map(([key, values]) => [values[0], key]));
-const STATUS_TEXT = Object.freeze({"启动中": "statusLaunching", "请先完成配置": "statusSetupRequired", "设置已保存": "statusSaved", "设置已保存并生效": "statusApplied", "主显示器已保存": "statusPrimarySaved", "消息解析失败": "statusParseError", "正在检查更新...": "statusCheckingUpdates", "检查更新失败": "statusUpdateFailed", "当前已是最新版本": "statusUpToDate", "已打开 GitHub 主页": "statusGithubOpened", "打开 GitHub 主页失败": "statusGithubOpenFailed", "MuNET 链接无效": "statusInvalidMunet", "MuNET 页面尚未准备好": "statusMunetNotReady", "网页链接格式不正确": "statusBadUrl", "测试切换": "testSwitch", "正在切换分辨率...": "statusSwitchingResolution", "已恢复分辨率": "statusResolutionRestored", "恢复失败": "statusRestoreFailed", "游戏启动中...": "statusGameStarting", "等待游戏窗口...": "statusWaitingGame", "游戏运行中...": "statusGameRunning", "启动失败": "statusLaunchFailed", "未找到显示器": "statusNoDisplay"});
-const dynamicTextSelector = '#homeNewsList, #activityEventDate, #activityEventTitle, #activityEventBody, #announcementTitle, #announcementBody, #btnAnnouncementAction, #portalTab, #statusText, #version, #targetMode, #originalMode, #primaryDisplay, #startBatPath, #btnMigrateToAppleChu, #btnTestSwitch';
+const STATUS_TEXT = Object.freeze({"启动中": "statusLaunching", "请先完成配置": "statusSetupRequired", "设置已保存": "statusSaved", "设置已保存并生效": "statusApplied", "主显示器已保存": "statusPrimarySaved", "消息解析失败": "statusParseError", "正在检查更新...": "statusCheckingUpdates", "检查更新失败": "statusUpdateFailed", "当前已是最新版本": "statusUpToDate", "已打开 GitHub 主页": "statusGithubOpened", "打开 GitHub 主页失败": "statusGithubOpenFailed", "MuNET 链接无效": "statusInvalidMunet", "MuNET 页面尚未准备好": "statusMunetNotReady", "网页链接格式不正确": "statusBadUrl", "测试切换": "testSwitch", "正在切换分辨率...": "statusSwitchingResolution", "已恢复分辨率": "statusResolutionRestored", "恢复失败": "statusRestoreFailed", "游戏启动中...": "statusGameStarting", "等待游戏窗口...": "statusWaitingGame", "游戏运行中...": "statusGameRunning", "启动失败": "statusLaunchFailed", "未找到显示器": "statusNoDisplay", "签到成功": "checkinAlready"});
+const dynamicTextSelector = '#homeNewsList, #activityEventDate, #activityEventTitle, #activityEventBody, #announcementTitle, #announcementBody, #btnAnnouncementAction, #portalTab, #statusText, #version, #targetMode, #originalMode, #primaryDisplay, #startBatPath, #btnMigrateToAppleChu, #btnTestSwitch, [data-i18n], #checkinFortune, #checkinFortuneBody, #btnCheckin, #checkinSuccess, #checkinStreak, #checkinDays, #checkinSummary, #shopResultCount';
 function translateTextNodes() {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let node;
@@ -2010,11 +2036,9 @@ function applyTranslations() {
   setTranslatedText('.recommendation h3', 'scoreRecommendation');
   setTranslatedText('.recommendation p', 'scoreRecommendationBody');
   setTranslatedText('.recommendation button', 'viewRecommendation');
-  setTranslatedText('.fortune-card strong', 'greatFortune');
-  setTranslatedText('.fortune-card p', 'fortuneBody');
-  setTranslatedText('.fortune-card button', 'drawFortune');
+  setTranslatedAttribute('.shop-toolbar', 'aria-label', 'shopFilter');
+
   setTranslatedText('.calendar-card h3', 'consecutiveCheckin');
-  setTranslatedText('.calendar-card .panel-heading > strong', 'checkinStreak');
   setTranslatedText('.social-heading h2', 'socialTitle');
   setTranslatedText('.friends-panel h3', 'onlineFriends');
   setTranslatedText('.friends-count', 'onlineCount');
@@ -2071,6 +2095,10 @@ function applyTranslations() {
   syncAppleChuStatus();
   renderEvent(activeEventIndex, false);
   renderNewsTab(currentNewsTab);
+  document.querySelectorAll('[data-i18n]').forEach(node => { node.textContent = t(node.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(node => { node.setAttribute('aria-label', t(node.dataset.i18nAria)); });
+  applyShopFilter(document.querySelector('[data-shop-filter].active')?.dataset.shopFilter || 'all');
+  renderCheckin();
   render();
 }
 function setLanguagePreference(value, { persist = true } = {}) {
@@ -2095,16 +2123,126 @@ const post = (type, payload = {}) => window.chrome?.webview
 
 function selectWorkspace(view) {
   const target = view || 'home';
+  if (target === 'checkin') renderCheckin();
   document.querySelectorAll('[data-view-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.viewPanel === target));
   document.querySelectorAll('[data-view]').forEach(link => link.classList.toggle('active', link.dataset.view === target));
   document.querySelector('.view-stack')?.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function applyShopFilter(category = 'all') {
+  const chips = document.querySelectorAll('[data-shop-filter]');
+  const cards = document.querySelectorAll('#shopProductGrid .product-card');
+  let visible = 0;
+  chips.forEach(chip => {
+    const active = chip.dataset.shopFilter === category;
+    chip.classList.toggle('active', active);
+    chip.setAttribute('aria-pressed', String(active));
+  });
+  cards.forEach(card => {
+    card.hidden = category !== 'all' && card.dataset.shopCategory !== category;
+    if (!card.hidden) visible += 1;
+  });
+  byId('shopResultCount').textContent = visible + ' / ' + cards.length + ' ' + t('shopItems');
+}
+
+const checkinStorageKey = 'chunithm-checkin-days-v1';
+function localDayKey(date = new Date()) {
+  return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+}
+function readCheckinDays() {
+  try {
+    const values = JSON.parse(localStorage.getItem(checkinStorageKey) || '[]');
+    if (!Array.isArray(values)) return [];
+    return [...new Set(values.filter(day => typeof day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(day) && localDayKey(new Date(day + 'T12:00:00')) === day))].sort();
+  } catch { return []; }
+}
+function formatCommunityText(key, values) {
+  let text = t(key);
+  Object.entries(values).forEach(([name, value]) => { text = text.replace('{' + name + '}', String(value)); });
+  return text;
+}
+function renderCheckin() {
+  const dates = readCheckinDays();
+  const checkedDays = new Set(dates);
+  const today = new Date();
+  const done = checkedDays.has(localDayKey(today));
+  const button = byId('btnCheckin');
+  button.textContent = t(done ? 'checkinAlready' : 'drawFortune');
+  button.disabled = done;
+  button.classList.toggle('checked-in', done);
+  const success = byId('checkinSuccess');
+  success.hidden = !done;
+  success.classList.remove('save-error');
+  success.textContent = t('checkinSuccess');
+  byId('checkinFortune').textContent = t(done ? 'greatFortune' : 'checkinPending');
+  byId('checkinFortuneBody').textContent = t(done ? 'fortuneBody' : 'checkinFortuneBody');
+
+  const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
+  if (!done) cursor.setDate(cursor.getDate() - 1);
+  let streak = 0;
+  while (checkedDays.has(localDayKey(cursor))) {
+    streak += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  byId('checkinStreak').textContent = formatCommunityText('checkinStreakValue', { count: streak });
+  byId('checkinSummary').textContent = formatCommunityText('checkinTotal', { days: dates.length, points: dates.length * 20 });
+  const calendar = byId('checkinDays');
+  calendar.replaceChildren();
+  ['weekdayMon', 'weekdayTue', 'weekdayWed', 'weekdayThu', 'weekdayFri', 'weekdaySat', 'weekdaySun'].forEach(key => {
+    const label = document.createElement('b');
+    label.textContent = t(key);
+    calendar.append(label);
+  });
+  const weekDay = (today.getDay() + 6) % 7;
+  for (let index = 0; index < 7; index += 1) {
+    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - weekDay + index, 12);
+    const checked = checkedDays.has(localDayKey(date));
+    const cell = document.createElement('span');
+    cell.textContent = checked ? '✓' : String(date.getDate());
+    cell.classList.toggle('done', checked);
+    cell.classList.toggle('today', index === weekDay);
+    cell.setAttribute('aria-label', date.toLocaleDateString(activeLanguage) + (checked ? ' · ' + t('checkinDayDone') : ''));
+    if (index === weekDay) cell.setAttribute('aria-current', 'date');
+    calendar.append(cell);
+  }
+}
+function performCheckin() {
+  const dates = readCheckinDays();
+  const today = localDayKey();
+  if (dates.includes(today)) { renderCheckin(); return; }
+  try {
+    localStorage.setItem(checkinStorageKey, JSON.stringify([...dates, today].sort()));
+    renderCheckin();
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      byId('checkinSuccess').animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, easing: 'ease-out' });
+    }
+  } catch {
+    const message = byId('checkinSuccess');
+    message.hidden = false;
+    message.classList.add('save-error');
+    message.textContent = t('checkinError');
+  }
+}
+let checkinRefreshTimer;
+function scheduleCheckinRefresh() {
+  clearTimeout(checkinRefreshTimer);
+  const now = new Date();
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  checkinRefreshTimer = setTimeout(() => { renderCheckin(); scheduleCheckinRefresh(); }, midnight.getTime() - now.getTime() + 100);
+}
+function toggleMiraProfile(visible) {
+  const modal = byId('miraProfile');
+  modal.hidden = !visible;
+  document.querySelector('.launcher-shell').inert = visible;
+  if (visible) byId('btnCloseMiraProfile').focus();
+  else byId('btnMiraProfile').focus();
+}
+
 document.addEventListener('click', event => {
   const link = event.target.closest('[data-view]');
   if (link) { event.preventDefault(); selectWorkspace(link.dataset.view); }
-  const chip = event.target.closest('.filter-chip');
-  if (chip) { chip.parentElement?.querySelectorAll('.filter-chip').forEach(item => item.classList.toggle('active', item === chip)); }
+  const chip = event.target.closest('[data-shop-filter]');
+  if (chip) applyShopFilter(chip.dataset.shopFilter || 'all');
   const tab = event.target.closest('.news-tabs button');
   if (tab) tab.parentElement?.querySelectorAll('button').forEach(item => item.classList.toggle('active', item === tab));
 });
@@ -2642,6 +2780,12 @@ byId('friendSearchForm')?.addEventListener('submit', event => {
   const input = byId('friendSearchInput');
   if (input) input.value = '';
 });
+byId('btnCheckin').addEventListener('click', performCheckin);
+byId('btnMiraProfile').addEventListener('click', () => toggleMiraProfile(true));
+byId('btnCloseMiraProfile').addEventListener('click', () => toggleMiraProfile(false));
+byId('miraProfile').addEventListener('click', event => { if (event.target === byId('miraProfile')) toggleMiraProfile(false); });
+window.addEventListener('focus', () => { renderCheckin(); scheduleCheckinRefresh(); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { renderCheckin(); scheduleCheckinRefresh(); } });
 byId('btnSettings').onclick = () => { fillSettings(); show('settingsModal', true); };
 byId('portalTab').onclick = openPortal;
 byId('themeToggle').onclick = () => applyTheme(theme === 'dark' ? 'light' : 'dark');
@@ -2715,6 +2859,11 @@ document.addEventListener('click', event => {
   if (!byId('languageDropdownSetting')?.contains(event.target)) setLanguageDropdownOpen(false);
 });
 document.addEventListener('keydown', event => {
+  if (!byId('miraProfile').hidden) {
+    if (event.key === 'Escape') { event.preventDefault(); toggleMiraProfile(false); }
+    if (event.key === 'Tab') { event.preventDefault(); byId('btnCloseMiraProfile').focus(); }
+    return;
+  }
   if (event.key === 'Escape' && byId('donationModal')?.classList.contains('show')) show('donationModal', false);
   if (event.key === 'Escape' && byId('announcementModal')?.classList.contains('show')) show('announcementModal', false);
 });
@@ -2734,6 +2883,7 @@ window.chrome?.webview?.addEventListener('message', handleMessage);
 render();
 applyTheme(theme);
 applyTranslations();
+scheduleCheckinRefresh();
 // 浏览器预览:仅当非 WebView2 环境且 URL 带 ?preview 时注入假数据。
 // 版本号不再硬编码(缺省显示 'preview',可用 ?version=x 覆盖),避免与发布版本漂移。
 if (!window.chrome?.webview && new URLSearchParams(location.search).has('preview')) {

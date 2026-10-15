@@ -20,6 +20,9 @@
 </button>          <button class="rail-link" data-view="social">
 <img class="rail-icon asset-icon" src="assets/好友%20%281%29.png" data-icon-light="assets/好友%20%281%29.png" data-icon-dark="assets/好友.png" alt="" aria-hidden="true" />
 <span>好友</span>
+</button>          <button class="rail-link" data-view="community">
+<img class="rail-icon asset-icon" src="assets/社区%20%281%29.png" data-icon-light="assets/社区%20%281%29.png" data-icon-dark="assets/社区.png" alt="" aria-hidden="true" />
+<span>社区</span>
 </button>          <button class="rail-link" data-view="aime">
 <img class="rail-icon asset-icon aime-rail-icon" src="assets/aime-rail.png" alt="" aria-hidden="true" />
 <span>Aime</span>
@@ -316,6 +319,52 @@
 <div class="online-friend"><span class="online-avatar pink">M</span><span><strong>Mira</strong><small>准备开始推分</small></span><i aria-label="在线"></i></div>
 <div class="online-friend"><span class="online-avatar blue">K</span><span><strong>KuroNeko</strong><small>刚刚查看了活动</small></span><i aria-label="在线"></i></div>
 </div>
+</aside>
+</div>
+</section>          <section class="workspace-view community-view" data-view-panel="community">
+<div class="page-heading community-heading">
+<span class="eyebrow background-readable" data-i18n="communityEyebrow">COMMUNITY / 05</span>
+<h2 class="background-readable" data-i18n="communityTitle">社区</h2>
+<p class="background-readable" data-i18n="communitySubtitle">分享你的成绩、活动记忆和下一首想挑战的曲目。</p>
+</div>
+<div class="community-layout">
+<div class="community-feed-panel">
+<div class="community-toolbar">
+<div class="community-filters" role="group" aria-label="社区动态筛选" data-i18n-aria="communityFilter">
+<button class="filter-chip active" type="button" data-community-filter="all" aria-pressed="true" data-i18n="communityAll">全部</button>
+<button class="filter-chip" type="button" data-community-filter="score" aria-pressed="false" data-i18n="communityScores">成绩</button>
+<button class="filter-chip" type="button" data-community-filter="event" aria-pressed="false" data-i18n="communityEvents">活动</button>
+<button class="filter-chip" type="button" data-community-filter="topic" aria-pressed="false" data-i18n="communityTopics">话题</button>
+</div>
+<span class="community-result-count" id="communityResultCount" aria-live="polite"></span>
+</div>
+<form class="community-composer" id="communityComposer">
+<div class="community-composer-avatar" aria-hidden="true">我</div>
+<label class="visually-hidden" for="communityPostInput" data-i18n="communityComposerLabel">发布社区动态</label>
+<input id="communityPostInput" maxlength="120" placeholder="分享一条动态..." data-i18n-placeholder="communityComposerPlaceholder" />
+<select id="communityPostType" aria-label="动态类型" data-i18n-aria="communityPostType">
+<option value="topic" data-i18n="communityTopics">话题</option>
+<option value="score" data-i18n="communityScores">成绩</option>
+<option value="event" data-i18n="communityEvents">活动</option>
+</select>
+<button class="app-button compact primary" type="submit" data-i18n="communityPublish">发布</button>
+</form>
+<div class="community-feed" id="communityFeed" aria-live="polite"></div>
+</div>
+<aside class="community-sidebar">
+<article class="content-card community-topic-card">
+<span class="eyebrow" data-i18n="communityHotEyebrow">HOT TOPICS</span>
+<h3 data-i18n="communityHotTitle">正在讨论</h3>
+<button class="community-topic" type="button"><span># 新活动首日成绩</span><b>128</b></button>
+<button class="community-topic" type="button"><span># 你的常用难度</span><b>76</b></button>
+<button class="community-topic" type="button"><span># 下一首想打什么</span><b>43</b></button>
+</article>
+<article class="content-card community-stats-card">
+<div class="community-stat-heading"><span class="eyebrow" data-i18n="communityPulse">COMMUNITY PULSE</span><span class="community-pulse-dot" aria-hidden="true"></span></div>
+<strong>2,486</strong>
+<p data-i18n="communityMembers">本周活跃玩家</p>
+<div class="community-stat-bar" aria-hidden="true"><span></span></div>
+</article>
 </aside>
 </div>
 </section>          <section class="workspace-view" data-view-panel="aime">

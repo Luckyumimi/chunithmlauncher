@@ -103,6 +103,15 @@ const UI_TEXT = Object.freeze({
     "Amigos",
     "Freunde"
   ],
+  "navCommunity": [
+    "社区",
+    "Community",
+    "コミュニティ",
+    "커뮤니티",
+    "Communauté",
+    "Comunidad",
+    "Community"
+  ],
   "navAime": [
     "Aime",
     "Aime",
@@ -868,6 +877,64 @@ const UI_TEXT = Object.freeze({
     "Perfil actualizado: a subir puntuación esta noche",
     "Profil aktualisiert: heute Abend weiter Punkte sammeln"
   ],
+  "communityEyebrow": [
+    "COMMUNITY / 05",
+    "COMMUNITY / 05",
+    "コミュニティ / 05",
+    "커뮤니티 / 05",
+    "COMMUNAUTÉ / 05",
+    "COMUNIDAD / 05",
+    "COMMUNITY / 05"
+  ],
+  "communityTitle": [
+    "社区",
+    "Community",
+    "コミュニティ",
+    "커뮤니티",
+    "Communauté",
+    "Comunidad",
+    "Community"
+  ],
+  "communitySubtitle": [
+    "分享你的成绩、活动记忆和下一首想挑战的曲目。",
+    "Share scores, event memories, and the next song you want to challenge.",
+    "スコアやイベントの思い出、次に挑戦したい曲をシェアしよう。",
+    "점수와 이벤트 추억, 다음에 도전할 곡을 공유해 보세요.",
+    "Partagez vos scores, souvenirs d’événements et prochains défis.",
+    "Comparte tus puntuaciones, recuerdos de eventos y próximos retos.",
+    "Teile Scores, Event-Erinnerungen und deinen nächsten Song-Challenge."
+  ],
+  "communityFilter": [
+    "社区动态筛选",
+    "Community feed filters",
+    "コミュニティフィルター",
+    "커뮤니티 피드 필터",
+    "Filtres du fil communautaire",
+    "Filtros del feed de comunidad",
+    "Community-Feed-Filter"
+  ],
+  "communityAll": ["全部", "All", "すべて", "전체", "Tout", "Todo", "Alle"],
+  "communityScores": ["成绩", "Scores", "スコア", "점수", "Scores", "Puntuaciones", "Scores"],
+  "communityEvents": ["活动", "Events", "イベント", "이벤트", "Événements", "Eventos", "Events"],
+  "communityTopics": ["话题", "Topics", "トピック", "주제", "Sujets", "Temas", "Themen"],
+  "communityComposerLabel": ["发布社区动态", "Publish a community post", "投稿を作成", "커뮤니티 글 작성", "Publier dans la communauté", "Publicar en la comunidad", "Community-Beitrag veröffentlichen"],
+  "communityComposerPlaceholder": ["分享一条动态...", "Share an update...", "近況をシェア...", "업데이트를 공유하세요...", "Partagez une actualité...", "Comparte una actualización...", "Update teilen..."],
+  "communityPostType": ["动态类型", "Post type", "投稿タイプ", "글 유형", "Type de publication", "Tipo de publicación", "Beitragstyp"],
+  "communityPublish": ["发布", "Publish", "投稿", "게시", "Publier", "Publicar", "Veröffentlichen"],
+  "communityHotEyebrow": ["HOT TOPICS", "HOT TOPICS", "注目トピック", "인기 주제", "SUJETS POPULAIRES", "TEMAS DESTACADOS", "BELIEBTE THEMEN"],
+  "communityHotTitle": ["正在讨论", "Trending now", "話題のトピック", "지금 이야기 중", "Tendances", "Tendencias", "Gerade im Gespräch"],
+  "communityPulse": ["COMMUNITY PULSE", "COMMUNITY PULSE", "コミュニティパルス", "커뮤니티 펄스", "PULSE COMMUNAUTAIRE", "PULSO DE LA COMUNIDAD", "COMMUNITY-PULS"],
+  "communityMembers": ["本周活跃玩家", "Active players this week", "今週のアクティブプレイヤー", "이번 주 활성 플레이어", "Joueurs actifs cette semaine", "Jugadores activos esta semana", "Aktive Spieler diese Woche"],
+  "communityCount": ["{count} 条动态", "{count} posts", "{count}件の投稿", "{count}개 글", "{count} publications", "{count} publicaciones", "{count} Beiträge"],
+  "communityTimeNow": ["刚刚", "Just now", "たった今", "방금", "À l’instant", "Ahora", "Gerade eben"],
+  "communityTimeToday": ["今天", "Today", "今日", "오늘", "Aujourd’hui", "Hoy", "Heute"],
+  "communityLocalPost": ["本地玩家", "Local player", "ローカルプレイヤー", "로컬 플레이어", "Joueur local", "Jugador local", "Lokaler Spieler"],
+  "communityScorePost": ["刚刚把「{song}」打到 {rank}，这首的尾杀还是很爽。", "Just pushed “{song}” to {rank}. That ending is still so satisfying.", "「{song}」を{rank}まで更新。最後の配置が気持ちいい。", "「{song}」를 {rank}까지 갱신했어요. 마지막 배치가 정말 좋아요.", "Je viens de passer « {song} » en {rank}. La fin est toujours aussi satisfaisante.", "Acabo de subir « {song} » a {rank}. Ese final sigue siendo genial.", "„{song}“ gerade auf {rank} verbessert. Das Ende macht immer noch Spaß."],
+  "communityEventPost": ["新活动的限定头像框终于拿到了，下一步挑战全曲目。", "Finally got the new event avatar frame. Next goal: clear the full set.", "新イベントの限定フレームを獲得。次は全曲クリアに挑戦。", "새 이벤트 한정 프레임을 얻었어요. 다음 목표는 전체 곡 클리어예요.", "J’ai enfin obtenu le cadre d’avatar de l’événement. Prochain objectif : tout terminer.", "Por fin conseguí el marco del evento. Próximo objetivo: completar todas las canciones.", "Endlich den Event-Avatarrahmen bekommen. Nächstes Ziel: alle Songs schaffen."],
+  "communityTopicPost": ["大家最近都在练哪首 13+？求一首适合热手的推荐。", "What 13+ charts is everyone practicing lately? I need a good warm-up recommendation.", "最近みんなはどの13+を練習してる？ウォームアップ曲を教えて。", "요즘 다들 어떤 13+ 채보를 연습하나요? 손 풀기 곡을 추천해 주세요.", "Quels charts 13+ travaillez-vous en ce moment ? Je cherche un bon échauffement.", "¿Qué charts 13+ están practicando? Busco una buena canción para calentar.", "Welche 13+-Charts übt ihr gerade? Ich suche einen guten Warm-up-Song."],
+  "communityLike": ["点赞", "Like", "いいね", "좋아요", "J’aime", "Me gusta", "Gefällt mir"],
+  "communityPublished": ["社区动态已发布", "Community post published", "コミュニティに投稿しました", "커뮤니티 글을 게시했습니다", "Publication envoyée", "Publicación enviada", "Community-Beitrag veröffentlicht"],
+  "communitySaveError": ["社区动态保存失败", "Could not save the community post", "投稿を保存できませんでした", "커뮤니티 글을 저장하지 못했습니다", "Impossible d’enregistrer la publication", "No se pudo guardar la publicación", "Community-Beitrag konnte nicht gespeichert werden"],
   "challenging": [
     "正在挑战 World Vanquisher",
     "Challenging World Vanquisher",
@@ -1978,7 +2045,7 @@ let activeLanguage = languagePreference === 'system' ? detectSystemLanguage() : 
 let currentStatus = '';
 const t = key => UI_TEXT[key]?.[LANGUAGE_INDEX[activeLanguage] ?? 0] ?? UI_TEXT[key]?.[0] ?? key;
 const textKeyByChinese = new Map(Object.entries(UI_TEXT).map(([key, values]) => [values[0], key]));
-const STATUS_TEXT = Object.freeze({"启动中": "statusLaunching", "请先完成配置": "statusSetupRequired", "设置已保存": "statusSaved", "设置已保存并生效": "statusApplied", "主显示器已保存": "statusPrimarySaved", "消息解析失败": "statusParseError", "正在检查更新...": "statusCheckingUpdates", "检查更新失败": "statusUpdateFailed", "当前已是最新版本": "statusUpToDate", "已打开 GitHub 主页": "statusGithubOpened", "打开 GitHub 主页失败": "statusGithubOpenFailed", "MuNET 链接无效": "statusInvalidMunet", "MuNET 页面尚未准备好": "statusMunetNotReady", "网页链接格式不正确": "statusBadUrl", "测试切换": "testSwitch", "正在切换分辨率...": "statusSwitchingResolution", "已恢复分辨率": "statusResolutionRestored", "恢复失败": "statusRestoreFailed", "游戏启动中...": "statusGameStarting", "等待游戏窗口...": "statusWaitingGame", "游戏运行中...": "statusGameRunning", "启动失败": "statusLaunchFailed", "未找到显示器": "statusNoDisplay", "签到成功": "checkinAlready"});
+const STATUS_TEXT = Object.freeze({"社区动态已发布": "communityPublished", "社区动态保存失败": "communitySaveError", "启动中": "statusLaunching", "请先完成配置": "statusSetupRequired", "设置已保存": "statusSaved", "设置已保存并生效": "statusApplied", "主显示器已保存": "statusPrimarySaved", "消息解析失败": "statusParseError", "正在检查更新...": "statusCheckingUpdates", "检查更新失败": "statusUpdateFailed", "当前已是最新版本": "statusUpToDate", "已打开 GitHub 主页": "statusGithubOpened", "打开 GitHub 主页失败": "statusGithubOpenFailed", "MuNET 链接无效": "statusInvalidMunet", "MuNET 页面尚未准备好": "statusMunetNotReady", "网页链接格式不正确": "statusBadUrl", "测试切换": "testSwitch", "正在切换分辨率...": "statusSwitchingResolution", "已恢复分辨率": "statusResolutionRestored", "恢复失败": "statusRestoreFailed", "游戏启动中...": "statusGameStarting", "等待游戏窗口...": "statusWaitingGame", "游戏运行中...": "statusGameRunning", "启动失败": "statusLaunchFailed", "未找到显示器": "statusNoDisplay", "签到成功": "checkinAlready"});
 const dynamicTextSelector = '#homeNewsList, #activityEventDate, #activityEventTitle, #activityEventBody, #announcementTitle, #announcementBody, #btnAnnouncementAction, #portalTab, #statusText, #version, #targetMode, #originalMode, #primaryDisplay, #startBatPath, #btnMigrateToAppleChu, #btnTestSwitch, [data-i18n], #checkinFortune, #checkinFortuneBody, #btnCheckin, #checkinSuccess, #checkinStreak, #checkinDays, #checkinSummary, #shopResultCount';
 function translateTextNodes() {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
@@ -2040,6 +2107,20 @@ function applyTranslations() {
 
   setTranslatedText('.calendar-card h3', 'consecutiveCheckin');
   setTranslatedText('.social-heading h2', 'socialTitle');
+  setTranslatedText('.rail-link[data-view=\"community\"] span', 'navCommunity');
+  setTranslatedText('.community-heading .eyebrow', 'communityEyebrow');
+  setTranslatedText('.community-heading h2', 'communityTitle');
+  setTranslatedText('.community-heading p', 'communitySubtitle');
+  setTranslatedText('.community-composer label', 'communityComposerLabel');
+  setTranslatedText('#communityComposer button', 'communityPublish');
+  setTranslatedText('.community-topic-card .eyebrow', 'communityHotEyebrow');
+  setTranslatedText('.community-topic-card h3', 'communityHotTitle');
+  setTranslatedText('.community-stats-card .eyebrow', 'communityPulse');
+  setTranslatedText('.community-stats-card p', 'communityMembers');
+  setTranslatedAttribute('.community-filters', 'aria-label', 'communityFilter');
+  setTranslatedAttribute('#communityPostType', 'aria-label', 'communityPostType');
+  const communityInput = byId('communityPostInput');
+  if (communityInput) communityInput.placeholder = t('communityComposerPlaceholder');
   setTranslatedText('.friends-panel h3', 'onlineFriends');
   setTranslatedText('.friends-count', 'onlineCount');
   setTranslatedText('#friendSearchForm button', 'addFriend');
@@ -2098,6 +2179,7 @@ function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(node => { node.textContent = t(node.dataset.i18n); });
   document.querySelectorAll('[data-i18n-aria]').forEach(node => { node.setAttribute('aria-label', t(node.dataset.i18nAria)); });
   applyShopFilter(document.querySelector('[data-shop-filter].active')?.dataset.shopFilter || 'all');
+  renderCommunityFeed();
   renderCheckin();
   render();
 }
@@ -2349,6 +2431,77 @@ function renderNewsTab(key = 'activities') {
   if (!list) return;
   list.innerHTML = (newsTabs[key] || newsTabs.activities).map(([titleKey, date]) => `<button><span>${t(titleKey)}</span><time>${date}</time></button>`).join('');
   document.querySelectorAll('[data-news-tab]').forEach(tab => tab.classList.toggle('active', tab.dataset.newsTab === key));
+}
+const communityStorageKey = 'chunithm-community-posts-v1';
+let communityFilter = 'all';
+const defaultCommunityPosts = [
+  { id: 'score-arcaea', type: 'score', author: 'ArcaeaPlayer', avatar: 'A', tone: '', timeKey: 'communityTimeToday', bodyKey: 'communityScorePost', values: { song: 'World Vanquisher', rank: 'SSS' } },
+  { id: 'event-mira', type: 'event', author: 'Mira', avatar: 'M', tone: 'pink', timeKey: 'communityTimeToday', bodyKey: 'communityEventPost' },
+  { id: 'topic-kuroneko', type: 'topic', author: 'KuroNeko', avatar: 'K', tone: 'blue', timeKey: 'communityTimeNow', bodyKey: 'communityTopicPost' },
+];
+const communityTypeKeys = { score: 'communityScores', event: 'communityEvents', topic: 'communityTopics' };
+function escapeCommunityHtml(value) {
+  return String(value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
+}
+function readCommunityPosts() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(communityStorageKey) || '[]');
+    if (!Array.isArray(stored)) return [];
+    return stored.filter(post => post && typeof post.body === 'string' && post.body.trim() && communityTypeKeys[post.type]).map(post => ({
+      id: String(post.id || ('local-' + (post.createdAt || Date.now()))),
+      type: post.type,
+      author: t('communityLocalPost'),
+      avatar: '我',
+      tone: 'local',
+      timeKey: 'communityTimeNow',
+      body: post.body.trim(),
+      createdAt: Number(post.createdAt) || 0,
+    })).slice(-12).reverse();
+  } catch { return []; }
+}
+function formatCommunityPostBody(post) {
+  if (post.body) return escapeCommunityHtml(post.body);
+  return escapeCommunityHtml(formatCommunityText(post.bodyKey, post.values || {}));
+}
+function renderCommunityFeed({ animate = false } = {}) {
+  const feed = byId('communityFeed');
+  if (!feed) return;
+  const posts = [...readCommunityPosts(), ...defaultCommunityPosts];
+  const visiblePosts = posts.filter(post => communityFilter === 'all' || post.type === communityFilter);
+  document.querySelectorAll('[data-community-filter]').forEach(button => {
+    const active = button.dataset.communityFilter === communityFilter;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  byId('communityResultCount').textContent = formatCommunityText('communityCount', { count: visiblePosts.length });
+  feed.replaceChildren(...visiblePosts.map(post => {
+    const article = document.createElement('article');
+    article.className = 'community-post';
+    article.dataset.communityType = post.type;
+    article.innerHTML = '<div class="community-post-avatar ' + escapeCommunityHtml(post.tone || '') + '">' + escapeCommunityHtml(post.avatar) + '</div><div class="community-post-main"><div class="community-post-heading"><strong>' + escapeCommunityHtml(post.author) + '</strong><span>' + escapeCommunityHtml(t(post.timeKey)) + '</span></div><p>' + formatCommunityPostBody(post) + '</p><span class="community-post-tag">' + escapeCommunityHtml(t(communityTypeKeys[post.type])) + '</span></div><button class="community-post-action" type="button" aria-pressed="false" aria-label="' + escapeCommunityHtml(t('communityLike')) + '">♡</button>';
+    return article;
+  }));
+  if (animate) {
+    Array.from(feed.children).forEach((post, index) => animateCommunityElement(post, [
+      { opacity: 0, transform: 'translateY(10px)' },
+      { opacity: 1, transform: 'translateY(0)' }
+    ], { delay: Math.min(index, 5) * 28, duration: 260 }));
+  }
+}
+function addCommunityPost(event) {
+  event.preventDefault();
+  const input = byId('communityPostInput');
+  const body = input.value.trim();
+  if (!body) { input.focus(); return; }
+  const post = { id: 'local-' + Date.now(), type: byId('communityPostType').value, body, createdAt: Date.now() };
+  try {
+    const posts = readCommunityPosts().map(item => ({ id: item.id, type: item.type, body: item.body, createdAt: item.createdAt }));
+    localStorage.setItem(communityStorageKey, JSON.stringify([...posts, post].slice(-12)));
+  } catch { status('社区动态保存失败', '#bc5861'); return; }
+  input.value = '';
+  communityFilter = 'all';
+  renderCommunityFeed({ animate: true });
+  status('社区动态已发布', '#5caa74');
 }
 let activeEventIndex = 0;
 let eventTransitionTimer = null;
@@ -2857,6 +3010,20 @@ byId('friendSearchForm')?.addEventListener('submit', event => {
   event.preventDefault();
   const input = byId('friendSearchInput');
   if (input) input.value = '';
+});
+byId('communityComposer')?.addEventListener('submit', addCommunityPost);
+document.addEventListener('click', event => {
+  const filter = event.target.closest('[data-community-filter]');
+  if (filter) { communityFilter = filter.dataset.communityFilter || 'all'; renderCommunityFeed({ animate: true }); }
+  const topic = event.target.closest('.community-topic');
+  if (topic) { const input = byId('communityPostInput'); if (input) { input.value = topic.querySelector('span')?.textContent.replace(/^#\s*/, '') || ''; input.focus(); } }
+  const like = event.target.closest('.community-post-action');
+  if (like) {
+    const liked = like.getAttribute('aria-pressed') === 'true';
+    like.setAttribute('aria-pressed', String(!liked));
+    like.textContent = liked ? '♡' : '♥';
+    like.classList.toggle('liked', !liked);
+  }
 });
 byId('btnCheckin').addEventListener('click', performCheckin);
 byId('btnMiraProfile').addEventListener('click', () => toggleMiraProfile(true));

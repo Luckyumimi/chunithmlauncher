@@ -42,7 +42,7 @@ struct ShopItem: Codable, Identifiable {
     let detailKey: String
     let colorHex: String
     let category: String?
-    let price: String? = nil
+    let price: String?
 }
 
 struct AimeStep: Codable, Identifiable {

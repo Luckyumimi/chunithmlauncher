@@ -1420,6 +1420,7 @@ function applyTranslations() {
   byId('languageSelect').value = languagePreference;
   translateTextNodes();
   syncThemeDropdown(theme);
+  syncThemeToggleButton();
   syncLanguageDropdown(languagePreference);
   syncAppleChuStatus();
   renderEvent(activeEventIndex, false);
@@ -1634,6 +1635,7 @@ function applyTheme(value) {
     icon.src = theme === 'dark' ? icon.dataset.iconDark : icon.dataset.iconLight;
   });
   byId('themeSelect').value = theme;
+  syncThemeToggleButton();
   syncThemeDropdown(theme);
   localStorage.setItem('chunithm-theme', theme);
 }
@@ -1807,17 +1809,27 @@ function setFirstRunDropdownOpen(open) {
 }
 
 function syncThemeDropdown(value = theme) {
+  const labels = { light: t('themeLightMode'), dark: t('themeDarkMode') };
   const valueNode = byId('themeSelectValueFirstRun'); const optionsNode = byId('themeSelectOptionsFirstRun');
   if (!valueNode || !optionsNode) return;
-  const labels = { light: t('themeLightMode'), dark: t('themeDarkMode') };
   valueNode.textContent = labels[value] || labels.light;
-  optionsNode.innerHTML = '';
-  Object.entries(labels).forEach(([key, label]) => {
+  optionsNode.replaceChildren(...Object.entries(labels).map(([key, label]) => {
     const option = document.createElement('button'); option.type = 'button'; option.className = 'display-picker-option'; option.setAttribute('role', 'option');
     option.setAttribute('aria-selected', key === value ? 'true' : 'false'); option.textContent = label;
     option.onclick = () => { byId('themeSelect').value = key; applyTheme(key); setThemeDropdownOpen(false); };
-    optionsNode.appendChild(option);
-  });
+    return option;
+  }));
+}
+
+function syncThemeToggleButton() {
+  const button = byId('themeToggle');
+  if (!button) return;
+  const nextTheme = theme === 'dark' ? 'light' : 'dark';
+  const label = nextTheme === 'dark' ? t('themeDark') : t('themeLight');
+  button.setAttribute('aria-label', label);
+  button.title = label;
+  byId('themeLabel').textContent = label;
+  byId('themeIcon').innerHTML = theme === 'dark' ? fixedSunMarkup : `<path d="${moonPath}"></path>`;
 }
 
 function positionThemeDropdown() {
@@ -2111,6 +2123,7 @@ const startWindowDrag = event => {
 document.querySelector('.window-drag-region')?.addEventListener('mousedown', startWindowDrag);
 document.querySelector('.topbar')?.addEventListener('mousedown', startWindowDrag);
 byId('themeSelect').onchange = event => applyTheme(event.target.value);
+byId('themeToggle').onclick = () => applyTheme(theme === 'dark' ? 'light' : 'dark');
 byId('languageSelectTrigger').onclick = () => setLanguageDropdownOpen(!byId('languageDropdownSetting').classList.contains('open'));
 byId('languageSelectTrigger').onkeydown = event => {
   if (event.key === 'Escape') setLanguageDropdownOpen(false);

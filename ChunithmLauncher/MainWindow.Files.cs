@@ -10,6 +10,11 @@ namespace ChunithmLauncher;
 
 public partial class MainWindow
 {
+    private static readonly HashSet<string> BackgroundImageExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".jpg", ".jpeg", ".png", ".bmp", ".webp",
+    };
+
     private void PickStartBat(bool previewOnly = false)
     {
         var dialog = new Microsoft.Win32.OpenFileDialog
@@ -48,14 +53,61 @@ public partial class MainWindow
         {
             if (previewOnly)
             {
-                PostMessage("update-background-image", new { path = dialog.FileName });
+                var previewUrl = PrepareBackgroundImage(dialog.FileName, previewOnly: true);
+                PostMessage("update-background-image", new { path = dialog.FileName, url = previewUrl ?? string.Empty });
                 SetStatus("已暂存背景图片，点击“保存设置”后生效", "#ffb36a");
                 return;
             }
 
             _backgroundImagePath = dialog.FileName;
+            _backgroundImageUrl = PrepareBackgroundImage(_backgroundImagePath);
             PersistConfig();
-            PostMessage("update-background-image", new { path = _backgroundImagePath });
+            PostMessage("update-background-image", new { path = _backgroundImagePath, url = _backgroundImageUrl ?? string.Empty });
+        }
+    }
+
+    private string GetBackgroundImageDirectory()
+    {
+        return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "ChunithmLauncher",
+            "backgrounds");
+    }
+
+    private string? PrepareBackgroundImage(string? sourcePath, bool previewOnly = false)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(sourcePath))
+            {
+                return null;
+            }
+
+            var fullSourcePath = Path.GetFullPath(sourcePath.Trim());
+            if (!File.Exists(fullSourcePath))
+            {
+                return null;
+            }
+
+            var extension = Path.GetExtension(fullSourcePath);
+            if (!BackgroundImageExtensions.Contains(extension))
+            {
+                return null;
+            }
+
+            var directory = GetBackgroundImageDirectory();
+            Directory.CreateDirectory(directory);
+            var fileName = previewOnly ? $"background-preview{extension}" : $"background{extension}";
+            var destination = Path.Combine(directory, fileName);
+            File.Copy(fullSourcePath, destination, overwrite: true);
+
+            var cacheKey = File.GetLastWriteTimeUtc(destination).Ticks;
+            return $"https://{LauncherBackgroundHost}/{Uri.EscapeDataString(fileName)}?v={cacheKey}";
+        }
+        catch (Exception ex)
+        {
+            Log("准备背景图片失败", ex);
+            return null;
         }
     }
 

@@ -1420,7 +1420,7 @@ document.addEventListener('click', event => {
 const state = {
   startBatPath: '', appleChuEnabled: false, primaryDisplay: '', primaryDisplayName: '', originalMode: '',
   targetMode: '1920×1080 @ 120Hz', launchMode: 'smart', smartDisplayEnabled: false, runBatAsAdministrator: true, terminateCmdBeforeLaunch: true,
-  themeColor: '#fdd500', backgroundImagePath: '', displays: [], language: 'system', activitySourceMode: 'default', activitySourceUrl: '', activityFeedLastUpdated: null,
+  themeColor: '#fdd500', backgroundImagePath: '', backgroundImageUrl: '', displays: [], language: 'system', activitySourceMode: 'default', activitySourceUrl: '', activityFeedLastUpdated: null,
 };
 const fallbackEventSlides = [
   { image: 'assets/events/event-doki.png', date: '09.25 — 10.06', titleKey: 'eventDokiTitle', bodyKey: 'eventDokiBody' },
@@ -1612,7 +1612,7 @@ function show(id, visible) {
 }
 
 function render() {
-  applyUserBackground(state.backgroundImagePath);
+  applyUserBackground(state.backgroundImageUrl || state.backgroundImagePath);
   byId('targetMode').textContent = state.targetMode;
   byId('originalMode').textContent = state.originalMode || t('unread');
   byId('primaryDisplay').textContent = state.primaryDisplayName || t('unselected');
@@ -2015,6 +2015,7 @@ function handleMessage(event) {
   if (data.type === 'update-start-bat') { state.startBatPath = p.path || ''; state.appleChuEnabled = !!p.appleChuEnabled; syncAppleChuStatus(); byId('startBat').value = state.startBatPath; byId('startBatSetting').value = state.startBatPath; render(); }
   if (data.type === 'update-background-image') {
     state.backgroundImagePath = p.path || '';
+    state.backgroundImageUrl = p.url || '';
     byId('bgImageInput').value = state.backgroundImagePath;
     render();
   }

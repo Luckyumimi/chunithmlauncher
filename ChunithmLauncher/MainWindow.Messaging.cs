@@ -67,6 +67,7 @@ public partial class MainWindow
         if (settings.BackgroundImagePath is not null)
         {
             _backgroundImagePath = settings.BackgroundImagePath;
+            _backgroundImageUrl = PrepareBackgroundImage(_backgroundImagePath);
         }
 
         if (!string.IsNullOrWhiteSpace(settings.LaunchMode))
@@ -139,6 +140,7 @@ public partial class MainWindow
             themeColor = _themeColor,
             language = _language,
             backgroundImagePath = _backgroundImagePath ?? string.Empty,
+            backgroundImageUrl = _backgroundImageUrl ?? string.Empty,
             activitySourceMode = _activitySourceMode,
             activitySourceUrl = _activitySourceUrl,
             activityFeedLastUpdated = _activityFeedLastUpdated,

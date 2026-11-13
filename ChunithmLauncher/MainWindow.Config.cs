@@ -94,7 +94,11 @@ public partial class MainWindow
         if (!string.IsNullOrWhiteSpace(_config.ThemeColor)) _themeColor = _config.ThemeColor;
         if (!string.IsNullOrWhiteSpace(_config.Language)) _language = _config.Language;
         if (!string.IsNullOrWhiteSpace(_config.GameWindowTitle)) _gameWindowTitle = _config.GameWindowTitle;
-        if (!string.IsNullOrWhiteSpace(_config.BackgroundImagePath)) _backgroundImagePath = _config.BackgroundImagePath;
+        if (!string.IsNullOrWhiteSpace(_config.BackgroundImagePath))
+        {
+            _backgroundImagePath = _config.BackgroundImagePath;
+            _backgroundImageUrl = PrepareBackgroundImage(_backgroundImagePath);
+        }
         if (_config.ActivitySourceMode is "default" or "custom") _activitySourceMode = _config.ActivitySourceMode;
         if (!string.IsNullOrWhiteSpace(_config.ActivitySourceUrl)) _activitySourceUrl = _config.ActivitySourceUrl;
         if (_config.ActivityFeedLastUpdated is not null) _activityFeedLastUpdated = _config.ActivityFeedLastUpdated;

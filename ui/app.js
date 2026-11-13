@@ -1626,29 +1626,32 @@ function render() {
   byId('launchMode').dataset.mode = state.launchMode;
 }
 
-let backgroundProbeToken = 0;
+let backgroundImageToken = 0;
 function applyUserBackground(path) {
   const page = document.querySelector('.page');
-  if (!page) return;
+  const image = byId('userBackgroundImage');
+  if (!page || !image) return;
   const normalizedPath = String(path || '').trim().replaceAll('\\', '/');
-  const token = ++backgroundProbeToken;
+  const token = ++backgroundImageToken;
   page.classList.remove('has-user-background');
   document.documentElement.style.setProperty('--user-bg', 'none');
+  image.hidden = true;
+  image.removeAttribute('src');
   if (!normalizedPath) return;
   const cssPath = /^(?:https?:|data:|blob:|file:)/i.test(normalizedPath)
     ? normalizedPath
     : `file:///${normalizedPath.replace(/^\/+/, '')}`;
-  const probe = new Image();
-  probe.onload = () => {
-    if (token !== backgroundProbeToken) return;
-    document.documentElement.style.setProperty('--user-bg', `url("${cssPath.replaceAll('"', '\\"')}")`);
+  image.onload = () => {
+    if (token !== backgroundImageToken) return;
+    image.hidden = false;
     page.classList.add('has-user-background');
   };
-  probe.onerror = () => {
-    if (token !== backgroundProbeToken) return;
+  image.onerror = () => {
+    if (token !== backgroundImageToken) return;
+    image.hidden = true;
     page.classList.remove('has-user-background');
   };
-  probe.src = cssPath;
+  image.src = cssPath;
 }
 
 function fillDisplays(select, selected) {

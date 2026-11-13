@@ -36,7 +36,6 @@ public partial class MainWindow : Window
     private static readonly HttpClient UpdateHttpClient = CreateUpdateHttpClient();
     private const string GithubRepoHomeUrl = "https://github.com/luckyumimi/chunithmlauncher";
     private const string LauncherUiHost = "launcher.chunithm.local";
-    private const string LauncherBackgroundHost = "launcher-background.chunithm.local";
     private const string GithubLatestReleaseApi = "https://api.github.com/repos/luckyumimi/chunithmlauncher/releases/latest";
     private const string GithubLatestReleasePage = "https://github.com/luckyumimi/chunithmlauncher/releases/latest";
 
@@ -356,16 +355,10 @@ public partial class MainWindow : Window
     private void NavigateToLauncherUi()
     {
         var uiDirectory = Path.GetDirectoryName(ResolveUiIndexPath())!;
-        var backgroundDirectory = GetBackgroundImageDirectory();
-        Directory.CreateDirectory(backgroundDirectory);
         WebView.CoreWebView2!.SetVirtualHostNameToFolderMapping(
             LauncherUiHost,
             uiDirectory,
             CoreWebView2HostResourceAccessKind.Deny);
-        WebView.CoreWebView2.SetVirtualHostNameToFolderMapping(
-            LauncherBackgroundHost,
-            backgroundDirectory,
-            CoreWebView2HostResourceAccessKind.Allow);
         WebView.CoreWebView2.Navigate($"https://{LauncherUiHost}/index.html");
     }
 

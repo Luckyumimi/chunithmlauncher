@@ -10,6 +10,7 @@ namespace ChunithmLauncher;
 
 public partial class MainWindow
 {
+    private const long MaxBackgroundImageBytes = 16 * 1024 * 1024;
     private static readonly HashSet<string> BackgroundImageExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
         ".jpg", ".jpeg", ".png", ".bmp", ".webp",
@@ -101,8 +102,23 @@ public partial class MainWindow
             var destination = Path.Combine(directory, fileName);
             File.Copy(fullSourcePath, destination, overwrite: true);
 
-            var cacheKey = File.GetLastWriteTimeUtc(destination).Ticks;
-            return $"https://{LauncherBackgroundHost}/{Uri.EscapeDataString(fileName)}?v={cacheKey}";
+            var fileInfo = new FileInfo(destination);
+            if (fileInfo.Length > MaxBackgroundImageBytes)
+            {
+                Log($"背景图片过大，已跳过 ({fileInfo.Length} bytes)");
+                return null;
+            }
+
+            var contentType = extension.ToLowerInvariant() switch
+            {
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".bmp" => "image/bmp",
+                ".webp" => "image/webp",
+                _ => "application/octet-stream",
+            };
+            var data = Convert.ToBase64String(File.ReadAllBytes(destination));
+            return $"data:{contentType};base64,{data}";
         }
         catch (Exception ex)
         {

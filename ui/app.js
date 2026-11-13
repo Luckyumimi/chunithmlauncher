@@ -5,32 +5,6 @@ const byId = id => document.getElementById(id);
 // labels.  "system" intentionally resolves to the browser/Windows locale and
 // falls back to Simplified Chinese for locales we do not ship yet.
 const UI_TEXT = Object.freeze({
-  "shopFilter": ["商品筛选", "Shop filters", "商品フィルター", "상품 필터", "Filtres produits", "Filtros de productos", "Shop-Filter"],
-  "shopItems": ["件商品", "items", "アイテム", "개 상품", "articles", "artículos", "Artikel"],
-  "checkinSuccess": ["签到成功！本地演示奖励已到账 +20 点。", "Check-in complete! +20 local demo points added.", "チェックイン完了！ローカルデモ報酬 +20ポイント。", "출석 완료! 로컬 데모 보상 +20 포인트.", "Check-in réussi ! +20 points de démo locale.", "¡Check-in completado! +20 puntos de demo local.", "Check-in abgeschlossen! +20 Demo-Punkte hinzugefügt."],
-  "checkinPending": ["待抽取", "Not drawn", "未抽選", "아직 추첨 전", "Non tiré", "Sin sortear", "Noch nicht gezogen"],
-  "checkinFortuneBody": ["抽取今日运势，完成签到并领取 20 点奖励。", "Draw today's fortune, check in, and claim 20 points.", "今日の運勢を引いて、チェックインして20ポイントを受け取ろう。", "오늘의 운세를 뽑고 출석하여 20포인트를 받으세요.", "Tirez la fortune du jour et recevez 20 points.", "Saca tu fortuna y recibe 20 puntos.", "Ziehe dein Tagesglück und erhalte 20 Punkte."],
-  "checkinAlready": ["今日已签到", "Checked in today", "本日チェックイン済み", "오늘 출석 완료", "Déjà pointé aujourd’hui", "Ya has hecho check-in hoy", "Heute eingecheckt"],
-  "checkinWeek": ["本周签到", "Weekly check-in", "今週のチェックイン", "주간 출석", "Check-in hebdomadaire", "Check-in semanal", "Wöchentlicher Check-in"],
-  "profileScores": ["成绩", "Scores", "スコア", "점수", "Scores", "Puntuaciones", "Punkte"],
-  "miraAbout": ["关于 Mira", "About Mira", "Miraについて", "Mira 소개", "À propos de Mira", "Sobre Mira", "Über Mira"],
-  "miraBio": ["正在收集活动徽章，也在挑战新的个人最佳成绩。", "Collecting event badges and chasing a new personal best.", "イベントバッジを集めながら、自己ベストを更新中です。", "이벤트 배지를 모으며 개인 최고 기록에 도전하고 있어요.", "Je collectionne les badges d’événement et vise un nouveau record personnel.", "Colecciono insignias de eventos y busco una nueva marca personal.", "Ich sammle Event-Abzeichen und jage eine neue persönliche Bestleistung."],
-  "checkinError": ["签到未保存，请重试。","Check-in could not be saved. Please retry.","保存できませんでした。再試行してください。","저장하지 못했습니다. 다시 시도해 주세요.","Enregistrement impossible. Réessayez.","No se pudo guardar. Reinténtalo.","Speichern fehlgeschlagen. Bitte erneut versuchen."],
-  "checkinStreakValue": ["连续 {count} 天","{count}-day streak","{count}日連続","{count}일 연속","{count} jours de suite","{count} días seguidos","{count} Tage in Folge"],
-  "checkinTotal": ["累计签到 {days} 天 · 本地积分 {points}","{days} check-ins · {points} local points","合計{days}日 · ローカル{points}ポイント","총 {days}일 · 로컬 {points}포인트","{days} check-ins · {points} points locaux","{days} registros · {points} puntos locales","{days} Check-ins · {points} lokale Punkte"],
-  "checkinDayDone": ["已签到","Checked in","チェックイン済み","출석 완료","Pointé","Registrado","Eingecheckt"],
-  "shopName4": ["角色纪念徽章","Character badge","キャラクターバッジ","캐릭터 배지","Badge de personnage","Insignia de personaje","Charakter-Abzeichen"],
-  "shopDetail4": ["活动角色系列","Event character collection","イベントキャラクターシリーズ","이벤트 캐릭터 시리즈","Collection de personnages","Colección de personajes","Event-Charakterserie"],
-  "shopName5": ["节奏主题腕带","Rhythm wristband","リズムリストバンド","리듬 손목밴드","Bracelet rythmique","Pulsera rítmica","Rhythmus-Armband"],
-  "shopDetail5": ["轻量弹性材质","Lightweight stretch fabric","軽量ストレッチ素材","가벼운 신축성 소재","Tissu extensible léger","Tejido elástico ligero","Leichtes Stretchmaterial"],
-  "shopName6": ["谱面收藏台卡","Chart display card","譜面ディスプレイカード","채보 전시 카드","Carte de partition","Tarjeta de partituras","Chart-Aufsteller"],
-  "shopDetail6": ["桌面展示装饰","Desktop decoration","デスク用ディスプレイ","책상 장식","Décoration de bureau","Decoración de escritorio","Schreibtischdekoration"],
-  "shopName7": ["节奏主题 T 恤","Rhythm T-shirt","リズムTシャツ","리듬 티셔츠","T-shirt rythmique","Camiseta rítmica","Rhythmus-T-Shirt"],
-  "shopDetail7": ["日常穿搭系列","Everyday wear collection","デイリーウェアシリーズ","데일리웨어 시리즈","Collection quotidienne","Colección de diario","Alltagskollektion"],
-  "shopName8": ["玩家主题挂件","Player bag charm","プレイヤーバッグチャーム","플레이어 가방 장식","Breloque de joueur","Colgante de jugador","Spieler-Anhänger"],
-  "shopDetail8": ["背包装饰小物","A charm for your backpack","バッグ用アクセサリー","백팩 장식 소품","Accessoire de sac","Accesorio para mochila","Rucksack-Accessoire"],
-  "shopName9": ["活动桌面摆件","Event desk ornament","イベント卓上フィギュア","이벤트 책상 장식","Objet de bureau événementiel","Adorno de evento","Event-Schreibtischfigur"],
-  "shopDetail9": ["后续奖励占位","Preview of a future reward","今後の報酬プレビュー","향후 보상 미리보기","Aperçu de récompense","Vista previa de recompensa","Vorschau einer Belohnung"],
   "appTitle": [
     "Chunithm Launcher",
     "Chunithm Launcher",
@@ -76,42 +50,6 @@ const UI_TEXT = Object.freeze({
     "Eventos",
     "Events"
   ],
-  "navScores": [
-    "查分",
-    "Rating",
-    "Rating",
-    "Rating",
-    "Rating",
-    "Rating",
-    "Rating"
-  ],
-  "navShop": [
-    "商城",
-    "Shop",
-    "ショップ",
-    "상점",
-    "Boutique",
-    "Tienda",
-    "Shop"
-  ],
-  "navSocial": [
-    "好友",
-    "Friends",
-    "フレンド",
-    "친구",
-    "Amis",
-    "Amigos",
-    "Freunde"
-  ],
-  "navCommunity": [
-    "社区",
-    "Community",
-    "コミュニティ",
-    "커뮤니티",
-    "Communauté",
-    "Comunidad",
-    "Community"
-  ],
   "navAime": [
     "Aime",
     "Aime",
@@ -120,15 +58,6 @@ const UI_TEXT = Object.freeze({
     "Aime",
     "Aime",
     "Aime"
-  ],
-  "navCheckin": [
-    "签到",
-    "Check-in",
-    "チェックイン",
-    "출석",
-    "Check-in",
-    "Check-in",
-    "Check-in"
   ],
   "navSettings": [
     "设置",
@@ -184,15 +113,6 @@ const UI_TEXT = Object.freeze({
     "Modo claro",
     "Heller Modus"
   ],
-  "accountDemo": [
-    "演示账户　Lv.12",
-    "Demo account　Lv.12",
-    "デモアカウント　Lv.12",
-    "데모 계정　Lv.12",
-    "Compte démo　Nv.12",
-    "Cuenta de demostración　Nv.12",
-    "Demo-Konto　Lvl.12"
-  ],
   "portalDefault": [
     "打开MuNET",
     "Open MuNET",
@@ -203,22 +123,22 @@ const UI_TEXT = Object.freeze({
     "MuNET öffnen"
   ],
   "homeEyebrow": [
-    "SEASON 01　/　COMMUNITY UPDATE",
-    "SEASON 01　/　COMMUNITY UPDATE",
-    "SEASON 01　/　COMMUNITY UPDATE",
-    "SEASON 01　/　COMMUNITY UPDATE",
-    "SEASON 01　/　COMMUNITY UPDATE",
-    "SEASON 01　/　COMMUNITY UPDATE",
-    "SEASON 01　/　COMMUNITY UPDATE"
+    "SEASON 01　/　EVENT UPDATES",
+    "SEASON 01　/　EVENT UPDATES",
+    "SEASON 01　/　イベント情報",
+    "SEASON 01　/　이벤트 소식",
+    "SEASON 01　/　ACTUALITÉS",
+    "SEASON 01　/　NOVEDADES",
+    "SEASON 01　/　EVENT-NEWS"
   ],
   "homeSubtitle": [
-    "启动游戏、记录成绩，和同样喜欢 CHUNITHM 的玩家一起探索新的节奏。",
-    "Launch the game, track scores, and explore new rhythms with fellow CHUNITHM players.",
-    "ゲームを起動し、スコアを記録して、CHUNITHMを愛するプレイヤーと新しいリズムを探そう。",
-    "게임을 실행하고 점수를 기록하며, CHUNITHM을 좋아하는 플레이어들과 새로운 리듬을 찾아보세요.",
-    "Lancez le jeu, suivez vos scores et explorez de nouveaux rythmes avec d’autres joueurs de CHUNITHM.",
-    "Inicia el juego, registra tus puntuaciones y descubre nuevos ritmos con otros jugadores de CHUNITHM.",
-    "Starte das Spiel, verfolge deine Ergebnisse und entdecke neue Rhythmen mit anderen CHUNITHM-Spielern."
+    "启动游戏、浏览活动资讯，并快速完成本地配置。",
+    "Launch the game, browse event updates, and manage your local setup.",
+    "ゲームを起動し、イベント情報を確認して、ローカル設定を管理できます。",
+    "게임을 실행하고 이벤트 소식을 확인하며 로컬 설정을 관리하세요.",
+    "Lancez le jeu, consultez les actualités des événements et gérez votre configuration locale.",
+    "Inicia el juego, consulta las novedades de eventos y configura el entorno local.",
+    "Starte das Spiel, sieh dir Event-Neuigkeiten an und verwalte deine lokale Einrichtung."
   ],
   "launchGame": [
     "▶　启动游戏",
@@ -265,15 +185,6 @@ const UI_TEXT = Object.freeze({
     "Últimas novedades",
     "Neuigkeiten"
   ],
-  "viewAll": [
-    "查看全部 →",
-    "View all →",
-    "すべて見る →",
-    "모두 보기 →",
-    "Tout voir →",
-    "Ver todo →",
-    "Alle anzeigen →"
-  ],
   "newsActivities": [
     "活动",
     "Events",
@@ -300,60 +211,6 @@ const UI_TEXT = Object.freeze({
     "Actualités",
     "Noticias",
     "Neuigkeiten"
-  ],
-  "dailyCheckin": [
-    "每日签到",
-    "Daily check-in",
-    "毎日チェックイン",
-    "매일 출석",
-    "Check-in quotidien",
-    "Check-in diario",
-    "Täglicher Check-in"
-  ],
-  "dailyCheckinDesc": [
-    "领取今日运势与积分奖励",
-    "Claim today's fortune and points",
-    "今日の運勢とポイント報酬を受け取る",
-    "오늘의 운세와 포인트 보상을 받으세요",
-    "Recevez la fortune du jour et des points",
-    "Reclama tu fortuna del día y tus puntos",
-    "Hole dein Tagesglück und Punkte ab"
-  ],
-  "goCheckin": [
-    "去签到",
-    "Check in",
-    "チェックインする",
-    "출석하기",
-    "Faire le check-in",
-    "Hacer check-in",
-    "Einchecken"
-  ],
-  "playerData": [
-    "PLAYER DATA",
-    "PLAYER DATA",
-    "PLAYER DATA",
-    "PLAYER DATA",
-    "PLAYER DATA",
-    "PLAYER DATA",
-    "PLAYER DATA"
-  ],
-  "weekPoints": [
-    "本周积分　↑ 18%",
-    "Weekly points　↑ 18%",
-    "今週のポイント　↑ 18%",
-    "이번 주 포인트　↑ 18%",
-    "Points de la semaine　↑ 18%",
-    "Puntos de esta semana　↑ 18%",
-    "Punkte diese Woche　↑ 18%"
-  ],
-  "viewScores": [
-    "查看成绩",
-    "View scores",
-    "成績を見る",
-    "기록 보기",
-    "Voir les scores",
-    "Ver puntuaciones",
-    "Ergebnisse anzeigen"
   ],
   "targetMode": [
     "目标模式",
@@ -463,78 +320,6 @@ const UI_TEXT = Object.freeze({
     "Arte principal de la colaboración de Doki Doki Literature Club!",
     "Hauptmotiv der Doki-Doki-Literature-Club!-Kooperation"
   ],
-  "currentActivityAlt": [
-    "当前活动宣传图",
-    "Current event artwork",
-    "現在のイベント画像",
-    "현재 이벤트 이미지",
-    "Illustration de l’événement actuel",
-    "Imagen del evento actual",
-    "Bild des aktuellen Events"
-  ],
-  "activityDetail": [
-    "查看活动详情",
-    "View event details",
-    "イベント詳細を見る",
-    "이벤트 상세 보기",
-    "Voir les détails de l’événement",
-    "Ver detalles del evento",
-    "Eventdetails anzeigen"
-  ],
-  "currentRating": [
-    "当前 Rating",
-    "Current Rating",
-    "現在の Rating",
-    "현재 Rating",
-    "Rating actuel",
-    "Rating actual",
-    "Aktuelles Rating"
-  ],
-  "ratingWeeklyChange": [
-    "↑ 0.18 本周",
-    "↑ 0.18 this week",
-    "↑ 0.18 今週",
-    "↑ 0.18 이번 주",
-    "↑ 0.18 cette semaine",
-    "↑ 0.18 esta semana",
-    "↑ 0.18 diese Woche"
-  ],
-  "highestScore": [
-    "最高达成",
-    "Best score",
-    "最高達成",
-    "최고 기록",
-    "Meilleur score",
-    "Mejor puntuación",
-    "Bestleistung"
-  ],
-  "excCount": [
-    "EXC 23 首",
-    "23 EXC songs",
-    "EXC 23曲",
-    "EXC 23곡",
-    "23 morceaux EXC",
-    "23 canciones EXC",
-    "23 EXC-Songs"
-  ],
-  "weeklyPlay": [
-    "本周游玩",
-    "Played this week",
-    "今週のプレイ",
-    "이번 주 플레이",
-    "Joués cette semaine",
-    "Jugadas esta semana",
-    "Diese Woche gespielt"
-  ],
-  "weekLabel": [
-    "本周",
-    "this week",
-    "今週",
-    "이번 주",
-    "cette semaine",
-    "esta semana",
-    "diese Woche"
-  ],
   "songs": [
     "首歌曲",
     "songs",
@@ -544,15 +329,6 @@ const UI_TEXT = Object.freeze({
     "canciones",
     "Songs"
   ],
-  "recentScores": [
-    "近期成绩",
-    "Recent scores",
-    "最近の成績",
-    "최근 기록",
-    "Scores récents",
-    "Puntuaciones recientes",
-    "Letzte Ergebnisse"
-  ],
   "filter": [
     "筛选",
     "Filter",
@@ -561,406 +337,6 @@ const UI_TEXT = Object.freeze({
     "Filtrer",
     "Filtrar",
     "Filtern"
-  ],
-  "nextPlay": [
-    "NEXT PLAY",
-    "NEXT PLAY",
-    "NEXT PLAY",
-    "NEXT PLAY",
-    "NEXT PLAY",
-    "NEXT PLAY",
-    "NEXT PLAY"
-  ],
-  "scoreRecommendation": [
-    "推分推荐",
-    "Score recommendations",
-    "スコアアップおすすめ",
-    "점수 향상 추천",
-    "Recommandations de score",
-    "Recomendaciones de puntuación",
-    "Score-Empfehlungen"
-  ],
-  "scoreRecommendationBody": [
-    "根据你的近期成绩，试试一首速度和滑键都更接近的曲目。",
-    "Based on your recent scores, try a song with a similar speed and slide pattern.",
-    "最近の成績をもとに、速度とスライド傾向が近い曲に挑戦してみよう。",
-    "최근 기록을 바탕으로 속도와 슬라이드 패턴이 비슷한 곡을 시도해 보세요.",
-    "D’après vos scores récents, essayez un morceau au rythme et aux glissés similaires.",
-    "Según tus resultados recientes, prueba una canción con una velocidad y un patrón de slides similares.",
-    "Probiere anhand deiner letzten Ergebnisse ein Stück mit ähnlicher Geschwindigkeit und Slide-Struktur."
-  ],
-  "viewRecommendation": [
-    "查看推荐",
-    "View recommendation",
-    "おすすめを見る",
-    "추천 보기",
-    "Voir les recommandations",
-    "Ver recomendaciones",
-    "Empfehlung anzeigen"
-  ],
-  "allItems": [
-    "全部",
-    "All",
-    "すべて",
-    "전체",
-    "Tout",
-    "Todo",
-    "Alle"
-  ],
-  "badges": [
-    "徽章",
-    "Badges",
-    "バッジ",
-    "배지",
-    "Badges",
-    "Insignias",
-    "Abzeichen"
-  ],
-  "clothing": [
-    "服饰",
-    "Clothing",
-    "コスチューム",
-    "의상",
-    "Vêtements",
-    "Ropa",
-    "Kleidung"
-  ],
-  "deskItems": [
-    "桌面物件",
-    "Desk items",
-    "デスクアイテム",
-    "데스크 아이템",
-    "Objets de bureau",
-    "Objetos de escritorio",
-    "Schreibtisch-Objekte"
-  ],
-  "productImage": [
-    "商品图",
-    "Product image",
-    "商品画像",
-    "상품 이미지",
-    "Image du produit",
-    "Imagen del producto",
-    "Produktbild"
-  ],
-  "badgeSet": [
-    "节奏徽章套装",
-    "Rhythm badge set",
-    "リズムバッジセット",
-    "리듬 배지 세트",
-    "Ensemble de badges de rythme",
-    "Set de insignias de ritmo",
-    "Rhythmus-Abzeichen-Set"
-  ],
-  "limitedEvent": [
-    "限定活动纪念",
-    "Limited event keepsake",
-    "限定イベント記念品",
-    "한정 이벤트 기념품",
-    "Souvenir d’événement limité",
-    "Recuerdo de evento limitado",
-    "Limitierte Event-Erinnerung"
-  ],
-  "rhythmMat": [
-    "街机节奏桌垫",
-    "Arcade rhythm desk mat",
-    "アーケードリズムデスクマット",
-    "아케이드 리듬 데스크 매트",
-    "Tapis de bureau rythmique arcade",
-    "Alfombrilla de escritorio arcade",
-    "Arcade-Rhythmus-Schreibtischmatte"
-  ],
-  "antiSlip": [
-    "防滑织物材质",
-    "Anti-slip fabric",
-    "滑り止め生地",
-    "미끄럼 방지 패브릭",
-    "Tissu antidérapant",
-    "Tejido antideslizante",
-    "Rutschfestes Gewebe"
-  ],
-  "songCards": [
-    "曲目收藏卡",
-    "Song collection cards",
-    "楽曲コレクションカード",
-    "곡 수집 카드",
-    "Cartes de collection de morceaux",
-    "Tarjetas de colección de canciones",
-    "Song-Sammelkarten"
-  ],
-  "randomThree": [
-    "随机 3 张",
-    "Random 3 cards",
-    "ランダム3枚",
-    "랜덤 3장",
-    "3 cartes aléatoires",
-    "3 cartas aleatorias",
-    "3 zufällige Karten"
-  ],
-  "dailyRoutine": [
-    "DAILY ROUTINE / 04",
-    "DAILY ROUTINE / 04",
-    "DAILY ROUTINE / 04",
-    "DAILY ROUTINE / 04",
-    "DAILY ROUTINE / 04",
-    "DAILY ROUTINE / 04",
-    "DAILY ROUTINE / 04"
-  ],
-  "dailyRoutineTitle": [
-    "每日签到",
-    "Daily check-in",
-    "毎日チェックイン",
-    "매일 출석",
-    "Check-in quotidien",
-    "Check-in diario",
-    "Täglicher Check-in"
-  ],
-  "dailyRoutineBody": [
-    "每天打开启动器，抽取一份属于今天的节奏运势。",
-    "Open the launcher each day to draw your rhythm fortune.",
-    "毎日ランチャーを開いて、今日のリズム運勢を引こう。",
-    "매일 런처를 열고 오늘의 리듬 운세를 뽑아 보세요.",
-    "Ouvrez le launcher chaque jour pour tirer votre horoscope rythmique.",
-    "Abre el launcher cada día para sacar tu fortuna rítmica.",
-    "Öffne den Launcher jeden Tag und ziehe dein Rhythmus-Horoskop."
-  ],
-  "todayFortune": [
-    "TODAY'S FORTUNE",
-    "TODAY'S FORTUNE",
-    "TODAY'S FORTUNE",
-    "TODAY'S FORTUNE",
-    "TODAY'S FORTUNE",
-    "TODAY'S FORTUNE",
-    "TODAY'S FORTUNE"
-  ],
-  "greatFortune": [
-    "大吉",
-    "Excellent luck",
-    "大吉",
-    "대길",
-    "Chance exceptionnelle",
-    "Mucha suerte",
-    "Großes Glück"
-  ],
-  "fortuneBody": [
-    "适合挑战熟悉曲目的高难度谱面，今天的手感会比平时更稳定。",
-    "A good day to challenge hard charts you know. Your touch should feel steadier than usual.",
-    "知っている高難度譜面に挑戦するのにぴったり。今日はいつもより手応えが安定しそう。",
-    "익숙한 고난도 채보에 도전하기 좋은 날입니다. 오늘은 평소보다 손感이 더 안정적일 거예요.",
-    "Idéal pour tenter des charts difficiles que vous connaissez ; votre toucher devrait être plus stable aujourd’hui.",
-    "Un buen día para desafiar charts difíciles que conoces; hoy tu precisión debería ser más estable.",
-    "Ideal, um bekannte schwere Charts zu spielen; dein Spielgefühl sollte heute stabiler sein."
-  ],
-  "drawFortune": [
-    "抽取今日运势",
-    "Draw today's fortune",
-    "今日の運勢を引く",
-    "오늘의 운세 뽑기",
-    "Tirer la fortune du jour",
-    "Sacar la fortuna de hoy",
-    "Tagesglück ziehen"
-  ],
-  "consecutiveCheckin": [
-    "连续签到",
-    "Consecutive check-in",
-    "連続チェックイン",
-    "연속 출석",
-    "Série de check-ins",
-    "Racha de check-ins",
-    "Check-in-Serie"
-  ],
-  "checkinStreak": [
-    "4 / 7 天",
-    "4 / 7 days",
-    "4 / 7日",
-    "4 / 7일",
-    "4 / 7 jours",
-    "4 / 7 días",
-    "4 / 7 Tage"
-  ],
-  "days": [
-    "天",
-    "days",
-    "日",
-    "일",
-    "jours",
-    "días",
-    "Tage"
-  ],
-  "socialTitle": [
-    "好友动态",
-    "Friend activity",
-    "フレンドアクティビティ",
-    "친구 활동",
-    "Activité des amis",
-    "Actividad de amigos",
-    "Freunde-Aktivität"
-  ],
-  "friendsEyebrow": [
-    "FRIENDS",
-    "FRIENDS",
-    "FRIENDS",
-    "FRIENDS",
-    "FRIENDS",
-    "FRIENDS",
-    "FRIENDS"
-  ],
-  "onlineFriends": [
-    "在线好友",
-    "Online friends",
-    "オンラインのフレンド",
-    "온라인 친구",
-    "Amis en ligne",
-    "Amigos en línea",
-    "Online-Freunde"
-  ],
-  "onlineCount": [
-    "3 人在线",
-    "3 online",
-    "3人オンライン",
-    "온라인 3명",
-    "3 en ligne",
-    "3 en línea",
-    "3 online"
-  ],
-  "friendSearch": [
-    "搜索好友昵称或 ID",
-    "Search nickname or ID",
-    "フレンド名またはIDを検索",
-    "닉네임 또는 ID 검색",
-    "Rechercher un pseudo ou un ID",
-    "Buscar apodo o ID",
-    "Spitznamen oder ID suchen"
-  ],
-  "addFriend": [
-    "添加",
-    "Add",
-    "追加",
-    "추가",
-    "Ajouter",
-    "Añadir",
-    "Hinzufügen"
-  ],
-  "online": [
-    "在线",
-    "Online",
-    "オンライン",
-    "온라인",
-    "En ligne",
-    "En línea",
-    "Online"
-  ],
-  "viewProfile": [
-    "查看主页",
-    "View profile",
-    "プロフィールを見る",
-    "프로필 보기",
-    "Voir le profil",
-    "Ver perfil",
-    "Profil anzeigen"
-  ],
-  "activityCompleted": [
-    "刚刚完成了「World Vanquisher」的 SSS",
-    "Just achieved SSS on “World Vanquisher”",
-    "たった今「World Vanquisher」でSSSを達成",
-    "방금 「World Vanquisher」에서 SSS 달성",
-    "Vient d’obtenir un SSS sur « World Vanquisher »",
-    "Acaba de lograr SSS en « World Vanquisher »",
-    "Gerade SSS in „World Vanquisher“ erreicht"
-  ],
-  "profileUpdated": [
-    "更新了个人简介：今晚继续推分",
-    "Updated profile: pushing scores tonight",
-    "プロフィールを更新：今夜もスコア更新",
-    "프로필 업데이트: 오늘 밤도 점수 올리기",
-    "Profil mis à jour : amélioration des scores ce soir",
-    "Perfil actualizado: a subir puntuación esta noche",
-    "Profil aktualisiert: heute Abend weiter Punkte sammeln"
-  ],
-  "communityEyebrow": [
-    "COMMUNITY / 05",
-    "COMMUNITY / 05",
-    "コミュニティ / 05",
-    "커뮤니티 / 05",
-    "COMMUNAUTÉ / 05",
-    "COMUNIDAD / 05",
-    "COMMUNITY / 05"
-  ],
-  "communityTitle": [
-    "社区",
-    "Community",
-    "コミュニティ",
-    "커뮤니티",
-    "Communauté",
-    "Comunidad",
-    "Community"
-  ],
-  "communitySubtitle": [
-    "分享你的成绩、活动记忆和下一首想挑战的曲目。",
-    "Share scores, event memories, and the next song you want to challenge.",
-    "スコアやイベントの思い出、次に挑戦したい曲をシェアしよう。",
-    "점수와 이벤트 추억, 다음에 도전할 곡을 공유해 보세요.",
-    "Partagez vos scores, souvenirs d’événements et prochains défis.",
-    "Comparte tus puntuaciones, recuerdos de eventos y próximos retos.",
-    "Teile Scores, Event-Erinnerungen und deinen nächsten Song-Challenge."
-  ],
-  "communityFilter": [
-    "社区动态筛选",
-    "Community feed filters",
-    "コミュニティフィルター",
-    "커뮤니티 피드 필터",
-    "Filtres du fil communautaire",
-    "Filtros del feed de comunidad",
-    "Community-Feed-Filter"
-  ],
-  "communityAll": ["全部", "All", "すべて", "전체", "Tout", "Todo", "Alle"],
-  "communityScores": ["成绩", "Scores", "スコア", "점수", "Scores", "Puntuaciones", "Scores"],
-  "communityEvents": ["活动", "Events", "イベント", "이벤트", "Événements", "Eventos", "Events"],
-  "communityTopics": ["话题", "Topics", "トピック", "주제", "Sujets", "Temas", "Themen"],
-  "communityComposerLabel": ["发布社区动态", "Publish a community post", "投稿を作成", "커뮤니티 글 작성", "Publier dans la communauté", "Publicar en la comunidad", "Community-Beitrag veröffentlichen"],
-  "communityComposerPlaceholder": ["分享一条动态...", "Share an update...", "近況をシェア...", "업데이트를 공유하세요...", "Partagez une actualité...", "Comparte una actualización...", "Update teilen..."],
-  "communityPostType": ["动态类型", "Post type", "投稿タイプ", "글 유형", "Type de publication", "Tipo de publicación", "Beitragstyp"],
-  "communityPublish": ["发布", "Publish", "投稿", "게시", "Publier", "Publicar", "Veröffentlichen"],
-  "communityHotEyebrow": ["HOT TOPICS", "HOT TOPICS", "注目トピック", "인기 주제", "SUJETS POPULAIRES", "TEMAS DESTACADOS", "BELIEBTE THEMEN"],
-  "communityHotTitle": ["正在讨论", "Trending now", "話題のトピック", "지금 이야기 중", "Tendances", "Tendencias", "Gerade im Gespräch"],
-  "communityPulse": ["COMMUNITY PULSE", "COMMUNITY PULSE", "コミュニティパルス", "커뮤니티 펄스", "PULSE COMMUNAUTAIRE", "PULSO DE LA COMUNIDAD", "COMMUNITY-PULS"],
-  "communityMembers": ["本周活跃玩家", "Active players this week", "今週のアクティブプレイヤー", "이번 주 활성 플레이어", "Joueurs actifs cette semaine", "Jugadores activos esta semana", "Aktive Spieler diese Woche"],
-  "communityCount": ["{count} 条动态", "{count} posts", "{count}件の投稿", "{count}개 글", "{count} publications", "{count} publicaciones", "{count} Beiträge"],
-  "communityTimeNow": ["刚刚", "Just now", "たった今", "방금", "À l’instant", "Ahora", "Gerade eben"],
-  "communityTimeToday": ["今天", "Today", "今日", "오늘", "Aujourd’hui", "Hoy", "Heute"],
-  "communityLocalPost": ["本地玩家", "Local player", "ローカルプレイヤー", "로컬 플레이어", "Joueur local", "Jugador local", "Lokaler Spieler"],
-  "communityScorePost": ["刚刚把「{song}」打到 {rank}，这首的尾杀还是很爽。", "Just pushed “{song}” to {rank}. That ending is still so satisfying.", "「{song}」を{rank}まで更新。最後の配置が気持ちいい。", "「{song}」를 {rank}까지 갱신했어요. 마지막 배치가 정말 좋아요.", "Je viens de passer « {song} » en {rank}. La fin est toujours aussi satisfaisante.", "Acabo de subir « {song} » a {rank}. Ese final sigue siendo genial.", "„{song}“ gerade auf {rank} verbessert. Das Ende macht immer noch Spaß."],
-  "communityEventPost": ["新活动的限定头像框终于拿到了，下一步挑战全曲目。", "Finally got the new event avatar frame. Next goal: clear the full set.", "新イベントの限定フレームを獲得。次は全曲クリアに挑戦。", "새 이벤트 한정 프레임을 얻었어요. 다음 목표는 전체 곡 클리어예요.", "J’ai enfin obtenu le cadre d’avatar de l’événement. Prochain objectif : tout terminer.", "Por fin conseguí el marco del evento. Próximo objetivo: completar todas las canciones.", "Endlich den Event-Avatarrahmen bekommen. Nächstes Ziel: alle Songs schaffen."],
-  "communityTopicPost": ["大家最近都在练哪首 13+？求一首适合热手的推荐。", "What 13+ charts is everyone practicing lately? I need a good warm-up recommendation.", "最近みんなはどの13+を練習してる？ウォームアップ曲を教えて。", "요즘 다들 어떤 13+ 채보를 연습하나요? 손 풀기 곡을 추천해 주세요.", "Quels charts 13+ travaillez-vous en ce moment ? Je cherche un bon échauffement.", "¿Qué charts 13+ están practicando? Busco una buena canción para calentar.", "Welche 13+-Charts übt ihr gerade? Ich suche einen guten Warm-up-Song."],
-  "communityLike": ["点赞", "Like", "いいね", "좋아요", "J’aime", "Me gusta", "Gefällt mir"],
-  "communityPublished": ["社区动态已发布", "Community post published", "コミュニティに投稿しました", "커뮤니티 글을 게시했습니다", "Publication envoyée", "Publicación enviada", "Community-Beitrag veröffentlicht"],
-  "communitySaveError": ["社区动态保存失败", "Could not save the community post", "投稿を保存できませんでした", "커뮤니티 글을 저장하지 못했습니다", "Impossible d’enregistrer la publication", "No se pudo guardar la publicación", "Community-Beitrag konnte nicht gespeichert werden"],
-  "challenging": [
-    "正在挑战 World Vanquisher",
-    "Challenging World Vanquisher",
-    "「World Vanquisher」に挑戦中",
-    "「World Vanquisher」에 도전 중",
-    "Joue actuellement à « World Vanquisher »",
-    "Desafiando « World Vanquisher »",
-    "Spielt gerade „World Vanquisher“"
-  ],
-  "preparing": [
-    "准备开始推分",
-    "Preparing to push scores",
-    "スコア更新の準備中",
-    "점수 올릴 준비 중",
-    "Se prépare à améliorer son score",
-    "Preparándose para subir puntuación",
-    "Bereitet sich auf neue Bestleistungen vor"
-  ],
-  "viewedActivity": [
-    "刚刚查看了活动",
-    "Just viewed an event",
-    "イベントを見たばかり",
-    "방금 이벤트를 확인함",
-    "Vient de consulter un événement",
-    "Acaba de ver un evento",
-    "Hat gerade ein Event angesehen"
   ],
   "aimeTitle": [
     "下载Android Aime NFC 读卡器",
@@ -1602,13 +978,13 @@ const UI_TEXT = Object.freeze({
     "Fenstergröße auf 1296×730 festgelegt"
   ],
   "newsUpdate1": [
-    "社区内容展示页开放投稿",
-    "Community showcase submissions open",
-    "コミュニティ展示ページで投稿受付開始",
-    "커뮤니티 전시 페이지에 게시물 제출 가능",
-    "Les contributions sont ouvertes sur la vitrine communautaire",
-    "Abiertas las contribuciones en la galería comunitaria",
-    "Beiträge für die Community-Galerie geöffnet"
+    "本地启动与显示器设置说明",
+    "Local launch and display setup guide",
+    "ローカル起動とディスプレイ設定ガイド",
+    "로컬 실행 및 디스플레이 설정 가이드",
+    "Guide de démarrage local et de configuration des écrans",
+    "Guía de inicio local y configuración de pantalla",
+    "Anleitung für lokalen Start und Anzeigeeinstellungen"
   ],
   "newsUpdate2": [
     "版本 2.5.0 更新说明",
@@ -1627,51 +1003,6 @@ const UI_TEXT = Object.freeze({
     "lun.",
     "lun.",
     "Mo."
-  ],
-  "weekdayTue": [
-    "二",
-    "Tue",
-    "火",
-    "화",
-    "mar.",
-    "mar.",
-    "Di."
-  ],
-  "weekdayWed": [
-    "三",
-    "Wed",
-    "水",
-    "수",
-    "mer.",
-    "mié.",
-    "Mi."
-  ],
-  "weekdayThu": [
-    "四",
-    "Thu",
-    "木",
-    "목",
-    "jeu.",
-    "jue.",
-    "Do."
-  ],
-  "weekdayFri": [
-    "五",
-    "Fri",
-    "金",
-    "금",
-    "ven.",
-    "vie.",
-    "Fr."
-  ],
-  "weekdaySat": [
-    "六",
-    "Sat",
-    "土",
-    "토",
-    "sam.",
-    "sáb.",
-    "Sa."
   ],
   "weekdaySun": [
     "日",
@@ -1943,15 +1274,6 @@ const UI_TEXT = Object.freeze({
     "No se encontró ninguna pantalla",
     "Kein Display gefunden"
   ],
-  "eventArchive": [
-    "活动档案",
-    "Event archive",
-    "イベントアーカイブ",
-    "이벤트 아카이브",
-    "Dossier de l’événement",
-    "Archivo del evento",
-    "Event-Archiv"
-  ],
   "eventType": [
     "联动活动",
     "Collab event",
@@ -1961,69 +1283,6 @@ const UI_TEXT = Object.freeze({
     "Evento colab",
     "Kollab-Event"
   ],
-  "eventRewards": [
-    "角色 / 名牌 / 舞台背景",
-    "Characters / nameplates / stage",
-    "キャラクター / ネームプレート / ステージ",
-    "캐릭터 / 이름표 / 스테이지",
-    "Personnages / plaques / scène",
-    "Personajes / placas / escenario",
-    "Charaktere / Namensschilder / Bühne"
-  ],
-  "eventTime": [
-    "活动时间",
-    "Dates",
-    "開催期間",
-    "기간",
-    "Dates",
-    "Fechas",
-    "Zeitraum"
-  ],
-  "eventCategory": [
-    "活动类型",
-    "Format",
-    "内容",
-    "콘텐츠",
-    "Contenu",
-    "Contenido",
-    "Inhalt"
-  ],
-  "eventRewardLabel": [
-    "活动奖励",
-    "Rewards",
-    "報酬",
-    "보상",
-    "Récompenses",
-    "Recompensas",
-    "Belohnungen"
-  ],
-  "eventRewardCharacter": [
-    "角色",
-    "Characters",
-    "キャラクター",
-    "캐릭터",
-    "Personnages",
-    "Personajes",
-    "Charaktere"
-  ],
-  "eventRewardNameplate": [
-    "名牌",
-    "Nameplates",
-    "ネームプレート",
-    "이름표",
-    "Plaques",
-    "Placas",
-    "Namensschilder"
-  ],
-  "eventRewardStage": [
-    "舞台背景",
-    "Stage backgrounds",
-    "ステージ背景",
-    "스테이지 배경",
-    "Décors de scène",
-    "Fondos de escenario",
-    "Bühnenhintergründe"
-  ]
 });
 
 const LANGUAGE_OPTIONS = Object.freeze(['system', 'zh-CN', 'en-US', 'ja-JP', 'ko-KR', 'fr-FR', 'es-ES', 'de-DE']);
@@ -2045,8 +1304,8 @@ let activeLanguage = languagePreference === 'system' ? detectSystemLanguage() : 
 let currentStatus = '';
 const t = key => UI_TEXT[key]?.[LANGUAGE_INDEX[activeLanguage] ?? 0] ?? UI_TEXT[key]?.[0] ?? key;
 const textKeyByChinese = new Map(Object.entries(UI_TEXT).map(([key, values]) => [values[0], key]));
-const STATUS_TEXT = Object.freeze({"社区动态已发布": "communityPublished", "社区动态保存失败": "communitySaveError", "启动中": "statusLaunching", "请先完成配置": "statusSetupRequired", "设置已保存": "statusSaved", "设置已保存并生效": "statusApplied", "主显示器已保存": "statusPrimarySaved", "消息解析失败": "statusParseError", "正在检查更新...": "statusCheckingUpdates", "检查更新失败": "statusUpdateFailed", "当前已是最新版本": "statusUpToDate", "已打开 GitHub 主页": "statusGithubOpened", "打开 GitHub 主页失败": "statusGithubOpenFailed", "MuNET 链接无效": "statusInvalidMunet", "MuNET 页面尚未准备好": "statusMunetNotReady", "网页链接格式不正确": "statusBadUrl", "测试切换": "testSwitch", "正在切换分辨率...": "statusSwitchingResolution", "已恢复分辨率": "statusResolutionRestored", "恢复失败": "statusRestoreFailed", "游戏启动中...": "statusGameStarting", "等待游戏窗口...": "statusWaitingGame", "游戏运行中...": "statusGameRunning", "启动失败": "statusLaunchFailed", "未找到显示器": "statusNoDisplay", "签到成功": "checkinAlready"});
-const dynamicTextSelector = '#homeNewsList, #activityEventDate, #activityEventTitle, #activityEventBody, #announcementTitle, #announcementBody, #btnAnnouncementAction, #portalTab, #statusText, #version, #targetMode, #originalMode, #primaryDisplay, #startBatPath, #btnMigrateToAppleChu, #btnTestSwitch, [data-i18n], #checkinFortune, #checkinFortuneBody, #btnCheckin, #checkinSuccess, #checkinStreak, #checkinDays, #checkinSummary, #shopResultCount';
+const STATUS_TEXT = Object.freeze({"启动中": "statusLaunching", "请先完成配置": "statusSetupRequired", "设置已保存": "statusSaved", "设置已保存并生效": "statusApplied", "主显示器已保存": "statusPrimarySaved", "消息解析失败": "statusParseError", "正在检查更新...": "statusCheckingUpdates", "检查更新失败": "statusUpdateFailed", "当前已是最新版本": "statusUpToDate", "已打开 GitHub 主页": "statusGithubOpened", "打开 GitHub 主页失败": "statusGithubOpenFailed", "MuNET 链接无效": "statusInvalidMunet", "MuNET 页面尚未准备好": "statusMunetNotReady", "网页链接格式不正确": "statusBadUrl", "测试切换": "testSwitch", "正在切换分辨率...": "statusSwitchingResolution", "已恢复分辨率": "statusResolutionRestored", "恢复失败": "statusRestoreFailed", "游戏启动中...": "statusGameStarting", "等待游戏窗口...": "statusWaitingGame", "游戏运行中...": "statusGameRunning", "启动失败": "statusLaunchFailed", "未找到显示器": "statusNoDisplay"});
+const dynamicTextSelector = '#homeNewsList, #announcementTitle, #announcementBody, #btnAnnouncementAction, #portalTab, #statusText, #version, #targetMode, #originalMode, #primaryDisplay, #startBatPath, #btnMigrateToAppleChu, #btnTestSwitch, [data-i18n]';
 function translateTextNodes() {
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let node;
@@ -2075,57 +1334,14 @@ function applyTranslations() {
   setTranslatedAttribute('.launcher-rail', 'aria-label', 'navLabel');
   setTranslatedAttribute('.rail-brand', 'aria-label', 'backHome');
   byId('statusText').textContent = currentStatus ? translateKnownText(currentStatus) : t('statusIdle');
-  setTranslatedText('#themeLabel', theme === 'dark' ? 'themeLight' : 'themeDark');
-  setTranslatedText('#accountButton span', 'accountDemo');
-  setTranslatedAttribute('#accountButton .account-avatar', 'alt', 'accountDemo');
   setTranslatedText('.hero-copy .eyebrow', 'homeEyebrow');
   setTranslatedText('.hero-subtitle', 'homeSubtitle');
   setTranslatedText('#btnLaunch', 'launchGame');
   setTranslatedText('.news-panel h2', 'latest');
-  setTranslatedText('.news-panel .text-action', 'viewAll');
-  setTranslatedText('.mini-card:first-of-type strong', 'dailyCheckin');
-  setTranslatedText('.mini-card:first-of-type p', 'dailyCheckinDesc');
-  setTranslatedText('.mini-card:first-of-type button', 'goCheckin');
-  setTranslatedText('.score-card p', 'weekPoints');
-  setTranslatedText('.score-card button', 'viewScores');
   setTranslatedText('.target-label', 'targetMode');
   setTranslatedText('.launch-mode-label', 'launchMode');
   setTranslatedText('#launchMode [data-mode="smart"]', 'smartMode');
   setTranslatedText('#launchMode [data-mode="manual"]', 'manualMode');
-  setTranslatedText('.metric-card:nth-child(1) span', 'currentRating');
-  setTranslatedText('.metric-card:nth-child(1) small', 'ratingWeeklyChange');
-  setTranslatedText('.metric-card:nth-child(2) span', 'highestScore');
-  setTranslatedText('.metric-card:nth-child(2) small', 'excCount');
-  setTranslatedText('.metric-card:nth-child(3) span', 'weeklyPlay');
-  setTranslatedText('.metric-card:nth-child(3) small', 'songs');
-  setTranslatedText('.score-list h3', 'recentScores');
-  setTranslatedText('.score-list .text-action', 'filter');
-  setTranslatedText('.recommendation h3', 'scoreRecommendation');
-  setTranslatedText('.recommendation p', 'scoreRecommendationBody');
-  setTranslatedText('.recommendation button', 'viewRecommendation');
-  setTranslatedAttribute('.shop-toolbar', 'aria-label', 'shopFilter');
-
-  setTranslatedText('.calendar-card h3', 'consecutiveCheckin');
-  setTranslatedText('.social-heading h2', 'socialTitle');
-  setTranslatedText('.rail-link[data-view=\"community\"] span', 'navCommunity');
-  setTranslatedText('.community-heading .eyebrow', 'communityEyebrow');
-  setTranslatedText('.community-heading h2', 'communityTitle');
-  setTranslatedText('.community-heading p', 'communitySubtitle');
-  setTranslatedText('.community-composer label', 'communityComposerLabel');
-  setTranslatedText('#btnCommunityPublish', 'communityPublish');
-  setTranslatedText('.community-topic-card .eyebrow', 'communityHotEyebrow');
-  setTranslatedText('.community-topic-card h3', 'communityHotTitle');
-  setTranslatedText('.community-stats-card .eyebrow', 'communityPulse');
-  setTranslatedText('.community-stats-card p', 'communityMembers');
-  setTranslatedAttribute('.community-filters', 'aria-label', 'communityFilter');
-  setTranslatedAttribute('#communityPostType', 'aria-label', 'communityPostType');
-  setTranslatedAttribute('#communityPostTypeTrigger', 'aria-label', 'communityPostType');
-  const communityInput = byId('communityPostInput');
-  if (communityInput) communityInput.placeholder = t('communityComposerPlaceholder');
-  syncCommunityPostType();
-  setTranslatedText('.friends-panel h3', 'onlineFriends');
-  setTranslatedText('.friends-count', 'onlineCount');
-  setTranslatedText('#friendSearchForm button', 'addFriend');
   setTranslatedText('.aime-title', 'aimeTitle');
   setTranslatedText('.aime-steps > div:nth-child(1) h3', 'installApp');
   setTranslatedText('.aime-steps > div:nth-child(1) p', 'installAppBody');
@@ -2133,7 +1349,7 @@ function applyTranslations() {
   setTranslatedText('.aime-steps > div:nth-child(2) p', 'openNfcBody');
   setTranslatedText('.aime-steps > div:nth-child(3) h3', 'connectGame');
   setTranslatedText('.aime-steps > div:nth-child(3) p', 'connectGameBody');
-  setTranslatedText('.aime-steps > a', 'projectGuide');
+  setTranslatedText('.aime-steps > a, .aime-steps > button', 'projectGuide');
   setTranslatedText('#firstRun h2', 'firstRun');
   setTranslatedText('#firstRun > .modal-card > p', 'firstRunBody');
   setTranslatedText('#settingsModal h2', 'settings');
@@ -2147,30 +1363,15 @@ function applyTranslations() {
   setTranslatedText('#announcementModal .modal-heading small', 'projectAnnouncement');
   setTranslatedText('#btnCloseDonation, #btnCloseAnnouncement', 'close');
   setTranslatedText('#btnSaveSettings', 'saveSettings');
-  setTranslatedText('.event-media-label', 'eventArchive');
-  setTranslatedText('#activityEventType, .event-meta-strip > div:nth-child(2) strong', 'eventType');
-  setTranslatedText('#activityEventRewardCharacter', 'eventRewardCharacter');
-  setTranslatedText('#activityEventRewardNameplate', 'eventRewardNameplate');
-  setTranslatedText('#activityEventRewardStage', 'eventRewardStage');
-  setTranslatedText('.event-meta-strip > div:nth-child(1) span', 'eventTime');
-  setTranslatedText('.event-meta-strip > div:nth-child(2) span', 'eventCategory');
-  setTranslatedText('.event-meta-strip > div:nth-child(3) span', 'eventRewardLabel');
-  setTranslatedText('.event-meta-strip > div:nth-child(3) strong', 'eventRewards');
   setTranslatedText('#btnSave', 'finishSetup');
   setTranslatedText(aboutNote, 'aboutNote');
   document.querySelectorAll('.event-hero-controls button').forEach(button => button.setAttribute('aria-label', t(button.id === 'eventPrev' || button.dataset.eventPrev !== undefined ? 'eventPrev' : 'eventNext')));
   setTranslatedAttribute('#eventIndicator, .event-indicator', 'aria-label', 'eventPages');
-  setTranslatedAttribute('#friendSearchInput', 'aria-label', 'friendSearch');
-  setTranslatedAttribute('.online-friends', 'aria-label', 'onlineFriends');
-  setTranslatedAttribute('.online-friend i', 'aria-label', 'online');
   setTranslatedAttribute('#homeEventImage', 'alt', 'activityAlt');
-  setTranslatedAttribute('#activityEventImage', 'alt', 'currentActivityAlt');
   setTranslatedAttribute('.phone-placeholder img', 'alt', 'aimeTitle');
-  setTranslatedAttribute('#friendSearchInput', 'placeholder', 'friendSearch');
   setTranslatedAttribute('#startBat, #startBatSetting', 'placeholder', 'chooseStartBat');
   setTranslatedAttribute('#originalModeInputSetting', 'placeholder', 'originalModeExample');
   setTranslatedAttribute('#bgImageInput', 'placeholder', 'localPathUrl');
-  setTranslatedAttribute('#portalButtonText', 'placeholder', 'portalDefault');
   byId('languageSelect').value = languagePreference;
   translateTextNodes();
   syncThemeDropdown(theme);
@@ -2180,9 +1381,6 @@ function applyTranslations() {
   renderNewsTab(currentNewsTab);
   document.querySelectorAll('[data-i18n]').forEach(node => { node.textContent = t(node.dataset.i18n); });
   document.querySelectorAll('[data-i18n-aria]').forEach(node => { node.setAttribute('aria-label', t(node.dataset.i18nAria)); });
-  applyShopFilter(document.querySelector('[data-shop-filter].active')?.dataset.shopFilter || 'all');
-  renderCommunityFeed();
-  renderCheckin();
   render();
 }
 function setLanguagePreference(value, { persist = true } = {}) {
@@ -2207,204 +1405,14 @@ const post = (type, payload = {}) => window.chrome?.webview
 
 function selectWorkspace(view) {
   const target = view || 'home';
-  if (target === 'checkin') renderCheckin();
   document.querySelectorAll('[data-view-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.viewPanel === target));
   document.querySelectorAll('[data-view]').forEach(link => link.classList.toggle('active', link.dataset.view === target));
   document.querySelector('.view-stack')?.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Keep one animation per element so rapid interactions always settle on the latest state.
-const communityAnimations = new Map();
-const communityMotionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-function stopCommunityTransition(element) {
-  communityAnimations.get(element)?.cancel();
-  communityAnimations.delete(element);
-}
-function animateCommunityElement(element, keyframes, options = {}) {
-  stopCommunityTransition(element);
-  if (communityMotionPreference.matches || !element?.getClientRects().length || typeof element.animate !== 'function') return Promise.resolve();
-  const animation = element.animate(keyframes, { duration: 280, easing: 'cubic-bezier(.22, 1, .36, 1)', fill: 'both', ...options });
-  communityAnimations.set(element, animation);
-  return animation.finished.catch(() => {}).finally(() => {
-    if (communityAnimations.get(element) === animation) communityAnimations.delete(element);
-    animation.cancel();
-  });
-}
-communityMotionPreference.addEventListener('change', event => {
-  if (event.matches) {
-    communityAnimations.forEach(animation => animation.cancel());
-    communityAnimations.clear();
-  }
-});
-let shopFilterRevision = 0;
-async function applyShopFilter(category = 'all', { animate = false } = {}) {
-  const grid = byId('shopProductGrid');
-  const chips = document.querySelectorAll('[data-shop-filter]');
-  const cards = grid.querySelectorAll('.product-card');
-  if (animate && document.querySelector('[data-shop-filter].active')?.dataset.shopFilter === category) return;
-  const revision = ++shopFilterRevision;
-  chips.forEach(chip => {
-    const active = chip.dataset.shopFilter === category;
-    chip.classList.toggle('active', active);
-    chip.setAttribute('aria-pressed', String(active));
-  });
-  const shouldAnimate = animate && !communityMotionPreference.matches && grid.getClientRects().length > 0;
-  if (shouldAnimate) {
-    grid.setAttribute('aria-busy', 'true');
-    await animateCommunityElement(grid, [{ opacity: getComputedStyle(grid).opacity }, { opacity: 0 }], { duration: 100, easing: 'ease-out' });
-    if (revision !== shopFilterRevision) return;
-  } else stopCommunityTransition(grid);
-  let visible = 0;
-  cards.forEach(card => {
-    stopCommunityTransition(card);
-    card.hidden = category !== 'all' && card.dataset.shopCategory !== category;
-    if (!card.hidden) {
-      if (shouldAnimate) animateCommunityElement(card, [
-        { opacity: 0, transform: 'translateY(12px) scale(.985)' },
-        { opacity: 1, transform: 'translateY(0) scale(1)' }
-      ], { delay: Math.min(visible, 6) * 22 });
-      visible += 1;
-    }
-  });
-  grid.removeAttribute('aria-busy');
-  byId('shopResultCount').textContent = visible + ' / ' + cards.length + ' ' + t('shopItems');
-}
-
-const checkinStorageKey = 'chunithm-checkin-days-v1';
-function localDayKey(date = new Date()) {
-  return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
-}
-function readCheckinDays() {
-  try {
-    const values = JSON.parse(localStorage.getItem(checkinStorageKey) || '[]');
-    if (!Array.isArray(values)) return [];
-    return [...new Set(values.filter(day => typeof day === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(day) && localDayKey(new Date(day + 'T12:00:00')) === day))].sort();
-  } catch { return []; }
-}
-function formatCommunityText(key, values) {
-  let text = t(key);
-  Object.entries(values).forEach(([name, value]) => { text = text.replace('{' + name + '}', String(value)); });
-  return text;
-}
-function renderCheckin() {
-  const dates = readCheckinDays();
-  const checkedDays = new Set(dates);
-  const today = new Date();
-  const done = checkedDays.has(localDayKey(today));
-  const button = byId('btnCheckin');
-  button.textContent = t(done ? 'checkinAlready' : 'drawFortune');
-  button.disabled = done;
-  button.classList.toggle('checked-in', done);
-  const success = byId('checkinSuccess');
-  success.hidden = !done;
-  success.classList.remove('save-error');
-  success.textContent = t('checkinSuccess');
-  byId('checkinFortune').textContent = t(done ? 'greatFortune' : 'checkinPending');
-  byId('checkinFortuneBody').textContent = t(done ? 'fortuneBody' : 'checkinFortuneBody');
-
-  const cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
-  if (!done) cursor.setDate(cursor.getDate() - 1);
-  let streak = 0;
-  while (checkedDays.has(localDayKey(cursor))) {
-    streak += 1;
-    cursor.setDate(cursor.getDate() - 1);
-  }
-  byId('checkinStreak').textContent = formatCommunityText('checkinStreakValue', { count: streak });
-  byId('checkinSummary').textContent = formatCommunityText('checkinTotal', { days: dates.length, points: dates.length * 20 });
-  const calendar = byId('checkinDays');
-  calendar.replaceChildren();
-  ['weekdayMon', 'weekdayTue', 'weekdayWed', 'weekdayThu', 'weekdayFri', 'weekdaySat', 'weekdaySun'].forEach(key => {
-    const label = document.createElement('b');
-    label.textContent = t(key);
-    calendar.append(label);
-  });
-  const weekDay = (today.getDay() + 6) % 7;
-  for (let index = 0; index < 7; index += 1) {
-    const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - weekDay + index, 12);
-    const checked = checkedDays.has(localDayKey(date));
-    const cell = document.createElement('span');
-    cell.textContent = checked ? '✓' : String(date.getDate());
-    cell.classList.toggle('done', checked);
-    cell.classList.toggle('today', index === weekDay);
-    cell.setAttribute('aria-label', date.toLocaleDateString(activeLanguage) + (checked ? ' · ' + t('checkinDayDone') : ''));
-    if (index === weekDay) cell.setAttribute('aria-current', 'date');
-    calendar.append(cell);
-  }
-}
-function performCheckin() {
-  const dates = readCheckinDays();
-  const today = localDayKey();
-  if (dates.includes(today)) { renderCheckin(); return; }
-  try {
-    localStorage.setItem(checkinStorageKey, JSON.stringify([...dates, today].sort()));
-  } catch {
-    const message = byId('checkinSuccess');
-    message.hidden = false;
-    message.classList.add('save-error');
-    message.textContent = t('checkinError');
-    return;
-  }
-  const fortuneCard = byId('btnCheckin').closest('.fortune-card');
-  const previousHeight = fortuneCard.getBoundingClientRect().height;
-  renderCheckin();
-  animateCommunityElement(fortuneCard, [
-    { height: previousHeight + 'px' },
-    { height: fortuneCard.getBoundingClientRect().height + 'px' }
-  ], { duration: 340 });
-  [byId('checkinFortune'), byId('checkinFortuneBody'), byId('checkinSuccess'), byId('checkinStreak'), byId('checkinSummary')].forEach((element, index) => {
-    animateCommunityElement(element, [
-      { opacity: 0, transform: 'translateY(10px)' },
-      { opacity: 1, transform: 'translateY(0)' }
-    ], { delay: index * 35, duration: 340 });
-  });
-  animateCommunityElement(byId('btnCheckin'), [
-    { transform: 'scale(.96)' }, { transform: 'scale(1)' }
-  ]);
-  animateCommunityElement(document.querySelector('#checkinDays .today'), [
-    { transform: 'scale(.8)', opacity: .4 },
-    { transform: 'scale(1.12)', opacity: 1, offset: .65 },
-    { transform: 'scale(1)', opacity: 1 }
-  ], { delay: 100, duration: 380 });
-}
-
-let checkinRefreshTimer;
-function scheduleCheckinRefresh() {
-  clearTimeout(checkinRefreshTimer);
-  const now = new Date();
-  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-  checkinRefreshTimer = setTimeout(() => { renderCheckin(); scheduleCheckinRefresh(); }, midnight.getTime() - now.getTime() + 100);
-}
-let miraProfileRevision = 0;
-let miraProfileTarget = false;
-async function toggleMiraProfile(visible) {
-  if (miraProfileTarget === visible) return;
-  miraProfileTarget = visible;
-  const revision = ++miraProfileRevision;
-  const modal = byId('miraProfile');
-  const card = modal.querySelector('.profile-popover-card');
-  const wasHidden = modal.hidden;
-  const opacity = wasHidden ? 0 : getComputedStyle(modal).opacity;
-  const transform = wasHidden ? 'translateY(18px) scale(.96)' : getComputedStyle(card).transform;
-  modal.hidden = false;
-  document.querySelector('.launcher-shell').inert = true;
-  if (visible) byId('btnCloseMiraProfile').focus({ preventScroll: true });
-  await Promise.all([
-    animateCommunityElement(modal, [{ opacity }, { opacity: visible ? 1 : 0 }], { duration: visible ? 240 : 180 }),
-    animateCommunityElement(card, [{ transform }, { transform: visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(.97)' }], { duration: visible ? 320 : 180 })
-  ]);
-  if (revision !== miraProfileRevision) return;
-  if (!visible) {
-    modal.hidden = true;
-    document.querySelector('.launcher-shell').inert = false;
-    byId('btnMiraProfile').focus({ preventScroll: true });
-  }
-}
-
 document.addEventListener('click', event => {
   const link = event.target.closest('[data-view]');
   if (link) { event.preventDefault(); selectWorkspace(link.dataset.view); }
-  const chip = event.target.closest('[data-shop-filter]');
-  if (chip) applyShopFilter(chip.dataset.shopFilter || 'all', { animate: true });
   const tab = event.target.closest('.news-tabs button');
   if (tab) tab.parentElement?.querySelectorAll('button').forEach(item => item.classList.toggle('active', item === tab));
 });
@@ -2412,15 +1420,46 @@ document.addEventListener('click', event => {
 const state = {
   startBatPath: '', appleChuEnabled: false, primaryDisplay: '', primaryDisplayName: '', originalMode: '',
   targetMode: '1920×1080 @ 120Hz', launchMode: 'smart', smartDisplayEnabled: false, runBatAsAdministrator: true, terminateCmdBeforeLaunch: true,
-  themeColor: '#fdd500', backgroundImagePath: '', displays: [], language: 'system',
+  themeColor: '#fdd500', backgroundImagePath: '', displays: [], language: 'system', activitySourceMode: 'default', activitySourceUrl: '', activityFeedLastUpdated: null,
 };
-const eventSlides = [
+const fallbackEventSlides = [
   { image: 'assets/events/event-doki.png', date: '09.25 — 10.06', titleKey: 'eventDokiTitle', bodyKey: 'eventDokiBody' },
   { image: 'assets/events/event-songs.png', date: '09.25', titleKey: 'eventSongsTitle', bodyKey: 'eventSongsBody' },
   { image: 'assets/events/event-iyowa.png', date: '09.25 — 11.11', titleKey: 'eventIyowaTitle', bodyKey: 'eventIyowaBody' },
   { image: 'assets/events/event-emperor.png', date: '09.10 — 09.13', titleKey: 'eventEmperorTitle', bodyKey: 'eventEmperorBody' },
   { image: 'assets/events/event-maimai.png', date: '09.17 — 09.30', titleKey: 'eventMaimaiTitle', bodyKey: 'eventMaimaiBody' },
 ];
+let eventSlides = [...fallbackEventSlides];
+const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+const eventTitle = slide => slide.title || t(slide.titleKey);
+const eventDescription = slide => slide.description || t(slide.bodyKey);
+const safeHttpUrl = value => { try { const url = new URL(String(value || '')); return ['http:', 'https:'].includes(url.protocol) ? url.href : ''; } catch { return ''; } };
+const eventDate = slide => slide.date || (slide.publishedAt ? new Date(slide.publishedAt).toLocaleDateString(activeLanguage === 'en-US' ? 'en-US' : 'zh-CN') : '');
+function resetActivityFeedFallback() {
+  eventSlides = [...fallbackEventSlides];
+  activeEventIndex = 0;
+  renderEvent(0, false);
+  renderNewsTab(currentNewsTab);
+}
+function applyActivityFeed(items) {
+  const normalized = (Array.isArray(items) ? items : []).filter(item => item?.imageUrl && item?.title).map(item => ({
+    image: item.imageUrl,
+    title: item.title,
+    description: item.description || '',
+    originalUrl: item.originalUrl || '',
+    publishedAt: item.publishedAt || '',
+    date: eventDate(item),
+  }));
+  if (!normalized.length) {
+    resetActivityFeedFallback();
+    return false;
+  }
+  eventSlides = normalized;
+  activeEventIndex = 0;
+  renderEvent(0, false);
+  renderNewsTab(currentNewsTab);
+  return true;
+}
 const newsTabs = {
   activities: [['newsActivity1', '09/25'], ['newsActivity2', '09/25']],
   announcements: [['newsAnnouncement1', '09/22'], ['newsAnnouncement2', '09/21']],
@@ -2431,85 +1470,16 @@ function renderNewsTab(key = 'activities') {
   currentNewsTab = key;
   const list = byId('homeNewsList');
   if (!list) return;
-  list.innerHTML = (newsTabs[key] || newsTabs.activities).map(([titleKey, date]) => `<button><span>${t(titleKey)}</span><time>${date}</time></button>`).join('');
-  document.querySelectorAll('[data-news-tab]').forEach(tab => tab.classList.toggle('active', tab.dataset.newsTab === key));
-}
-const communityStorageKey = 'chunithm-community-posts-v1';
-let communityFilter = 'all';
-const defaultCommunityPosts = [
-  { id: 'score-arcaea', type: 'score', author: 'ArcaeaPlayer', avatar: 'A', tone: '', timeKey: 'communityTimeToday', bodyKey: 'communityScorePost', values: { song: 'World Vanquisher', rank: 'SSS' } },
-  { id: 'event-mira', type: 'event', author: 'Mira', avatar: 'M', tone: 'pink', timeKey: 'communityTimeToday', bodyKey: 'communityEventPost' },
-  { id: 'topic-kuroneko', type: 'topic', author: 'KuroNeko', avatar: 'K', tone: 'blue', timeKey: 'communityTimeNow', bodyKey: 'communityTopicPost' },
-];
-const communityTypeKeys = { score: 'communityScores', event: 'communityEvents', topic: 'communityTopics' };
-function escapeCommunityHtml(value) {
-  return String(value).replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
-}
-function readCommunityPosts() {
-  try {
-    const stored = JSON.parse(localStorage.getItem(communityStorageKey) || '[]');
-    if (!Array.isArray(stored)) return [];
-    return stored.filter(post => post && typeof post.body === 'string' && post.body.trim() && communityTypeKeys[post.type]).map(post => ({
-      id: String(post.id || ('local-' + (post.createdAt || Date.now()))),
-      type: post.type,
-      author: t('communityLocalPost'),
-      avatar: '我',
-      tone: 'local',
-      timeKey: 'communityTimeNow',
-      body: post.body.trim(),
-      createdAt: Number(post.createdAt) || 0,
-    })).slice(-12).reverse();
-  } catch { return []; }
-}
-function formatCommunityPostBody(post) {
-  if (post.body) return escapeCommunityHtml(post.body);
-  return escapeCommunityHtml(formatCommunityText(post.bodyKey, post.values || {}));
-}
-function renderCommunityFeed({ animate = false } = {}) {
-  const feed = byId('communityFeed');
-  if (!feed) return;
-  const posts = [...readCommunityPosts(), ...defaultCommunityPosts];
-  const visiblePosts = posts.filter(post => communityFilter === 'all' || post.type === communityFilter);
-  document.querySelectorAll('[data-community-filter]').forEach(button => {
-    const active = button.dataset.communityFilter === communityFilter;
-    button.classList.toggle('active', active);
-    button.setAttribute('aria-pressed', String(active));
-  });
-  byId('communityResultCount').textContent = formatCommunityText('communityCount', { count: visiblePosts.length });
-  feed.replaceChildren(...visiblePosts.map(post => {
-    const article = document.createElement('article');
-    article.className = 'community-post';
-    article.dataset.communityType = post.type;
-    article.innerHTML = '<div class="community-post-avatar ' + escapeCommunityHtml(post.tone || '') + '">' + escapeCommunityHtml(post.avatar) + '</div><div class="community-post-main"><div class="community-post-heading"><strong>' + escapeCommunityHtml(post.author) + '</strong><span>' + escapeCommunityHtml(t(post.timeKey)) + '</span></div><p>' + formatCommunityPostBody(post) + '</p><span class="community-post-tag">' + escapeCommunityHtml(t(communityTypeKeys[post.type])) + '</span></div><button class="community-post-action" type="button" aria-pressed="false" aria-label="' + escapeCommunityHtml(t('communityLike')) + '">♡</button>';
-    return article;
-  }));
-  if (animate) {
-    Array.from(feed.children).forEach((post, index) => animateCommunityElement(post, [
-      { opacity: 0, transform: 'translateY(10px)' },
-      { opacity: 1, transform: 'translateY(0)' }
-    ], { delay: Math.min(index, 5) * 28, duration: 260 }));
+  if (key === 'activities') {
+    list.innerHTML = eventSlides.slice(0, 3).map(slide => { const url = safeHttpUrl(slide.originalUrl); return `<button type="button" title="${escapeHtml(eventDescription(slide))}" data-activity-url="${escapeHtml(url)}"><span class="news-copy"><b>${escapeHtml(eventTitle(slide))}</b><small>${escapeHtml(eventDescription(slide))}</small></span><span class="news-meta"><time>${escapeHtml(eventDate(slide))}</time>${url ? '<span class="news-link">查看原文 ↗</span>' : ''}</span></button>`; }).join('');
+  } else {
+    list.innerHTML = (newsTabs[key] || newsTabs.activities).map(([titleKey, date]) => `<button type="button"><span>${t(titleKey)}</span><time>${date}</time></button>`).join('');
   }
-}
-function addCommunityPost(event) {
-  event.preventDefault();
-  const input = byId('communityPostInput');
-  const body = input.value.trim();
-  if (!body) { input.focus(); return; }
-  const post = { id: 'local-' + Date.now(), type: byId('communityPostType').value, body, createdAt: Date.now() };
-  try {
-    const posts = readCommunityPosts().map(item => ({ id: item.id, type: item.type, body: item.body, createdAt: item.createdAt }));
-    localStorage.setItem(communityStorageKey, JSON.stringify([...posts, post].slice(-12)));
-  } catch { status('社区动态保存失败', '#bc5861'); return; }
-  input.value = '';
-  communityFilter = 'all';
-  renderCommunityFeed({ animate: true });
-  status('社区动态已发布', '#5caa74');
+  document.querySelectorAll('[data-news-tab]').forEach(tab => tab.classList.toggle('active', tab.dataset.newsTab === key));
 }
 let activeEventIndex = 0;
 let eventTransitionTimer = null;
-let eventCopyTimer = null;
 const eventSlideDuration = 520;
-const eventCopyFadeDelay = 180;
 let eventTransitionRunning = false;
 function queueEventStep(direction) {
   if (eventTransitionRunning) return;
@@ -2521,9 +1491,7 @@ function renderEvent(index, animate = true, direction = 1) {
   activeEventIndex = nextIndex;
   const sliders = [
     { current: byId('homeEventImage'), next: byId('homeEventImageNext') },
-    { current: byId('activityEventImage'), next: byId('activityEventImageNext') },
   ].filter(slider => slider.current && slider.next);
-  const copy = document.querySelector('.workspace-view[data-view-panel="activities"] .feature-copy');
   const slideDirection = direction < 0 ? -1 : 1;
   sliders.forEach(({ current, next }) => {
     current.classList.remove('event-slide-out');
@@ -2539,25 +1507,20 @@ function renderEvent(index, animate = true, direction = 1) {
         dot.type = 'button';
         dot.className = 'event-dot';
         dot.dataset.eventIndex = dotIndex;
-        dot.setAttribute('aria-label', activeLanguage === 'en-US' ? `Event ${dotIndex + 1}: ${t(slide.titleKey)}` : `第 ${dotIndex + 1} 张活动：${t(slide.titleKey)}`);
+        dot.setAttribute('aria-label', activeLanguage === 'en-US' ? `Event ${dotIndex + 1}: ${eventTitle(slide)}` : `第 ${dotIndex + 1} 张活动：${eventTitle(slide)}`);
         if (dotIndex === activeEventIndex) dot.setAttribute('aria-current', 'true');
         return dot;
       }));
     });
-    byId('activityEventDate').textContent = event.date;
-    byId('activityEventMetaDate').textContent = event.date;
-    byId('activityEventMetaDateLabel').textContent = event.date;
-    byId('activityEventIndex').textContent = String(activeEventIndex + 1).padStart(2, '0');
-    byId('activityEventTitle').textContent = t(event.titleKey);
-    byId('activityEventBody').textContent = t(event.bodyKey);
   };
   const event = eventSlides[activeEventIndex];
   if (!animate || sliders.length === 0) {
-    window.clearTimeout(eventCopyTimer);
-    copy?.classList.remove('event-copy-fade-out', 'event-copy-fade-in');
+    window.clearTimeout(eventTransitionTimer);
+    eventTransitionTimer = null;
+    eventTransitionRunning = false;
     sliders.forEach(({ current, next }) => {
       current.src = event.image;
-      current.alt = t(event.titleKey);
+      current.alt = eventTitle(event);
       next.src = event.image;
       next.alt = '';
     });
@@ -2565,41 +1528,32 @@ function renderEvent(index, animate = true, direction = 1) {
     return;
   }
   eventTransitionRunning = true;
-  window.clearTimeout(eventCopyTimer);
-  copy?.classList.remove('event-copy-fade-in');
-  copy?.classList.add('event-copy-fade-out');
-  eventCopyTimer = window.setTimeout(() => {
-    if (!eventTransitionRunning) return;
-    updateEvent();
-    copy?.classList.remove('event-copy-fade-out');
-    copy?.classList.add('event-copy-fade-in');
-  }, eventCopyFadeDelay);
+  window.clearTimeout(eventTransitionTimer);
   sliders.forEach(({ current, next }) => {
     next.src = event.image;
-    next.alt = t(event.titleKey);
+    next.alt = eventTitle(event);
     current.classList.add('event-slide-out');
     next.classList.add('event-slide-in');
   });
   eventTransitionTimer = window.setTimeout(() => {
-    if (!copy?.classList.contains('event-copy-fade-in')) updateEvent();
-    copy?.classList.remove('event-copy-fade-out', 'event-copy-fade-in');
+    updateEvent();
     sliders.forEach(({ current, next }) => {
       current.src = event.image;
-      current.alt = t(event.titleKey);
+      current.alt = eventTitle(event);
       current.classList.remove('event-slide-out');
       next.classList.remove('event-slide-in');
     });
     eventTransitionTimer = null;
-    eventCopyTimer = null;
     eventTransitionRunning = false;
   }, eventSlideDuration);
 }
 document.querySelectorAll('#eventPrev, [data-event-prev]').forEach(button => button.addEventListener('click', event => { event.stopPropagation(); queueEventStep(-1); }));
 document.querySelectorAll('#eventNext, [data-event-next]').forEach(button => button.addEventListener('click', event => { event.stopPropagation(); queueEventStep(1); }));
 document.addEventListener('click', event => { const dot = event.target.closest('[data-event-index]'); if (dot) { const nextIndex = Number(dot.dataset.eventIndex); renderEvent(nextIndex, true, nextIndex >= activeEventIndex ? 1 : -1); } });
+document.addEventListener('click', event => { const activity = event.target.closest('[data-activity-url]'); const url = safeHttpUrl(activity?.dataset.activityUrl); if (url) { event.preventDefault(); event.stopPropagation(); post('open-activity-link', { url }); } });
 document.querySelectorAll('[data-news-tab]').forEach(tab => tab.addEventListener('click', () => renderNewsTab(tab.dataset.newsTab)));
 let eventSwipeStart = null;
-  document.querySelectorAll('.event-hero, .event-feature').forEach(slider => {
+document.querySelectorAll('.event-hero').forEach(slider => {
   slider.addEventListener('pointerdown', event => { if (event.target.closest('.event-hero-controls, button')) return; eventSwipeStart = event.clientX; slider.setPointerCapture?.(event.pointerId); });
   slider.addEventListener('pointerup', event => {
     if (eventSwipeStart === null) return;
@@ -2614,6 +1568,7 @@ renderNewsTab();
 let testTimer;
 let theme = localStorage.getItem('chunithm-theme') || 'light';
 const defaultPortalUrl = 'https://portal.mumur.net/';
+const aimeGuideUrl = 'https://github.com/Luckyumimi/NfcAimeReader';
 const readStoredValue = (key, legacyKey) => localStorage.getItem(key) || localStorage.getItem(legacyKey) || '';
 let portalUrl = readStoredValue('chunithm-portal-url', 'chunithm-munet-url');
 const storedPortalButtonText = readStoredValue('chunithm-portal-text', 'chunithm-munet-text');
@@ -2631,8 +1586,6 @@ function applyTheme(value) {
   document.querySelectorAll('[data-icon-light][data-icon-dark]').forEach(icon => {
     icon.src = theme === 'dark' ? icon.dataset.iconDark : icon.dataset.iconLight;
   });
-  byId('themeLabel').textContent = t(theme === 'dark' ? 'themeLight' : 'themeDark');
-  byId('themeIcon').innerHTML = theme === 'dark' ? fixedSunMarkup : `<path d="${moonPath}"></path>`;
   byId('themeSelect').value = theme;
   syncThemeDropdown(theme);
   localStorage.setItem('chunithm-theme', theme);
@@ -2866,54 +1819,44 @@ function setLanguageDropdownOpen(open) {
   if (open) requestAnimationFrame(positionLanguageDropdown);
 }
 
-function syncCommunityPostType(value = byId('communityPostType')?.value || 'topic') {
-  const valueNode = byId('communityPostTypeValue');
-  const optionsNode = byId('communityPostTypeOptions');
-  const select = byId('communityPostType');
+function syncActivitySourceDropdown(value = state.activitySourceMode || 'default') {
+  const valueNode = byId('activitySourceValue');
+  const optionsNode = byId('activitySourceOptions');
+  const select = byId('activitySourceMode');
   if (!valueNode || !optionsNode || !select) return;
-  const labels = { topic: t('communityTopics'), score: t('communityScores'), event: t('communityEvents') };
-  select.value = labels[value] ? value : 'topic';
-  valueNode.textContent = labels[select.value];
+  const labels = { default: '默认活动服务', custom: '自定义活动服务' };
+  const selected = labels[value] ? value : 'default';
+  select.value = selected;
+  valueNode.textContent = labels[selected];
   optionsNode.replaceChildren(...Object.entries(labels).map(([key, label]) => {
     const option = document.createElement('button');
-    option.type = 'button';
-    option.className = 'display-picker-option';
-    option.setAttribute('role', 'option');
-    option.setAttribute('aria-selected', key === select.value ? 'true' : 'false');
-    option.textContent = label;
-    option.onclick = () => {
-      select.value = key;
-      syncCommunityPostType(key);
-      setCommunityPostTypeDropdownOpen(false);
-    };
+    option.type = 'button'; option.className = 'display-picker-option'; option.setAttribute('role', 'option');
+    option.setAttribute('aria-selected', key === selected ? 'true' : 'false'); option.textContent = label;
+    option.onclick = () => { select.value = key; state.activitySourceMode = key; syncActivitySourceDropdown(key); updateActivitySourceControls(); setActivitySourceDropdownOpen(false); };
     return option;
   }));
 }
-function positionCommunityPostTypeDropdown() {
-  const dropdown = byId('communityPostTypeDropdown');
-  const trigger = byId('communityPostTypeTrigger');
-  const panel = byId('communityPostTypePanel');
+
+function positionActivitySourceDropdown() {
+  const dropdown = byId('activitySourceDropdown');
+  const trigger = byId('activitySourceTrigger');
+  const panel = byId('activitySourcePanel');
   if (!dropdown?.classList.contains('open') || !trigger || !panel) return;
-  const rect = trigger.getBoundingClientRect();
-  const gap = 7;
+  const rect = trigger.getBoundingClientRect(); const gap = 7;
   const contentHeight = Math.min(280, panel.scrollHeight || 280);
-  const spaceBelow = Math.max(0, window.innerHeight - rect.bottom - gap);
-  const spaceAbove = Math.max(0, rect.top - gap);
-  const opensAbove = spaceBelow < contentHeight && spaceAbove > spaceBelow;
-  const maxHeight = Math.max(0, Math.min(contentHeight, opensAbove ? spaceAbove : spaceBelow));
-  panel.style.setProperty('--dropdown-top', (Math.max(8, opensAbove ? rect.top - gap - maxHeight : rect.bottom + gap)) + 'px');
-  panel.style.setProperty('--dropdown-left', rect.left + 'px');
-  panel.style.setProperty('--dropdown-width', rect.width + 'px');
-  panel.style.setProperty('--dropdown-max-height', maxHeight + 'px');
+  const spaceBelow = Math.max(0, window.innerHeight - rect.bottom - gap); const spaceAbove = Math.max(0, rect.top - gap);
+  const opensAbove = spaceBelow < contentHeight && spaceAbove > spaceBelow; const maxHeight = Math.max(0, Math.min(contentHeight, opensAbove ? spaceAbove : spaceBelow));
+  panel.style.setProperty('--dropdown-top', `${Math.max(8, opensAbove ? rect.top - gap - maxHeight : rect.bottom + gap)}px`);
+  panel.style.setProperty('--dropdown-left', `${rect.left}px`); panel.style.setProperty('--dropdown-width', `${rect.width}px`); panel.style.setProperty('--dropdown-max-height', `${maxHeight}px`);
 }
-function setCommunityPostTypeDropdownOpen(open) {
-  const dropdown = byId('communityPostTypeDropdown');
-  const trigger = byId('communityPostTypeTrigger');
+
+function setActivitySourceDropdownOpen(open) {
+  const dropdown = byId('activitySourceDropdown'); const trigger = byId('activitySourceTrigger');
   if (!dropdown || !trigger) return;
-  dropdown.classList.toggle('open', open);
-  trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-  if (open) requestAnimationFrame(positionCommunityPostTypeDropdown);
+  dropdown.classList.toggle('open', open); trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) requestAnimationFrame(positionActivitySourceDropdown);
 }
+
 function fillSettings() {
   byId('runBatAsAdministrator').checked = state.runBatAsAdministrator !== false;
   byId('terminateCmdBeforeLaunch').checked = state.terminateCmdBeforeLaunch !== false;
@@ -2930,6 +1873,26 @@ function fillSettings() {
   fillDisplays(byId('displaySelectSetting'), state.primaryDisplay);
   byId('languageSelect').value = languagePreference;
   syncLanguageDropdown(languagePreference);
+  byId('activitySourceMode').value = state.activitySourceMode || 'default';
+  byId('activitySourceUrl').value = state.activitySourceUrl || '';
+  syncActivitySourceDropdown(state.activitySourceMode || 'default');
+  updateActivitySourceControls();
+  updateActivitySourceStatus();
+}
+
+function updateActivitySourceStatus(message = '') {
+  const statusNode = byId('activitySourceStatus');
+  if (!statusNode) return;
+  const lastUpdated = state.activityFeedLastUpdated;
+  const stamp = lastUpdated ? `最近成功：${new Date(lastUpdated).toLocaleString(activeLanguage === 'en-US' ? 'en-US' : 'zh-CN')}` : '';
+  statusNode.textContent = [message || '活动服务不可用时会使用本地缓存或内置活动。', stamp].filter(Boolean).join(' ');
+}
+
+function updateActivitySourceControls() {
+  const custom = byId('activitySourceMode')?.value === 'custom';
+  if (byId('activityCustomSourceFields')) byId('activityCustomSourceFields').classList.toggle('hidden', !custom);
+  if (byId('activitySourceUrl')) byId('activitySourceUrl').disabled = !custom;
+  if (byId('btnRefreshActivities')) byId('btnRefreshActivities').textContent = custom ? '测试连接' : '刷新活动';
 }
 
 function setPrimary(id) {
@@ -2967,7 +1930,17 @@ function saveSettings() {
   state.terminateCmdBeforeLaunch = byId('terminateCmdBeforeLaunch').checked;
   state.language = byId('languageSelect').value;
   setLanguagePreference(state.language);
-  post('save-settings', { startBatPath, primaryDisplay, originalMode: state.originalMode, targetMode: state.targetMode, launchMode: state.launchMode, smartDisplayEnabled: state.smartDisplayEnabled, runBatAsAdministrator: state.runBatAsAdministrator, terminateCmdBeforeLaunch: state.terminateCmdBeforeLaunch, themeColor: state.themeColor, backgroundImagePath: state.backgroundImagePath, language: state.language });
+  state.activitySourceMode = byId('activitySourceMode').value === 'custom' ? 'custom' : 'default';
+  state.activitySourceUrl = byId('activitySourceUrl').value.trim();
+  if (state.activitySourceMode === 'custom') {
+    try {
+      const parsed = new URL(state.activitySourceUrl);
+      if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('protocol');
+    } catch {
+      return status('自定义活动接口必须是 http 或 https 地址', '#bd5f68');
+    }
+  }
+  post('save-settings', { startBatPath, primaryDisplay, originalMode: state.originalMode, targetMode: state.targetMode, launchMode: state.launchMode, smartDisplayEnabled: state.smartDisplayEnabled, runBatAsAdministrator: state.runBatAsAdministrator, terminateCmdBeforeLaunch: state.terminateCmdBeforeLaunch, themeColor: state.themeColor, backgroundImagePath: state.backgroundImagePath, language: state.language, activitySourceMode: state.activitySourceMode, activitySourceUrl: state.activitySourceUrl });
   show('settingsModal', false); show('firstRun', false); render(); status('设置已保存');
 }
 
@@ -2996,6 +1969,9 @@ function openPortal() {
 function init(payload) {
   Object.assign(state, payload, { displays: payload.displays || [] });
   if (payload.language) setLanguagePreference(payload.language, { persist: false });
+  if (payload.activitySourceMode) state.activitySourceMode = payload.activitySourceMode;
+  if (payload.activitySourceUrl !== undefined) state.activitySourceUrl = payload.activitySourceUrl || '';
+  if (payload.activityFeedLastUpdated) state.activityFeedLastUpdated = payload.activityFeedLastUpdated;
   syncAppleChuStatus();
   state.primaryDisplay = state.primaryDisplay || state.displays.find(item => item.selected)?.id || '';
   state.primaryDisplayName = state.primaryDisplayName && state.primaryDisplayName !== '未选择' ? state.primaryDisplayName : state.displays.find(item => item.id === state.primaryDisplay)?.name || '';
@@ -3050,45 +2026,23 @@ function handleMessage(event) {
       byId('btnTestSwitch').textContent = t('testSwitch');
     }
   }
+  if (data.type === 'activity-feed') {
+    const applied = applyActivityFeed(p.items);
+    state.activityFeedLastUpdated = p.lastUpdated || p.generatedAt || state.activityFeedLastUpdated;
+    updateActivitySourceStatus(applied ? (p.fromCache ? '已使用本地缓存活动。' : '活动已从服务更新。') : '服务返回空内容，已使用内置活动。');
+  }
+  if (data.type === 'activity-feed-error') {
+    if (p.useFallback) resetActivityFeedFallback();
+    updateActivitySourceStatus(p.message || '活动服务暂时不可用，已使用本地内容。');
+  }
 }
 
 byId('btnLaunch').onclick = () => {
   post('launch-game');
   status('启动中', '#d6944e');
 };
-byId('friendSearchForm')?.addEventListener('submit', event => {
-  event.preventDefault();
-  const input = byId('friendSearchInput');
-  if (input) input.value = '';
-});
-byId('communityComposer')?.addEventListener('submit', addCommunityPost);
-byId('communityPostTypeTrigger').onclick = () => setCommunityPostTypeDropdownOpen(!byId('communityPostTypeDropdown').classList.contains('open'));
-byId('communityPostTypeTrigger').onkeydown = event => {
-  if (event.key === 'Escape') setCommunityPostTypeDropdownOpen(false);
-  if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setCommunityPostTypeDropdownOpen(true); }
-};
-document.addEventListener('click', event => {
-  const filter = event.target.closest('[data-community-filter]');
-  if (filter) { communityFilter = filter.dataset.communityFilter || 'all'; renderCommunityFeed({ animate: true }); }
-  const topic = event.target.closest('.community-topic');
-  if (topic) { const input = byId('communityPostInput'); if (input) { input.value = topic.querySelector('span')?.textContent.replace(/^#\s*/, '') || ''; input.focus(); } }
-  const like = event.target.closest('.community-post-action');
-  if (like) {
-    const liked = like.getAttribute('aria-pressed') === 'true';
-    like.setAttribute('aria-pressed', String(!liked));
-    like.textContent = liked ? '♡' : '♥';
-    like.classList.toggle('liked', !liked);
-  }
-});
-byId('btnCheckin').addEventListener('click', performCheckin);
-byId('btnMiraProfile').addEventListener('click', () => toggleMiraProfile(true));
-byId('btnCloseMiraProfile').addEventListener('click', () => toggleMiraProfile(false));
-byId('miraProfile').addEventListener('click', event => { if (event.target === byId('miraProfile')) toggleMiraProfile(false); });
-window.addEventListener('focus', () => { renderCheckin(); scheduleCheckinRefresh(); });
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { renderCheckin(); scheduleCheckinRefresh(); } });
 byId('btnSettings').onclick = () => { fillSettings(); show('settingsModal', true); };
 byId('portalTab').onclick = openPortal;
-byId('themeToggle').onclick = () => applyTheme(theme === 'dark' ? 'light' : 'dark');
 byId('windowMinimize').onclick = () => post('window-minimize');
 byId('windowClose').onclick = () => post('window-close');
 const startWindowDrag = event => {
@@ -3110,6 +2064,13 @@ byId('themeSelectTriggerFirstRun').onkeydown = event => {
   if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setThemeDropdownOpen(true); }
 };
 byId('btnCloseSettings').onclick = () => show('settingsModal', false);
+byId('activitySourceTrigger').onclick = () => setActivitySourceDropdownOpen(!byId('activitySourceDropdown').classList.contains('open'));
+byId('activitySourceTrigger').onkeydown = event => {
+  if (event.key === 'Escape') setActivitySourceDropdownOpen(false);
+  if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setActivitySourceDropdownOpen(true); }
+};
+byId('activitySourceMode').onchange = event => { state.activitySourceMode = event.target.value; syncActivitySourceDropdown(state.activitySourceMode); updateActivitySourceControls(); };
+byId('btnRefreshActivities').onclick = () => post('refresh-activity-feed');
 byId('btnDonate').onclick = () => { show('donationModal', true); byId('btnCopyDonation').focus(); };
 byId('btnCloseDonation').onclick = () => show('donationModal', false);
 byId('btnCloseAnnouncement').onclick = () => show('announcementModal', false);
@@ -3147,6 +2108,7 @@ byId('displaySelectTriggerFirstRun').onkeydown = event => {
 byId('btnMigrateToAppleChu').onclick = () => post('open-chuchart-manager-actions');
 byId('btnEditAppleChu').onclick = () => post('open-chuchart-manager-actions');
 byId('btnBrowseBg').onclick = () => post('pick-background-image-preview'); byId('btnCheckUpdate').onclick = () => post('check-update'); byId('btnOpenGithubHome').onclick = () => post('open-github-home');
+byId('btnOpenAimeGuide').onclick = () => { if (window.chrome?.webview) post('open-aime-guide'); else window.open(aimeGuideUrl, '_blank', 'noopener,noreferrer'); };
 byId('smartDisplayToggle').onchange = event => { state.smartDisplayEnabled = event.target.checked; post('set-smart-display', { enabled: state.smartDisplayEnabled }); };
 byId('target60HzToggle').onchange = event => { byId('targetModeSetting').value = event.target.checked ? '1920×1080 @ 60Hz' : '1920×1080 @ 120Hz'; };
 byId('themeColor').oninput = event => { byId('themeColorText').value = event.target.value; document.documentElement.style.setProperty('--accent', event.target.value); };
@@ -3157,14 +2119,9 @@ document.addEventListener('click', event => {
   if (!byId('displayDropdownFirstRun')?.contains(event.target)) setFirstRunDropdownOpen(false);
   if (!byId('themeDropdownFirstRun')?.contains(event.target)) setThemeDropdownOpen(false);
   if (!byId('languageDropdownSetting')?.contains(event.target)) setLanguageDropdownOpen(false);
-  if (!byId('communityPostTypeDropdown')?.contains(event.target)) setCommunityPostTypeDropdownOpen(false);
+  if (!byId('activitySourceDropdown')?.contains(event.target)) setActivitySourceDropdownOpen(false);
 });
 document.addEventListener('keydown', event => {
-  if (!byId('miraProfile').hidden) {
-    if (event.key === 'Escape') { event.preventDefault(); toggleMiraProfile(false); }
-    if (event.key === 'Tab') { event.preventDefault(); byId('btnCloseMiraProfile').focus(); }
-    return;
-  }
   if (event.key === 'Escape' && byId('donationModal')?.classList.contains('show')) show('donationModal', false);
   if (event.key === 'Escape' && byId('announcementModal')?.classList.contains('show')) show('announcementModal', false);
 });
@@ -3176,8 +2133,8 @@ window.addEventListener('resize', positionThemeDropdown);
 window.addEventListener('scroll', positionThemeDropdown, true);
 window.addEventListener('resize', positionLanguageDropdown);
 window.addEventListener('scroll', positionLanguageDropdown, true);
-window.addEventListener('resize', positionCommunityPostTypeDropdown);
-window.addEventListener('scroll', positionCommunityPostTypeDropdown, true);
+window.addEventListener('resize', positionActivitySourceDropdown);
+window.addEventListener('scroll', positionActivitySourceDropdown, true);
 document.querySelectorAll('#launchMode button').forEach(button => button.onclick = () => { state.launchMode = button.dataset.mode; post('set-launch-mode', { mode: state.launchMode }); render(); });
 byId('btnTestSwitch').onclick = () => { if (testTimer) { post('restore-original'); clearInterval(testTimer); testTimer = null; byId('btnTestSwitch').textContent = '测试切换'; return; } post('test-switch'); let seconds = 15; byId('btnTestSwitch').textContent = `恢复原始分辨率 (${seconds}s)`; testTimer = setInterval(() => { seconds -= 1; byId('btnTestSwitch').textContent = `恢复原始分辨率 (${seconds}s)`; if (seconds <= 0) { clearInterval(testTimer); testTimer = null; byId('btnTestSwitch').textContent = '测试切换'; } }, 1000); };
 
@@ -3186,7 +2143,6 @@ window.chrome?.webview?.addEventListener('message', handleMessage);
 render();
 applyTheme(theme);
 applyTranslations();
-scheduleCheckinRefresh();
 // 浏览器预览:仅当非 WebView2 环境且 URL 带 ?preview 时注入假数据。
 // 版本号不再硬编码(缺省显示 'preview',可用 ?version=x 覆盖),避免与发布版本漂移。
 if (!window.chrome?.webview && new URLSearchParams(location.search).has('preview')) {

@@ -61,6 +61,9 @@ public partial class MainWindow
         _config.Language = _language;
         _config.GameWindowTitle = _gameWindowTitle;
         _config.BackgroundImagePath = _backgroundImagePath;
+        _config.ActivitySourceMode = _activitySourceMode;
+        _config.ActivitySourceUrl = _activitySourceUrl;
+        _config.ActivityFeedLastUpdated = _activityFeedLastUpdated;
 
         try
         {
@@ -92,6 +95,9 @@ public partial class MainWindow
         if (!string.IsNullOrWhiteSpace(_config.Language)) _language = _config.Language;
         if (!string.IsNullOrWhiteSpace(_config.GameWindowTitle)) _gameWindowTitle = _config.GameWindowTitle;
         if (!string.IsNullOrWhiteSpace(_config.BackgroundImagePath)) _backgroundImagePath = _config.BackgroundImagePath;
+        if (_config.ActivitySourceMode is "default" or "custom") _activitySourceMode = _config.ActivitySourceMode;
+        if (!string.IsNullOrWhiteSpace(_config.ActivitySourceUrl)) _activitySourceUrl = _config.ActivitySourceUrl;
+        if (_config.ActivityFeedLastUpdated is not null) _activityFeedLastUpdated = _config.ActivityFeedLastUpdated;
         if (!string.IsNullOrWhiteSpace(_config.TargetMode)) _targetMode = _config.TargetMode;
         else _targetMode = DefaultTargetMode;
 
@@ -123,5 +129,8 @@ public partial class MainWindow
         public string? GameWindowTitle { get; set; }
         public string? BackgroundImagePath { get; set; }
         public string? LastReadAnnouncementId { get; set; }
+        public string ActivitySourceMode { get; set; } = "default";
+        public string? ActivitySourceUrl { get; set; }
+        public DateTimeOffset? ActivityFeedLastUpdated { get; set; }
     }
 }

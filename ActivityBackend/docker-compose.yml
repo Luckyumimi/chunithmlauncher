@@ -1,0 +1,12 @@
+services:
+  activity-backend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      ActivityBackend__AdminUsername: admin
+      ActivityBackend__AdminPassword: change-me-now
+      ActivityBackend__SessionSecret: change-this-session-secret
+      ActivityBackend__AllowedOrigins__0: https://launcher.chunithm.local
+    volumes:
+      - ./data:/data

@@ -39,6 +39,7 @@ public partial class MainWindow
         else
         {
             SendInit();
+            _ = LoadActivityFeedAsync();
             _ = CheckAnnouncementAsync();
         }
     }

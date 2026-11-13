@@ -18,7 +18,9 @@ public partial class MainWindow
         bool? TerminateCmdBeforeLaunch,
         string? ThemeColor,
         string? BackgroundImagePath,
-        string? Language);
+        string? Language,
+        string? ActivitySourceMode,
+        string? ActivitySourceUrl);
 
     private sealed record PrimaryDisplayPayload(string? PrimaryDisplay);
 
@@ -96,6 +98,16 @@ public partial class MainWindow
         {
             _language = settings.Language;
         }
+
+        if (settings.ActivitySourceMode is "default" or "custom")
+        {
+            _activitySourceMode = settings.ActivitySourceMode;
+        }
+
+        if (settings.ActivitySourceUrl is not null)
+        {
+            _activitySourceUrl = settings.ActivitySourceUrl.Trim();
+        }
     }
 
 
@@ -127,6 +139,9 @@ public partial class MainWindow
             themeColor = _themeColor,
             language = _language,
             backgroundImagePath = _backgroundImagePath ?? string.Empty,
+            activitySourceMode = _activitySourceMode,
+            activitySourceUrl = _activitySourceUrl,
+            activityFeedLastUpdated = _activityFeedLastUpdated,
             version = GetAppVersion(),
             displays = _displays.Select(d => new { id = d.Id, name = d.Name, selected = d.Selected }).ToArray(),
         };

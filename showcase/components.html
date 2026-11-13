@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e9e7ee">
+  <title>CHUNITHM Launcher / Component Library</title>
+  <link rel="stylesheet" href="components.css">
+</head>
+<body>
+  <header class="component-header">
+    <a class="brand" href="index.html" aria-label="返回项目展示页"><span class="brand-mark"></span><span>CHUNITHM<br>LAUNCHER</span></a>
+    <div class="header-copy"><span>LOCAL UI / THESIS-FEATURES</span><strong>组件库</strong></div>
+    <span class="header-code">UI—KIT / 01</span>
+  </header>
+
+  <main class="component-shell">
+    <section class="component-hero">
+      <p class="eyebrow"><span></span>UI / COMPONENTS</p>
+      <h1>组件库</h1>
+    </section>
+
+    <div class="component-grid">
+      <section class="component-section component-section--wide" id="buttons">
+        <div class="section-heading"><span class="section-number">01</span><div><p class="eyebrow">ACTION / BUTTON</p><h2>按钮</h2></div></div>
+        <div class="demo-panel button-demo">
+          <div class="demo-row"><button class="launcher-button launcher-button--primary" type="button">▶　启动游戏</button><button class="launcher-button" type="button">打开 MuNET</button><button class="launcher-button launcher-button--compact" type="button">刷新</button><button class="launcher-button launcher-button--disabled" type="button" disabled>不可用</button></div>
+          <div class="state-caption"><span>PRIMARY</span><span>SECONDARY</span><span>COMPACT</span><span>DISABLED</span></div>
+        </div>
+      </section>
+
+      <section class="component-section" id="inputs">
+        <div class="section-heading"><span class="section-number">02</span><div><p class="eyebrow">FORM / TEXT</p><h2>输入框</h2></div></div>
+        <div class="demo-panel form-demo"><label for="pathInput">start.bat 路径</label><div class="field-shell"><input id="pathInput" class="launcher-input" value="D:\SDHD\bin\start.bat"></div><label for="emptyInput">空状态 / placeholder</label><div class="field-shell"><input id="emptyInput" class="launcher-input" placeholder="请输入游戏路径"></div><label for="disabledInput">禁用状态</label><div class="field-shell disabled"><input id="disabledInput" class="launcher-input" value="由系统读取" disabled></div></div>
+      </section>
+
+      <section class="component-section" id="selects">
+        <div class="section-heading"><span class="section-number">03</span><div><p class="eyebrow">FORM / SELECT</p><h2>下拉选择器</h2></div></div>
+        <div class="demo-panel select-demo"><label for="displayPicker">主显示器</label><div class="display-picker" data-picker><button class="picker-trigger" type="button" aria-expanded="false" aria-controls="displayOptions" id="displayPicker"><span class="picker-value">\\.\DISPLAY1 · 2560×1440 @ 144Hz</span><span class="picker-chevron" aria-hidden="true"></span></button><div class="picker-options" id="displayOptions" role="listbox"><button type="button" role="option" aria-selected="true">\\.\DISPLAY1 · 2560×1440 @ 144Hz</button><button type="button" role="option" aria-selected="false">\\.\DISPLAY2 · 1920×1080 @ 60Hz</button><button type="button" role="option" aria-selected="false">\\.DISPLAY3 · 1280×800 @ 60Hz</button></div></div><p class="helper-text" id="pickerValue">已选择 DISPLAY1</p></div>
+      </section>
+
+      <section class="component-section" id="checkboxes">
+        <div class="section-heading"><span class="section-number">04</span><div><p class="eyebrow">FORM / CHECK</p><h2>复选框</h2></div></div>
+        <div class="demo-panel check-demo"><label class="check-control"><input type="checkbox" checked><span class="check-box" aria-hidden="true"></span><span>使用管理员权限运行 bat</span></label><label class="check-control"><input type="checkbox"><span class="check-box" aria-hidden="true"></span><span>启动前关闭残留 CMD</span></label><label class="check-control check-control--disabled"><input type="checkbox" disabled><span class="check-box" aria-hidden="true"></span><span>自动恢复显示器布局</span></label></div>
+      </section>
+
+      <section class="component-section" id="launch-mode">
+        <div class="section-heading"><span class="section-number">05</span><div><p class="eyebrow">LAUNCH / MODE</p><h2>启动模式</h2></div></div>
+        <div class="demo-panel mode-demo"><p class="field-label">启动模式</p><div class="segmented" id="launchMode" data-mode="smart" role="radiogroup" aria-label="启动模式"><button type="button" class="active" role="radio" aria-checked="true" data-mode="smart">智能切换</button><button type="button" role="radio" aria-checked="false" data-mode="manual">仅启动</button></div><div class="mode-result" aria-live="polite">当前：智能切换显示器后启动游戏</div></div>
+      </section>
+
+      <section class="component-section component-section--wide" id="states">
+        <div class="section-heading"><span class="section-number">06</span><div><p class="eyebrow">FEEDBACK / STATES</p><h2>状态反馈</h2></div></div>
+        <div class="demo-panel status-demo"><div class="status-pill"><i></i><span>待机</span></div><div class="status-pill status-pill--success"><i></i><span>设置已保存并生效</span></div><div class="status-pill status-pill--warning"><i></i><span>等待游戏窗口...</span></div><div class="status-pill status-pill--error"><i></i><span>读取分辨率失败</span></div></div>
+      </section>
+    </div>
+
+  </main>
+  <footer class="component-footer"><span>CHUNITHM LAUNCHER</span><a href="index.html">返回项目展示页 ↑</a><span>THESIS / 2026</span></footer>
+  <script src="components.js" defer></script>
+</body>
+</html>

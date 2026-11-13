@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f0e8">
+  <meta name="description" content="CHUNITHM Launcher 毕业设计项目展示页。">
+  <title>CHUNITHM Launcher / 项目展示</title>
+  <link rel="stylesheet" href="styles.css?v=20261019-annotations">
+</head>
+<body>
+  <div class="scroll-meter" aria-hidden="true"><span id="scrollMeter"></span></div>
+  <header class="site-header">
+    <a class="brand-mark" href="#top" aria-label="返回页面顶部">
+      <span class="brand-mark__shape" aria-hidden="true"></span>
+      <span>CQL</span>
+    </a>
+    <nav class="site-nav" aria-label="页面导航">
+      <a href="#project">项目</a>
+      <a href="#screens">界面</a>
+      <a href="#system">结构</a>
+    </nav>
+    <span class="header-index">01 / 04</span>
+  </header>
+
+  <main id="top">
+    <section class="hero section-shell" id="project">
+      <div class="hero__copy reveal">
+        <p class="kicker"><span class="kicker__line"></span>INTERFACE STUDY</p>
+        <h1><span>中二节奏启动器</span><strong>把复杂<br>留在游戏之前。</strong></h1>
+        <p class="hero__lead">核心功能：启动游戏时快捷切换分辨率，免去繁琐的手动调整；首页展示活动轮播与最新资讯，并提供 Aime 和本地启动配置。</p>
+        <div class="hero__meta">
+          <span>WINDOWS TOOL</span>
+          <span>WEBVIEW2 UI</span>
+        </div>
+      </div>
+      <figure class="hero__artifact reveal reveal--delay-1">
+        <figcaption class="hero__artifact-label"><span>启动器首页 / 浅色模式</span><span>1280 × 820</span></figcaption>
+        <div class="hero__screenshot-frame">
+          <div class="hero__window-bar" aria-hidden="true"><i></i><i></i><i></i><span>CHUNITHM LAUNCHER</span></div>
+          <img src="assets/screenshots/ui-home-light.png" alt="从本地 ui/index.html 按 1280×820 渲染的启动器首页浅色模式截图">
+        </div>
+      </figure>
+      <a class="scroll-cue" href="#screens"><span>向下浏览</span><i aria-hidden="true">↓</i></a>
+    </section>
+
+    <section class="statement section-shell reveal">
+      <div class="section-label section-label--block"><span class="section-label__tag">SECTION</span><strong class="section-label__number">01</strong><span class="section-label__name">WHY</span></div>
+      <div class="statement__body">
+        <p class="eyebrow">从手动切换，到可被记住的流程</p>
+        <h2>游戏开始之前，<br><span>先把复杂留在系统里。</span></h2>
+        <p>CHUNITHM 常常需要在固定的分辨率和刷新率下运行。启动器将显示器读取、切换、游戏监测和恢复整理成一条连续流程，让用户只需要确认一次，然后开始游玩。</p>
+      </div>
+      <figure class="statement__evidence">
+        <figcaption>01—A / DISPLAY CONTROL</figcaption>
+        <img src="assets/screenshots/ui-home-resolution-panel.png" alt="启动器首页中的目标分辨率、原始分辨率、主显示器、启动模式和启动游戏控件">
+        <p>切换参数和启动入口同屏呈现，减少开始游玩前的手动调整。</p>
+      </figure>
+    </section>
+
+    <section class="screens section-shell" id="screens">
+      <div class="section-heading reveal">
+        <div class="section-label section-label--block"><span class="section-label__tag">SECTION</span><strong class="section-label__number">02</strong><span class="section-label__name">UI ARCHIVE</span></div>
+        <div>
+          <p class="eyebrow">本地 ui / thesis-features</p>
+          <h2>开始之前，<br><span>先看看界面</span></h2>
+        </div>
+      </div>
+
+      <div class="screen-archive reveal reveal--delay-1">
+        <article class="screen-card screen-card--wide">
+          <div class="screen-card__top"><span>A—01 / HOME</span><strong>首页</strong></div>
+          <figure class="launcher-frame"><img src="assets/screenshots/ui-home-light.png" alt="CHUNITHM Launcher 首页浅色界面截图"></figure>
+          <p>启动状态、活动资讯和目标显示模式在同一视野，减少页面切换。打开首页即可确认关键状态，直接找到启动入口。</p>
+        </article>
+        <article class="screen-card">
+          <div class="screen-card__top"><span>A—02 / AIME</span><strong>Aime</strong></div>
+          <figure class="launcher-frame"><img src="assets/screenshots/ui-aime-light.png" alt="CHUNITHM Launcher Aime 页面浅色界面截图"></figure>
+          <p>用真实应用画面配合编号步骤，依次说明安装应用、开启 NFC 和连接游戏。把操作顺序直接呈现在页面中，可以降低首次接触读卡器时的不确定感，让用户知道从哪里开始、接下来做什么。</p>
+        </article>
+        <article class="screen-card screen-card--settings">
+          <div class="screen-card__top"><span>A—03 / SETTINGS</span><strong>设置</strong></div>
+          <figure class="launcher-frame"><img src="assets/screenshots/ui-settings-light.png" alt="CHUNITHM Launcher 设置弹窗浅色界面截图"></figure>
+          <p>按照启动路径、显示器与分辨率、外观等任务分组，并让输入控件和对应说明保持邻近。底部固定保存按钮减少长弹窗中的来回寻找，让用户完成配置后能明确提交更改。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="workflow section-shell">
+      <div class="section-label section-label--block"><span class="section-label__tag">SECTION</span><strong class="section-label__number">03</strong><span class="section-label__name">WORKFLOW</span></div>
+      <div class="workflow__intro reveal">
+        <p class="eyebrow">One flow, three moments</p>
+        <h2>从准备到恢复，<br><span>每一步都有回应。</span></h2>
+      </div>
+      <div class="workflow__list">
+        <article class="workflow-card workflow-card--yellow reveal">
+          <span class="workflow-card__number">01</span>
+          <div><p>BEFORE PLAY</p><h3>读取现场</h3><span>识别目标显示器与当前分辨率，保留恢复所需的原始状态。</span></div>
+          <b class="workflow-card__arrow" aria-hidden="true">↗</b>
+        </article>
+        <article class="workflow-card workflow-card--ink reveal reveal--delay-1">
+          <span class="workflow-card__number">02</span>
+          <div><p>AT LAUNCH</p><h3>切换并启动</h3><span>以智能模式或仅启动模式进入游戏，状态在界面中持续可见。</span></div>
+          <b class="workflow-card__arrow" aria-hidden="true">↗</b>
+        </article>
+        <article class="workflow-card workflow-card--paper reveal reveal--delay-2">
+          <span class="workflow-card__number">03</span>
+          <div><p>AFTER PLAY</p><h3>恢复现场</h3><span>监测游戏窗口与命令进程，退出后恢复显示器状态。</span></div>
+          <b class="workflow-card__arrow" aria-hidden="true">↗</b>
+        </article>
+      </div>
+    </section>
+
+    <section class="system section-shell" id="system">
+      <div class="section-heading reveal">
+        <div class="section-label section-label--block"><span class="section-label__tag">SECTION</span><strong class="section-label__number">04</strong><span class="section-label__name">SYSTEM MAP</span></div>
+        <div>
+          <p class="eyebrow">确定性工作交给程序</p>
+          <h2>界面轻一点，<br><span>系统稳一点。</span></h2>
+        </div>
+      </div>
+      <div class="system-map reveal reveal--delay-1">
+        <div class="system-node system-node--ui"><small>01 / FRONTEND</small><strong>静态 UI</strong><span>HTML / CSS / JavaScript</span></div>
+        <div class="system-connector" aria-hidden="true">↓</div>
+        <div class="system-node system-node--host"><small>02 / HOST</small><strong>WPF + .NET 10</strong><span>WebView2 / JSON bridge</span></div>
+        <div class="system-connector" aria-hidden="true">↓</div>
+        <div class="system-node system-node--os"><small>03 / SYSTEM</small><strong>显示器与游戏进程</strong><span>读取 / 切换 / 监测 / 恢复</span></div>
+      </div>
+      <div class="system-footer reveal">
+        <span class="system-footer__code">BUILD / THESIS-FEATURES</span>
+      </div>
+    </section>
+
+    <section class="closing section-shell reveal">
+      <p class="kicker"><span class="kicker__line"></span>CHUNITHM LAUNCHER / PROJECT END</p>
+      <h2>希望你的每次<br><em>游玩</em><br>都有所收获</h2>
+      <p>一个围绕真实使用场景展开的启动器设计实验。</p>
+      <a class="back-top" href="#top">返回顶部 <span>↑</span></a>
+    </section>
+  </main>
+
+  <footer class="site-footer section-shell">
+    <span>CHUNITHM LAUNCHER</span>
+    <span>THESIS / 2026</span>
+    <span>LOCAL UI ARCHIVE</span>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>

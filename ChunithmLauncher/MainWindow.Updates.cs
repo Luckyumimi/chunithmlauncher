@@ -194,6 +194,11 @@ public partial class MainWindow
         SetStatus("打开 GitHub 主页失败", "#ff5a6a");
     }
 
+    private void OpenAimeGuidePage()
+    {
+        _ = TryOpenUrl("https://github.com/Luckyumimi/NfcAimeReader");
+    }
+
     private static bool TryOpenUrl(string url)
     {
         try

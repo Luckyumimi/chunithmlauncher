@@ -193,8 +193,13 @@ public partial class MainWindow : Window
                     PersistConfig();
                     SetStatus("设置已保存并生效", "#7dffa0");
                     SendInit();
+                    _ = LoadActivityFeedAsync(forceRefresh: true);
                 }
 
+                break;
+            case "load-activity-feed":
+            case "refresh-activity-feed":
+                _ = LoadActivityFeedAsync(forceRefresh: true);
                 break;
             case "window-minimize":
                 WindowState = WindowState.Minimized;
@@ -273,8 +278,20 @@ public partial class MainWindow : Window
                 }
 
                 break;
+            case "open-activity-link":
+                if (DeserializePayload<UrlPayload>(message) is { Url: { } activityUrl }
+                    && Uri.TryCreate(activityUrl, UriKind.Absolute, out var activityUri)
+                    && activityUri.Scheme is "http" or "https")
+                {
+                    _ = TryOpenUrl(activityUri.AbsoluteUri);
+                }
+
+                break;
             case "open-github-home":
                 OpenGithubHomePage();
+                break;
+            case "open-aime-guide":
+                OpenAimeGuidePage();
                 break;
             case "open-munet":
                 if (DeserializePayload<UrlPayload>(message) is { } urlPayload)
@@ -323,8 +340,7 @@ public partial class MainWindow : Window
 
     private string ResolveUiIndexPath()
     {
-        // 当前使用仓库内的静态 ui/ 前端。Vue 迁移目录保留在 ui-vue/，
-        // 但不参与启动器运行，避免发布产物或旧的 ui-dist/ 覆盖当前页面。
+        // 当前使用仓库内的静态 ui/ 前端，避免发布产物覆盖当前页面。
         var repositoryRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
         var output = Path.Combine(AppContext.BaseDirectory, "ui", "index.html");
         if (File.Exists(output))

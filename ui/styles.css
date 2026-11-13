@@ -23,7 +23,7 @@ html, body { width: 100%; height: 100%; margin: 0; }
 body { overflow: hidden; color: var(--ink); background: var(--paper); font-family: "Quicksand", "Noto Sans SC", "Microsoft YaHei UI", sans-serif; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
-.hidden { display: none !important; }
+.hidden, [hidden] { display: none !important; }
 
 .page { position: relative; height: 100%; overflow: hidden; background: #e9e7ee; transition: background-color .35s ease, color .35s ease; }
 .user-background-image { position: absolute; z-index: 0; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
@@ -205,6 +205,14 @@ footer { justify-content: flex-end; color: var(--muted); font-size: 10px; letter
 .modal-card.settings .row input:not([type="color"])::placeholder { color: var(--muted); }
 .field-shell { position: relative; flex: 1; min-width: 0; height: 44px; }
 .field-shell input { width: 100%; height: 100%; }
+.builtin-background-card { display: flex; align-items: center; gap: 22px; padding: 4px 0 8px; }
+.builtin-background-picker { display: block; flex: 0 0 150px; width: 150px; height: 90px; padding: 0; border: 0; border-radius: 4px; outline: 3px solid #332f3c; outline-offset: 0; background: #222; overflow: hidden; transition: transform .18s ease, outline-color .2s ease; }
+.builtin-background-picker:hover { transform: translateY(-1px); }
+.builtin-background-picker:focus-visible { outline-color: var(--focus-border); outline-offset: 4px; }
+.builtin-background-preview { display: block; width: 100%; height: 100%; object-fit: cover; }
+.builtin-background-info { display: grid; gap: 14px; align-content: center; min-width: 0; }
+.builtin-background-info > strong { color: var(--ink); font-size: 12px; font-weight: 700; }
+.builtin-background-info .app-button { width: max-content; }
 @keyframes inputFocusBorderAnim { from { inset: 0; opacity: 1; border-radius: 12px; } to { inset: -8px; opacity: 0; border-radius: 16px; } }
 .field-shell:not(.disabled):has(input:focus)::after, .display-picker:has(.display-picker-trigger:focus)::after { content: ''; display: block; position: absolute; inset: 0; z-index: 2; border: 2px solid var(--focus-border); border-radius: 12px; opacity: 0; pointer-events: none; animation: inputFocusBorderAnim .5s; }
 .section small { color: color-mix(in srgb, var(--accent) 70%, #7d7787); font-size: 10px; }
@@ -337,7 +345,7 @@ footer, .target-label, .stats span, .page-heading,
 @media (max-width: 980px) { .launcher-rail { flex-basis: 66px; padding-inline: 5px; } .launcher-stage { padding-inline: 24px; } .home-lower { grid-template-columns: 1fr 1fr; margin-top: 80px; } .news-panel { grid-column: 1 / -1; } .hero-art { width: 56%; opacity: 1; }.top-actions { gap: 6px; } }
 @media (max-width: 700px) { .launcher-shell { flex-direction: column; }.launcher-rail { flex: 0 0 auto; height: 64px; flex-direction: row; padding: 8px 12px; overflow-x: auto; }.rail-brand { flex: 0 0 42px; width: 42px; height: 42px; margin: 0 8px 0 0; }.rail-nav, .rail-bottom { display: flex; width: auto; gap: 2px; }.rail-bottom { margin: 0 0 0 auto; }.rail-link { flex: 0 0 48px; width: 48px; min-height: 42px; font-size: 8px; }.rail-icon { font-size: 16px; }.launcher-stage { min-height: 0; padding: 14px 18px; }.topbar { flex-wrap: wrap; }.stage-kicker { display: none; }.top-actions { margin-left: 0; flex-wrap: wrap; }.hero-copy { padding-top: 25px; }.hero-art { top: 90px; width: 80%; height: auto; opacity: 1; }.home-lower { margin-top: 50px; }.aime-layout { grid-template-columns: 1fr; } }
 @media (max-width: 500px) { .home-lower { grid-template-columns: 1fr; }.news-panel { grid-column: auto; }.hero-copy h1 { font-size: 42px; } }
-@media (max-width: 500px) { .top-actions { flex-direction: column-reverse; align-items: flex-end; } .window-actions { margin-left: 0; } .stats { grid-template-columns: 1fr; } .row { flex-wrap: wrap; } .row > * { width: 100%; flex: 1 1 100% !important; } .row .app-button { width: auto; flex: 0 0 auto !important; } }
+@media (max-width: 500px) { .top-actions { flex-direction: column-reverse; align-items: flex-end; } .window-actions { margin-left: 0; } .stats { grid-template-columns: 1fr; } .row { flex-wrap: wrap; } .row > * { width: 100%; flex: 1 1 100% !important; } .row .app-button { width: auto; flex: 0 0 auto !important; } .builtin-background-card { align-items: flex-start; flex-direction: column; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
 
 /* Homepage activity placement: anchored to the lower activity column. */
@@ -429,6 +437,12 @@ body.dark-mode .modal-card:not(.settings) .app-button:not(.primary) { background
 .page:not(.dark) .modal-card.settings .row select,
 .page:not(.dark) .modal-card:not(.settings) .row input:not([type="color"]),
 .page:not(.dark) .modal-card:not(.settings) .row select { background: #f5f2f9; }
+
+/* Keep custom artwork visible through the workspace surfaces in both themes. */
+.page.has-user-background .launcher-stage { background: rgba(245, 242, 249, .38); }
+.page.has-user-background .launcher-rail { background: rgba(245, 242, 249, .82); }
+.page.dark.has-user-background .launcher-stage { background: rgba(0, 0, 0, .46); }
+.page.dark.has-user-background .launcher-rail { background: rgba(22, 22, 22, .84); }
 
 /* The Aime instructions must remain readable on the dark #333333 surfaces. */
 .page.dark .aime-steps,
@@ -529,5 +543,9 @@ body.dark-mode .modal-card.settings .app-button:not(.primary),
 .page.dark .modal-card.settings .app-button:not(.primary) { background: #454545; color: #f2f2f2; }
 body.dark-mode .modal-card.settings .app-button:not(.primary):hover,
 .page.dark .modal-card.settings .app-button:not(.primary):hover { background: #4d4d4d; color: #f2f2f2; }
+body.dark-mode .builtin-background-picker,
+.page.dark .builtin-background-picker { outline-color: #f2f2f2; }
+body.dark-mode .builtin-background-info > strong,
+.page.dark .builtin-background-info > strong { color: #f2f2f2; }
 body:not(.dark-mode) .modal-card.settings .app-button:not(.primary) { background: #f5f2f9; color: #332f3c; }
 body:not(.dark-mode) .modal-card.settings .app-button:not(.primary):hover { background: #e9e7ee; color: #332f3c; }

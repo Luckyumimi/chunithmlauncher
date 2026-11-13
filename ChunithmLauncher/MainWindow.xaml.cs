@@ -291,6 +291,9 @@ public partial class MainWindow : Window
             case "open-github-home":
                 OpenGithubHomePage();
                 break;
+            case "open-background-author":
+                OpenBackgroundAuthorPage();
+                break;
             case "open-aime-guide":
                 OpenAimeGuidePage();
                 break;

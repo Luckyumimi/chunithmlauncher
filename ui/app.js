@@ -671,6 +671,51 @@ const UI_TEXT = Object.freeze({
     "Imagen de fondo",
     "Hintergrundbild"
   ],
+  "clearBackground": [
+    "清空",
+    "Clear",
+    "クリア",
+    "지우기",
+    "Effacer",
+    "Limpiar",
+    "Leeren"
+  ],
+  "builtinBackground": [
+    "内置图片",
+    "Built-in image",
+    "内蔵画像",
+    "내장 이미지",
+    "Image intégrée",
+    "Imagen integrada",
+    "Integriertes Bild"
+  ],
+  "backgroundAuthor": [
+    "作者 @RECNEPS-SAIS",
+    "Author @RECNEPS-SAIS",
+    "作者 @RECNEPS-SAIS",
+    "작가 @RECNEPS-SAIS",
+    "Auteur @RECNEPS-SAIS",
+    "Autor @RECNEPS-SAIS",
+    "Autor @RECNEPS-SAIS"
+  ],
+  "visitAuthor": [
+    "访问作者主页 ↗",
+    "Visit author profile ↗",
+    "作者ページを開く ↗",
+    "작가 페이지 열기 ↗",
+    "Voir le profil de l’auteur ↗",
+    "Ver perfil del autor ↗",
+    "Autorenprofil öffnen ↗"
+  ],
+  "useBuiltinBackground": [
+    "使用这张内置背景图片",
+    "Use this built-in background image",
+    "この内蔵背景画像を使う",
+    "이 내장 배경 이미지 사용",
+    "Utiliser cette image d’arrière-plan intégrée",
+    "Usar esta imagen de fondo integrada",
+    "Dieses integrierte Hintergrundbild verwenden"
+  ],
   "localPathUrl": [
     "本地路径或 URL",
     "Local path or URL",
@@ -1569,6 +1614,8 @@ let testTimer;
 let theme = localStorage.getItem('chunithm-theme') || 'light';
 const defaultPortalUrl = 'https://portal.mumur.net/';
 const aimeGuideUrl = 'https://github.com/Luckyumimi/NfcAimeReader';
+const backgroundAuthorUrl = 'https://space.bilibili.com/2278803/';
+const builtinBackgroundPath = 'assets/backgrounds/recneps-sais.png';
 const readStoredValue = (key, legacyKey) => localStorage.getItem(key) || localStorage.getItem(legacyKey) || '';
 let portalUrl = readStoredValue('chunithm-portal-url', 'chunithm-munet-url');
 const storedPortalButtonText = readStoredValue('chunithm-portal-text', 'chunithm-munet-text');
@@ -1640,7 +1687,9 @@ function applyUserBackground(path) {
   if (!normalizedPath) return;
   const cssPath = /^(?:https?:|data:|blob:|file:)/i.test(normalizedPath)
     ? normalizedPath
-    : `file:///${normalizedPath.replace(/^\/+/, '')}`;
+    : /^assets\//i.test(normalizedPath)
+      ? normalizedPath
+      : `file:///${normalizedPath.replace(/^\/+/, '')}`;
   image.onload = () => {
     if (token !== backgroundImageToken) return;
     image.hidden = false;
@@ -1924,7 +1973,12 @@ function saveSettings() {
   state.originalMode = byId('originalModeInputSetting').value; state.targetMode = byId('targetModeSetting').value;
   state.themeColor = byId('themeColorText').value || byId('themeColor').value;
   applyTheme(byId('themeSelect').value);
-  state.backgroundImagePath = byId('bgImageInput').value;
+  const previousBackgroundPath = state.backgroundImagePath;
+  const nextBackgroundPath = byId('bgImageInput').value.trim();
+  state.backgroundImagePath = nextBackgroundPath;
+  if (nextBackgroundPath !== previousBackgroundPath) {
+    state.backgroundImageUrl = /^(?:https?:|data:|blob:|file:)/i.test(nextBackgroundPath) || nextBackgroundPath.toLowerCase() === builtinBackgroundPath ? nextBackgroundPath : '';
+  }
   portalButtonText = byId('portalButtonText').value.trim() || t('portalDefault');
   portalUrl = byId('portalUrl').value.trim() || defaultPortalUrl;
   localStorage.setItem('chunithm-portal-text', portalButtonText);
@@ -2111,7 +2165,10 @@ byId('displaySelectTriggerFirstRun').onkeydown = event => {
 };
 byId('btnMigrateToAppleChu').onclick = () => post('open-chuchart-manager-actions');
 byId('btnEditAppleChu').onclick = () => post('open-chuchart-manager-actions');
+byId('btnClearBg').onclick = () => { byId('bgImageInput').value = ''; status('已暂存清空背景图片，点击“保存设置”后生效', '#ffb36a'); };
+byId('btnSelectBuiltinBg').onclick = () => { byId('bgImageInput').value = builtinBackgroundPath; status('已暂存内置背景图片，点击“保存设置”后生效', '#ffb36a'); };
 byId('btnBrowseBg').onclick = () => post('pick-background-image-preview'); byId('btnCheckUpdate').onclick = () => post('check-update'); byId('btnOpenGithubHome').onclick = () => post('open-github-home');
+byId('btnOpenBackgroundAuthor').onclick = () => { if (window.chrome?.webview) post('open-background-author'); else window.open(backgroundAuthorUrl, '_blank', 'noopener,noreferrer'); };
 byId('btnOpenAimeGuide').onclick = () => { if (window.chrome?.webview) post('open-aime-guide'); else window.open(aimeGuideUrl, '_blank', 'noopener,noreferrer'); };
 byId('smartDisplayToggle').onchange = event => { state.smartDisplayEnabled = event.target.checked; post('set-smart-display', { enabled: state.smartDisplayEnabled }); };
 byId('target60HzToggle').onchange = event => { byId('targetModeSetting').value = event.target.checked ? '1920×1080 @ 60Hz' : '1920×1080 @ 120Hz'; };

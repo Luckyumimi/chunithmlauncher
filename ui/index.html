@@ -289,9 +289,20 @@
 <div class="field-shell">
 <input id="bgImageInput" placeholder="本地路径或 URL" />
 </div>
+<button class="app-button compact" id="btnClearBg" type="button" data-i18n="clearBackground">清空</button>
 <button class="app-button compact" id="btnBrowseBg">选择</button>
 </div>
-</div>    <div class="section">
+<label data-i18n="builtinBackground">内置图片</label>
+<div class="builtin-background-card">
+<button class="builtin-background-picker" id="btnSelectBuiltinBg" type="button" data-i18n-aria="useBuiltinBackground">
+<img class="builtin-background-preview" src="assets/backgrounds/recneps-sais.png" alt="RECNEPS-SAIS 背景图片预览" />
+</button>
+<div class="builtin-background-info">
+<strong data-i18n="backgroundAuthor">作者 @RECNEPS-SAIS</strong>
+<button class="app-button compact" id="btnOpenBackgroundAuthor" type="button" data-i18n="visitAuthor">访问作者主页 ↗</button>
+</div>
+</div>
+</div>    <div class="section" id="activitySourceSettingsSection" hidden aria-hidden="true">
 <h3>活动来源</h3>
 <label>活动服务</label>
 <div class="row">

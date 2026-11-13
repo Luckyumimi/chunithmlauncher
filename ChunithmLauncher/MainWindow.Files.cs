@@ -10,6 +10,7 @@ namespace ChunithmLauncher;
 
 public partial class MainWindow
 {
+    private const string BuiltInBackgroundImagePath = "assets/backgrounds/recneps-sais.png";
     private const long MaxBackgroundImageBytes = 16 * 1024 * 1024;
     private static readonly HashSet<string> BackgroundImageExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -84,7 +85,22 @@ public partial class MainWindow
                 return null;
             }
 
-            var fullSourcePath = Path.GetFullPath(sourcePath.Trim());
+            var trimmedSourcePath = sourcePath.Trim();
+            if (trimmedSourcePath.Equals(BuiltInBackgroundImagePath, StringComparison.OrdinalIgnoreCase))
+            {
+                return $"https://{LauncherUiHost}/{BuiltInBackgroundImagePath}";
+            }
+
+            if (Uri.TryCreate(trimmedSourcePath, UriKind.Absolute, out var sourceUri)
+                && (sourceUri.Scheme == Uri.UriSchemeHttp || sourceUri.Scheme == Uri.UriSchemeHttps))
+            {
+                return sourceUri.AbsoluteUri;
+            }
+
+            var localSourcePath = sourceUri?.Scheme == Uri.UriSchemeFile
+                ? sourceUri.LocalPath
+                : trimmedSourcePath;
+            var fullSourcePath = Path.GetFullPath(localSourcePath);
             if (!File.Exists(fullSourcePath))
             {
                 return null;

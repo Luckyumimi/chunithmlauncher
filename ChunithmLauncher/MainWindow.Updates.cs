@@ -10,6 +10,8 @@ namespace ChunithmLauncher;
 
 public partial class MainWindow
 {
+    private const string BackgroundAuthorUrl = "https://space.bilibili.com/2278803/";
+
     private async Task CheckForUpdatesAsync()
     {
         SetStatus("正在检查更新...", "#5ee7ff");
@@ -192,6 +194,11 @@ public partial class MainWindow
         }
 
         SetStatus("打开 GitHub 主页失败", "#ff5a6a");
+    }
+
+    private void OpenBackgroundAuthorPage()
+    {
+        _ = TryOpenUrl(BackgroundAuthorUrl);
     }
 
     private void OpenAimeGuidePage()
